@@ -32,13 +32,6 @@
     git                                                     # version control utility
     gh                                                      # GitHub CLI
 
-  # NVIDIA driver configuration dependencies
-    pciutils
-    file
-    gnumake
-    gcc
-    cudatoolkit
-
   # X11 tools
     xclip                                                   # using `xclip -selection c` adds standard input to the clipboard
     xorg.xdpyinfo                                           # get information about X display(s)
