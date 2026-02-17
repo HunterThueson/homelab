@@ -22,6 +22,9 @@
     shells = with pkgs; [ bash ];
   };
 
+# Enable LACT daemon (for managing GPU)
+  services.lact.enable = true;
+
 ##############
 ## Packages ##
 ##############
