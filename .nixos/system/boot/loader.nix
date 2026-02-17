@@ -9,8 +9,13 @@
 {
 
   #  Enable whichever bootloader you want to use here
-  boot.loader.grub.enable = true;
-  boot.loader.systemd-boot.enable = false;
+
+  #------------------------------------#
+  #  Current bootloader: systemd-boot  #
+  #------------------------------------#
+
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.grub.enable = false;
 
   ##########################
   #  General boot options  #
@@ -31,7 +36,7 @@
   ########
 
   boot.loader.grub = {                                                      # Use the GRUB 2 boot loader
-    device = "nodev";
+    device = "/dev/disk/by-id/nvme-eui.0025384141427eb8";                   # ID of my BOOT (!) DISK (not partition!)
     efiSupport = true;
     useOSProber = true;
     configurationLimit = 25;                                                # Limit the number of GRUB menu entries

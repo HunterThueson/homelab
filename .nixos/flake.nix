@@ -15,11 +15,11 @@
 ############
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
 
     home-manager = {
-          url = "github:nix-community/home-manager";
-          inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/home-manager/release-25.11";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nixvim = {
@@ -52,7 +52,7 @@
         modules = [
 
         #####################
-        #  The Glass Tower  #                                             # my home desktop PC
+        #  The Glass Tower  #                                         # my home desktop PC
         #####################
 
           ./system/hosts/the-glass-tower.nix                          # Per-host entrypoint for host-specific options

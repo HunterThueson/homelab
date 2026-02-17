@@ -91,6 +91,7 @@
 
   # Graphics management software
     nvtopPackages.full
+    lact                                                    # Linux GPU Control Application (LACT)
 
   # Old School Runescape                                    # installing at system level to see if that allows access to GPU
     runelite                                                # third-party client for Old School Runescape (a game for masochists)
