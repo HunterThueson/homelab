@@ -51,29 +51,7 @@
         specialArgs = { inherit inputs; };                            # pass flake inputs to all submodules
         modules = [
 
-        #####################
-        #  The Glass Tower  #                                         # my home desktop PC
-        #####################
-
-          ./system/hosts/the-glass-tower.nix                          # Per-host entrypoint for host-specific options
-          ./system/hardware/the-glass-tower.nix                       # Nix-generated hardware config for this host
-
-          ./environment.nix                                           # band-aid
-
-        ##################
-        # System Modules #
-        ##################
-
-          ./system/boot/loader.nix                                    # Bootloader configuration
-
-          ./system/hardware/mouse-and-keyboard.nix                    # Mouse and keyboard configuration
-          ./system/hardware/GPU/nvidia.nix                            # Nvidia GPU configuration
-
-          ./system/display/login-manager.nix                          # Login manager configuration (currently set to SDDM)
-          ./system/display/xorg.nix                                   # Enable dual monitor setup (hopefully)
-          ./system/display/fonts.nix                                  # Configure system fonts
-
-          ./system/environment/nix-config.nix                         # Nix Language & Nixpkgs configuration options
+          ./system/the-glass-tower.nix
 
         ################
         # Home Manager #

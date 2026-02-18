@@ -1,4 +1,4 @@
-# ./system/hosts/the-glass-tower.nix
+# ./system/the-glass-tower.nix
 
     #####################             ------------------------------
     #  The Glass Tower  #     AKA     |  Hunter's Home Desktop PC  |
@@ -15,20 +15,22 @@
 
 {
 
-#  #############
-#  #  Modules  #
-#  #############
-#
-#  (import ./boot/loader.nix inputs)                                             # Bootloader configuration
-#
-#  (import ./hardware/mouse-and-keyboard.nix inputs)                             # Mouse and keyboard configuration
-#  (import ./hardware/GPU/nvidia.nix inputs)                                     # Nvidia GPU configurat
-#
-#  (import ./display/login-manager.nix inputs)                                   # Login manager configuration (currently set to SDDM)
-#  (import ./display/xorg.nix inputs)                                            # Enable dual monitor setup (hopefully)
-#  (import ./display/fonts.nix inputs)                                           # Configure system fo
-#
-#  (import ./environment/nix-config.nix inputs)                                  # Nix Language & Nixpkgs configuration options
+  imports = [
+
+    ./boot/loader.nix                                   # Bootloader configuration
+
+    ./hardware/the-glass-tower.nix                      # Nix-generated hardware config for this host
+    ./hardware/mouse-and-keyboard.nix                   # Mouse and keyboard configuration
+    ./hardware/GPU/nvidia.nix                           # Nvidia GPU configuration
+
+    ./environment.nix                                   # band-aid
+    ./environment/login-manager.nix                     # Login manager configuration (currently set to SDDM)
+    ./environment/nix-config.nix                        # Nix Language & Nixpkgs configuration options
+
+    ./display/xorg.nix                                  # Enable dual monitor setup (hopefully)
+    ./display/fonts.nix                                 # Configure system fonts
+
+  ];
 
   ##############################
   #  Time/clock configuration  #
