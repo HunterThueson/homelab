@@ -11,6 +11,7 @@ This repository contains my personal NixOS configuration(s) and is not necessari
 
 ## What I am Currently Struggling With
 - NixOS module option types. Holy crapoly the Nix Manual is cryptic.
+- My Nvidia settings are causing a lot of screen tearing, visual glitches, hitching, etc. in Old School Runescape but not in any other games—naturally it had to happen to my favorite one,eh?. Something is wrong with the Nvidia settings I have, but I haven't been able to figure it out yet.
 
 ## What's Next?
 - Get `nvim` and `emacs` to use the `electro-swing` color scheme I created for `alacritty`
