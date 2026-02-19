@@ -34,6 +34,7 @@
   # My custom module designed for switching configs easily
   userEnvironment = {
     loginManager = "sddm";
+    editor = "vim";
   };
 
   ##############################

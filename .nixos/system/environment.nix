@@ -17,11 +17,6 @@
 # Enable gnome keyring (mailspring dependency)
   services.gnome.gnome-keyring.enable = true;
 
-  environment = {
-    variables = { EDITOR = "vim"; };
-    shells = with pkgs; [ bash ];
-  };
-
 # Enable LACT daemon (for managing GPU)
   services.lact.enable = true;
 

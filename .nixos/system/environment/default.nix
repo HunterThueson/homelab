@@ -27,9 +27,18 @@ with lib;
           default = "sddm";
           example = "greetd";
         };
+        editor = mkOption {
+          description = "Set the editor";
+          type = types.enum [ "vim" "emacs" ];
+          default = "vim";
+          example = "emacs";
+        };
       };
 
-      config = (import ./loginManager);
+      config = mkMerge [
+        (import ./loginManager)
+        (import ./editor)
+      ];
     };
   };
 }
