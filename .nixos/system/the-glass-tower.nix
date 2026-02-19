@@ -24,13 +24,17 @@
     ./hardware/GPU/nvidia.nix                           # Nvidia GPU configuration
 
     ./environment.nix                                   # band-aid
-    ./environment/login-manager.nix                     # Login manager configuration (currently set to SDDM)
-    ./environment/nix-config.nix                        # Nix Language & Nixpkgs configuration options
+    ./environment                                       # User environment modules
 
     ./display/xorg.nix                                  # Enable dual monitor setup (hopefully)
     ./display/fonts.nix                                 # Configure system fonts
 
   ];
+
+  # My custom module designed for switching configs easily
+  userEnvironment = {
+    loginManager = "sddm";
+  };
 
   ##############################
   #  Time/clock configuration  #
