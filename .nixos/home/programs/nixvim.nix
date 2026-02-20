@@ -2,34 +2,41 @@
 
 # For configuring Nixvim
 
-{ lib, pkgs, ... }:
+{ config, lib, pkgs, nixvim, ... }:
+
 {
-  plugins = {
-    nix.enable = true;                  # enable syntax highlighting for *.nix files
-    lightline.enable = true;            # fancy status line
-    lspconfig.enable = true;            # install default configs for many language servers
-    lastplace.enable = true;            # intelligently return to the last place you were editing a given file
-  };
+  programs.nixvim = {
+    enable = true;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
 
-  opts = {
-    clipboard = "unnamedplus";          # always use system clipboard
+    plugins = {
+      nix.enable = true;                  # enable syntax highlighting for *.nix files
+      lightline.enable = true;            # fancy status line
+      lspconfig.enable = true;            # install default configs for many language servers
+      lastplace.enable = true;            # intelligently return to the last place you were editing a given file
+    };
 
-    # Appearance Options
-    number = true;                      # show line numbers
-    relativenumber = true;              # show relative line numbers
-    ruler = true;                       # show current position of cursor in bottom right corner
-    wrap = false;                       # don't wrap; allow lines to extend as far as needed
+    opts = {
+      clipboard = "unnamedplus";          # always use system clipboard
 
-    # Formatting Options
-    autoindent = true;
-    expandtab = true;
-    tabstop = 2;
-    shiftwidth = 2;
+      # Appearance Options
+      number = true;                      # show line numbers
+      relativenumber = true;              # show relative line numbers
+      ruler = true;                       # show current position of cursor in bottom right corner
+      wrap = false;                       # don't wrap; allow lines to extend as far as needed
 
-    # Search & History Options
-    incsearch = true;                   # start highlighting results as soon as you start typing
-    hlsearch = true;                    # highlight results when searching
-    history = 700;                      # remember much further into the past
+      # Formatting Options
+      autoindent = true;
+      expandtab = true;
+      tabstop = 2;
+      shiftwidth = 2;
 
+      # Search & History Options
+      incsearch = true;                   # start highlighting results as soon as you start typing
+      hlsearch = true;                    # highlight results when searching
+      history = 700;                      # remember much further into the past
+    };
   };
 }

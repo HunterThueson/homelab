@@ -1,18 +1,18 @@
 #  ~/.nixos/flake.nix
 
-   ####################################################
+   #--------------------------------------------------#
    #  Hunter Thueson's NixOS System Configuration(s)  #
-   ####################################################
+   #--------------------------------------------------#
 
-#  for high-level management of my NixOS system configuration(s) and their
-#  dependencies
+#   for high-level management of my NixOS system configuration(s) and their
+#   dependencies
 
 {
-  description = "Hunter Thueson's NixOS System Configuration";
+  description = "Hunter Thueson's NixOS System Configuration(s)";
 
-############
+#----------#
 #  Inputs  #
-############
+#----------#
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
@@ -28,9 +28,9 @@
     };
   };
 
-#############
+#-----------#
 #  Outputs  #
-#############
+#-----------#
 
   outputs = inputs @ { self, nixpkgs, home-manager, nixvim, ... }:
 
@@ -40,10 +40,9 @@
   in 
 
   {
-
-    ###########
+    #---------#
     #  Hosts  #
-    ###########
+    #---------#
 
     nixosConfigurations = {
       the-glass-tower = lib.nixosSystem {
@@ -51,49 +50,13 @@
         specialArgs = { inherit inputs; };                            # pass flake inputs to all submodules
         modules = [
 
-          ./system/the-glass-tower.nix
+          ./system/the-glass-tower.nix                                # Per-host entrypoint
 
-        ################
-        # Home Manager #
-        ################
+        # Home Manager
+          home-manager.nixosModules.home-manager (import ./home)
 
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;                        # make sure NixOS and Home Manager are using the same `nixpkgs`
-            home-manager.useUserPackages = true;                      # enable installation of user packages
-            home-manager.extraSpecialArgs = { inherit inputs; };      # pass flake inputs to all modules
-            home-manager.backupFileExtension = "backup";              # move existing files by appending ext. instead of throwing errors
-
-            home-manager.sharedModules = [
-              ( import ./home/standard-config.nix )
-              ( import ./home/programs/alacritty/alacritty.nix )
-            ];
-
-            # User modules
-            home-manager.users.hunter.imports = [
-              ./home/hunter.nix
-            ];
-
-            home-manager.users.ash.imports = [
-              ./home/ash.nix
-            ];
-          }
-
-        ##########
-        # Nixvim #
-        ##########
-
-          nixvim.nixosModules.nixvim
-          {
-            programs.nixvim = {
-              enable = true;
-              defaultEditor = true;
-              viAlias = true;
-              vimAlias = true;
-              imports = [ ./home/programs/nixvim.nix ];
-            };
-          }
-
+        # Nixvim
+          nixvim.nixosModules.nixvim (import ./home/programs/nixvim.nix)
         ];
       };
     };
