@@ -1,13 +1,14 @@
 #  ~/.nixos/flake.nix
 
-   #--------------------------------------------------#
-   #  Hunter Thueson's NixOS System Configuration(s)  #
-   #--------------------------------------------------#
-
-#   for high-level management of my NixOS system configuration(s) and their
-#   dependencies
-
 {
+
+#--------------------------------------------------#
+#  Hunter Thueson's NixOS System Configuration(s)  #
+#--------------------------------------------------#
+
+# for high-level management of my NixOS system configuration(s) and their
+# dependencies
+
   description = "Hunter Thueson's NixOS System Configuration(s)";
 
 #----------#
@@ -23,7 +24,7 @@
     };
 
     nixvim = {
-      url = "github:nix-community/nixvim";
+      url = "github:nix-community/nixvim/nixos-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -40,25 +41,30 @@
   in 
 
   {
+
     #---------#
     #  Hosts  #
     #---------#
 
     nixosConfigurations = {
+
       hephaestus = lib.nixosSystem {
         inherit system;
-        specialArgs = { inherit inputs; };                            # pass flake inputs to all submodules
+        specialArgs = { inherit inputs; };                                    # pass flake inputs to all submodules
         modules = [
 
-          ./system/hephaestus.nix                                     # Per-host entrypoint
+          ./system/hephaestus.nix                                             # Per-host entrypoint
 
-        # Home Manager
-          home-manager.nixosModules.home-manager (import ./home)
+          home-manager.nixosModules.home-manager (import ./home)              # Home Manager
 
-        # Nixvim
-          nixvim.nixosModules.nixvim (import ./home/programs/nixvim.nix)
+          nixvim.nixosModules.nixvim (import ./home/programs/nixvim.nix)      # Nixvim
+
         ];
+
       };
+
     };
+
   };
+
 }

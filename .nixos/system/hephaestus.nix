@@ -21,14 +21,13 @@ let
 in
 
 {
-
   imports = [
 
-    ./boot/loader.nix                                   # Bootloader configuration
-
-    ./hardware/${host}.nix                              # Nix-generated hardware config for this host
+    ./hardware/hephaestus.nix                           # per-system hardware configuration
     ./hardware/mouse-and-keyboard.nix                   # Mouse and keyboard configuration
     ./hardware/GPU/nvidia.nix                           # Nvidia GPU configuration
+
+    ./boot/loader.nix                                   # Bootloader configuration
 
     ./environment.nix                                   # band-aid
     ./environment                                       # User environment modules
@@ -38,24 +37,25 @@ in
 
   ];
 
+
   # My custom module designed for switching configs easily
   userEnvironment = {
     loginManager = "sddm";
     editor = "vim";
   };
 
-  ##############################
+  #----------------------------#
   #  Time/clock configuration  #
-  ##############################
+  #----------------------------#
 
   time = {
     timeZone = "America/Denver";                                                # Set your time zone.
     hardwareClockInLocalTime = true;                                            # Keep the hardware clock in local time instead of UTC
   };                                                                            # for compatibility with Windows Dual Boot
 
-  ########################
+  #----------------------#
   #  Networking options  #
-  ########################
+  #----------------------#
 
   networking = {
     networkmanager.enable = true;
@@ -63,18 +63,18 @@ in
     useDHCP = false;
   };
 
-  #####################################
+  #-----------------------------------#
   #  Internationalisation properties  #
-  #####################################
+  #-----------------------------------#
 
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
     useXkbConfig = true;                                                        # Use X keyboard config in TTY, etc. (for disabling CAPS)
   };
 
-  ########################
+  #----------------------#
   #  User configuration  #                                                      # Only hard-coding users here for the time being until I figure out a better way
-  ########################
+  #----------------------#
 
   users = {
     mutableUsers = false;
@@ -104,16 +104,16 @@ in
     "ash"
   ];
 
-  #########################
+  #-----------------------#
   #  Desktop Environment  #
-  #########################
+  #-----------------------#
 
   services.desktopManager.plasma6.enable = true;                                # Enable the KDE Plasma 6 desktop environment
   services.displayManager.defaultSession = "plasmax11";                         # Launch an X11 session by default (rather than Wayland)
 
-  ##############
+  #------------#
   #  Services  #
-  ##############
+  #------------#
 
   services.printing.enable = true;                                              # Enable printing
 
