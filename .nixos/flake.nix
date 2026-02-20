@@ -45,12 +45,12 @@
     #---------#
 
     nixosConfigurations = {
-      the-glass-tower = lib.nixosSystem {
+      hephaestus = lib.nixosSystem {
         inherit system;
         specialArgs = { inherit inputs; };                            # pass flake inputs to all submodules
         modules = [
 
-          ./system/the-glass-tower.nix                                # Per-host entrypoint
+          ./system/hephaestus.nix                                     # Per-host entrypoint
 
         # Home Manager
           home-manager.nixosModules.home-manager (import ./home)

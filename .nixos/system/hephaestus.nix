@@ -1,8 +1,8 @@
-# ./system/the-glass-tower.nix
+# ./system/hephaestus.nix
 
-    #####################             ------------------------------
-    #  The Glass Tower  #     AKA     |  Hunter's Home Desktop PC  |
-    #####################             ------------------------------
+    #--------------#             ------------------------------
+    #  Hephaestus  #     AKA     |  Hunter's Home Desktop PC  |
+    #--------------#             ------------------------------
 
 # This file acts as an entry-point for host-specific configuration options. This
 # helps avoid cluttering up `flake.nix` while still allowing easy alterations.
@@ -11,7 +11,14 @@
 # type lines; I still need to write the logic that allows easy toggling of my custom
 # options, but once that's done this file will essentially control the whole system.
 
+# Q: Why is it named Hephaestus?
+# A: Because Hephaestus is the god of the forge, and this system is where I forge my tools.
+
 { config, pkgs, inputs, ... }:
+
+let
+  host = "hephaestus";
+in
 
 {
 
@@ -19,7 +26,7 @@
 
     ./boot/loader.nix                                   # Bootloader configuration
 
-    ./hardware/the-glass-tower.nix                      # Nix-generated hardware config for this host
+    ./hardware/${host}.nix                              # Nix-generated hardware config for this host
     ./hardware/mouse-and-keyboard.nix                   # Mouse and keyboard configuration
     ./hardware/GPU/nvidia.nix                           # Nvidia GPU configuration
 
@@ -52,7 +59,7 @@
 
   networking = {
     networkmanager.enable = true;
-    hostName = "the-glass-tower";
+    hostName = "${host}";
     useDHCP = false;
   };
 
