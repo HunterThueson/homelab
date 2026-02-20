@@ -1,4 +1,4 @@
-# ./system/environment.nix
+# ./system/bandaid.nix
 #
 # This configuration file is imported by /etc/nixos/configuration.nix, and should contain
 # all of the environment configuration and package management logic used in the NixOS
@@ -79,9 +79,6 @@
     binutils                                                # dependency for `make`
     xorriso                                                 # dependency for `make iso`
     libsForQt5.qtstyleplugin-kvantum                        # dependency for Kvantum (KDE themes)
-
-  # Emacs
-    emacs
 
   # Mouse configuration software
     libratbag

@@ -23,13 +23,14 @@ in
 {
   imports = [
 
+    ./bandaid.nix                                       # band-aid
+
     ./hardware/hephaestus.nix                           # per-system hardware configuration
     ./hardware/mouse-and-keyboard.nix                   # Mouse and keyboard configuration
     ./hardware/GPU/nvidia.nix                           # Nvidia GPU configuration
 
     ./boot/loader.nix                                   # Bootloader configuration
 
-    ./environment.nix                                   # band-aid
     ./environment                                       # User environment modules
 
     ./display/xorg.nix                                  # Enable dual monitor setup (hopefully)
@@ -103,13 +104,6 @@ in
     "hunter"
     "ash"
   ];
-
-  #-----------------------#
-  #  Desktop Environment  #
-  #-----------------------#
-
-  services.desktopManager.plasma6.enable = true;                                # Enable the KDE Plasma 6 desktop environment
-  services.displayManager.defaultSession = "plasmax11";                         # Launch an X11 session by default (rather than Wayland)
 
   #------------#
   #  Services  #
