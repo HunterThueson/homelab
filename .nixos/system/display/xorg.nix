@@ -21,9 +21,14 @@
 #   364 / 2 = 182
 
 { config, pkgs, inputs, ... }:
+
+let
+  inherit (pkgs) lib;
+in
+
 {
   services.xserver = {
-    enable = true;
+    enable = lib.mkDefault true;
     verbose = 7;                                            # increase verbosity of X logs
 
     # Monitor configuration
@@ -36,6 +41,7 @@
       Option    "MetaModes" "DP-4: 3840x2160_144 +0+0 { ForceCompositionPipeline=On, AllowGSYNCCompatible=On }, DP-2: 2560x1440_144 +3840+182 { ViewPortIn=3192x1796, ViewPortOut=2560x1440, ForceCompositionPipeline=On, AllowGSYNC=On }"
     '';
     xrandrHeads = [
+
       # Gigabyte M28U @ 3840x2160
       {
         output = "DP-4";
@@ -47,6 +53,7 @@
           Option "Position" "0 0"
         '';
       }
+
       # Dell Ultrasharp S2417DG @ 2560x1440
       {
         output = "DP-2";
@@ -60,4 +67,3 @@
     ];
   };
 }
-

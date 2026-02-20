@@ -18,6 +18,7 @@
 
 let
   host = "hephaestus";
+  inherit (pkgs) lib;
 in
 
 {
@@ -38,6 +39,19 @@ in
 
   ];
 
+  #-------------------#
+  #  Desktop Manager  #
+  #-------------------#
+
+  specialisation = {
+    hyprTest.configuration = {
+      system.nixos.tags = [ "hyprTest" ];
+      services.desktopManager.plasma6.enable = false;
+      services.desktopManager.plasma6.enableQt5Integration = false;
+      #services.xserver.enable = false;
+      programs.hyprland.enable = true;
+    };
+  };
 
   # My custom module designed for switching configs easily
   userEnvironment = {
