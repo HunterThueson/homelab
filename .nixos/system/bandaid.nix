@@ -14,9 +14,6 @@
 
 {
 
-# Enable gnome keyring (mailspring dependency)
-  services.gnome.gnome-keyring.enable = true;
-
 # Enable LACT daemon (for managing GPU)
   services.lact.enable = true;
 
@@ -31,7 +28,6 @@
     gh                                                      # GitHub CLI
 
   # X11 tools
-    xclip                                                   # using `xclip -selection c` adds standard input to the clipboard
     xorg.xdpyinfo                                           # get information about X display(s)
 
   # Terminal
@@ -51,11 +47,9 @@
     neofetch                                                # display system info
     gtop                                                    # graphical `top`
     btop                                                    # another fancy `top`
-    upower                                                  # command line util for monitoring mouse battery life
 
   # GUI
     gparted                                                 # GUI partition management
-    pcmanfm                                                 # lightweight graphical file manager
 
   # the Rust programming language 
     cargo                                                   # downloads your Rust project's dependencies and builds your project
@@ -70,7 +64,6 @@
   
   # Hardware utilities
     openrgb                                                 # open source RGB lighting control utility
-    keymapp                                                 # configure ZSA keyboards (like my Moonlander)
     parted
     cryptsetup
 
@@ -79,10 +72,6 @@
     binutils                                                # dependency for `make`
     xorriso                                                 # dependency for `make iso`
     libsForQt5.qtstyleplugin-kvantum                        # dependency for Kvantum (KDE themes)
-
-  # Mouse configuration software
-    libratbag
-    piper
 
   # Graphics management software
     nvtopPackages.full
@@ -93,16 +82,10 @@
     wineWow64Packages.full                                  # fix dependency issue with bolt launcher
     bolt-launcher                                           # third-party client for Jagex Launcher on Linux
     jdk17                                                   # fix dependency issue with bolt launcher
+
+    python313Packages.beautifulsoup4
+    python313Packages.types-beautifulsoup4
   ];
-
-  # Steam
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;                         # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true;                    # Open ports in the firewall for Source Dedicated Server
-    localNetworkGameTransfers.openFirewall = true;          # Open ports in the firewall for Steam Local Network Game Transfers
-  };
-
 
   # Enable all bluez plugins
   hardware.bluetooth.package = pkgs.bluezFull;

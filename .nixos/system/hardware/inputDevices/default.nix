@@ -4,7 +4,7 @@
 
 {
   imports = [
-    ./xserver-libinput.nix
+    ./mouse-and-keyboard.nix
     ./zsa-keyboards.nix                 # Enable udev rules for keyboards from ZSA (Moonlander, Voyager, ErgoDox EZ, etc.)
   ];
 }

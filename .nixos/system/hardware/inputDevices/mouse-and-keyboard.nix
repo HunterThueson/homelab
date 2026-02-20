@@ -23,6 +23,8 @@
 
   services.ratbagd.enable = true;                             # Enable ratbagd, a daemon for configuring gaming mice
 
+  services.upower.enable = true;                              # Enable UPower, a DBus service that provides power management support
+
   environment.systemPackages = with pkgs; [
     piper                                                     # Mouse configuration software
     xclip                                                     # using `xclip -selection c` adds standard input to the clipboard

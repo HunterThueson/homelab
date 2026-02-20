@@ -27,7 +27,7 @@ in
     ./bandaid.nix                                       # band-aid
 
     ./hardware/hephaestus.nix                           # per-system hardware configuration
-    ./hardware/mouse-and-keyboard.nix                   # Mouse and keyboard configuration
+    ./hardware/inputDevices
     ./hardware/GPU/nvidia.nix                           # Nvidia GPU configuration
 
     ./boot/loader.nix                                   # Bootloader configuration
@@ -48,7 +48,6 @@ in
       system.nixos.tags = [ "hyprTest" ];
       services.desktopManager.plasma6.enable = false;
       services.desktopManager.plasma6.enableQt5Integration = false;
-      #services.xserver.enable = false;
       programs.hyprland.enable = true;
     };
   };
@@ -124,6 +123,17 @@ in
   #------------#
 
   services.printing.enable = true;                                              # Enable printing
+
+  #---------#
+  #  Steam  #
+  #---------#
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;                         # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true;                    # Open ports in the firewall for Source Dedicated Server
+    localNetworkGameTransfers.openFirewall = true;          # Open ports in the firewall for Steam Local Network Game Transfers
+  };
 
   ###############
   # This value determines the NixOS release from which the default
