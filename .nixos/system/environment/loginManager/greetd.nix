@@ -29,5 +29,10 @@ with lib;
         };
       };
     };
+
+    environment.etc."greetd.environments".text = ''
+      Hyprland
+    '';
+
   };
 }

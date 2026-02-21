@@ -24,6 +24,8 @@ in
 {
   imports = [
 
+    inputs.hyprland.nixosModules.default                # Hyprland NixOS module
+
     ./bandaid.nix                                       # band-aid
 
     ./hardware/hephaestus.nix                           # per-system hardware configuration
@@ -49,12 +51,18 @@ in
       services.desktopManager.plasma6.enable = false;
       services.desktopManager.plasma6.enableQt5Integration = false;
       programs.hyprland.enable = true;
+
+      environment.sessionVariables = {
+        NIXOS_OZONE_WL = "1";
+      };
+
+      userEnvironment.loginManager = "sddm";
     };
   };
 
   # My custom module designed for switching configs easily
   userEnvironment = {
-    loginManager = "sddm";
+    loginManager = lib.mkDefault "sddm";
     editor = "vim";
   };
 

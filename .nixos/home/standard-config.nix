@@ -3,7 +3,11 @@
 # configuration options to be applied to all users by default
 # 
 
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, lib, inputs, osConfig, ... }:
+
+let
+  cfg = config;
+in
 
 {
 

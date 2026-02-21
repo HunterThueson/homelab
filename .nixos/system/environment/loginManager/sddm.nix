@@ -18,6 +18,8 @@ with lib;
       enable = true;
       enableHidpi = true;
       autoNumlock = true;
+      wayland.enable = true;
+      defaultSession = "";
     };
   };
 }

@@ -1,8 +1,5 @@
 tutorial/
 tutorial/*
 
-modules/
-modules/**
-
 .cfg/
 .cfg/**

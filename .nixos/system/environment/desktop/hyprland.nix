@@ -4,19 +4,46 @@
   #  Hyprland Window Manager Configuration  #
   ###########################################
 
-# TODO: Configure hyprland lol
-
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, home, self, ... }:
 
 let
   cfg = config.programs.hyprland;
   inherit inputs;
-  inherit lib;
+  inherit home;
+  self = inputs.self;
 in
 
 {
 
   config = lib.mkIf (cfg.enable == true) {
+
+  #-------------------------#
+  #  NixOS Module Settings  #
+  #-------------------------#
+    environment.systemPackages = with pkgs; [
+      wlr-protocols
+      kdePackages.wayland-protocols
+      dunst
+      kitty
+      libnotify
+      networkmanagerapplet
+      rofi
+      swww
+      waybar
+    ];
+
+    programs.uwsm = {
+      enable = false;
+      waylandCompositors = {
+        hyprland = {
+          prettyName = "Hyprland";
+          comment = "Hyprland compositor managed by UWSM";
+          binPath = "/run/current-system/sw/bin/Hyprland";
+          extraArgs = [ ];
+        };
+      };
+    };
+
     # Enable Cachix so I don't have to build `hyprland` from source every time I `nixos-rebuild`
     nix.settings = {
       substituters = ["https://hyprland.cachix.org"];
@@ -26,11 +53,15 @@ in
 
     programs.hyprland = {
       xwayland.enable = true;                   # I will probably need this for OSRS or something
-
-      # set the Hyprland and XDPH packages to the flake input packages
+      withUWSM = false;
       package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
       portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
     };
+
+
+  };
+}
+# >EOF
 
     ########################
     #  TODO: The Big List  #
@@ -94,5 +125,3 @@ in
         #]
         #)))
     #};
-  };
-}

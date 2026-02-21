@@ -90,5 +90,7 @@
   # Enable all bluez plugins
   hardware.bluetooth.package = pkgs.bluezFull;
 
+  environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
+
 }
 
