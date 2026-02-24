@@ -67,6 +67,19 @@
 
       };
 
+      artemis = lib.nixosSystem {
+        inherit system;
+        specialArgs = { inherit inputs; };
+        modules = [
+
+          home-manager.nixosModules.home-manager (import ./home)              # Home Manager
+
+          nixvim.nixosModules.nixvim (import ./home/programs/nixvim.nix)      # Nixvim
+
+        ];
+
+      };
+
     };
 
     #homeConfigurations."hunter@hephaestus" = home-manager.lib.homeManagerConfiguration {
