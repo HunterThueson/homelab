@@ -15,7 +15,7 @@ This repository contains my personal NixOS configuration(s) and is not necessari
 
 ## What's Next?
 - Get `nvim` and `emacs` to use the `electro-swing` color scheme I created for `alacritty`
-- Create a "specialisation" that keeps KDE Plasma as my default (for now) but adds a boot entry that switches over to Hyprland for when I'm working on configuring that
+~~- Create a "specialisation" that keeps KDE Plasma as my default (for now) but adds a boot entry that switches over to Hyprland for when I'm working on configuring that~~ Completed 2/22/26
 - Set up Emacs with Evil Mode, Magit, and Org-Mode. Make sure it runs as a server & client so I don't have to perform startup tasks every time I launch a new window
 - Switch from KDE Plasma to Hyprland
 - Personalize my workspaces, window rules, and keybinds so that window management & navigation is as smooth and easy as possible
