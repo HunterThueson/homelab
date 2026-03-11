@@ -38,6 +38,8 @@ in
 
     ./display/xorg.nix                                  # Enable dual monitor setup (hopefully)
     ./display/fonts.nix                                 # Configure system fonts
+    
+    ../users                                            # User management
 
   ];
 
@@ -119,13 +121,6 @@ in
       };
     };
   };
-
-  nix.settings.allowed-users = [
-    "@wheel"
-    "hunter"
-    "ash"
-  ];
-
   #------------#
   #  Services  #
   #------------#
