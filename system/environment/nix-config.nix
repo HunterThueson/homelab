@@ -16,6 +16,7 @@
     settings = {
       experimental-features = [ "nix-command" "flakes" ];                       # Enable Flakes
       auto-optimise-store = true;                                               # Automatically optimise nix-store
+      allow-dirty = true;                                                       # Allow dirty Git/Mercurial trees
     };
 
     gc = {                                                                      # Automatic garbage collection
@@ -24,4 +25,10 @@
       options = "--delete-older-than 90d";
     };
   };
+
+  nix.settings.allowed-users = [
+    "@wheel"
+    "@wizard"
+  ];
+
 }
