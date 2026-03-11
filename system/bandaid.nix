@@ -77,6 +77,10 @@
     nvtopPackages.full
     lact                                                    # Linux GPU Control Application (LACT)
 
+  # AI image upscaling software (Real-ESRGAN)
+    realesrgan-ncnn-vulkan
+    upscayl-ncnn
+
   # Old School Runescape                                    # installing at system level to see if that allows access to GPU
     runelite                                                # third-party client for Old School Runescape (a game for masochists)
     wineWow64Packages.full                                  # fix dependency issue with bolt launcher
