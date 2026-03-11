@@ -19,7 +19,7 @@
 
       # Teleport to NixOS configuration directory
       cdn () {
-        cd /home/hunter/.nixos/
+        cd /etc/nixos/
         clear
         eza --icons=auto --group-directories-first
       }
