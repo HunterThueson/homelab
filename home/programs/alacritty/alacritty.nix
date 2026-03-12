@@ -1,17 +1,13 @@
 # ./home/programs/alacritty/alacritty.nix
 
-  #############################
-  #  Alacritty Configuration  #
-  #############################
+#---------------------------#
+#  Alacritty Configuration  #
+#---------------------------#
 
 { config, pkgs, lib, inputs, ... }:
 
 {
   programs.alacritty.settings = {
-
-  ##############
-  # Appearance #
-  ##############
 
     general.import = [
       "./colors/electro-swing.toml"               # import color scheme
@@ -50,15 +46,15 @@
     font = {                                      # font options
       size = 9;
       bold = {
-        family = lib.mkForce "FiraCode Nerd Font";
+        family = "FiraCode Nerd Font";
         style = lib.mkForce "Retina Bold";
       };
       italic = {
-        family = lib.mkForce "FiraCode Nerd Font";
+        family = "FiraCode Nerd Font";
         style = lib.mkForce "Retina Italic";
       };
       normal = {
-        family = lib.mkForce "FiraCode Nerd Font";
+        family = "FiraCode Nerd Font";
         style = lib.mkForce "Retina";
       };
     };

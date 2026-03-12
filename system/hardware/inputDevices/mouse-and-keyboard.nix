@@ -1,8 +1,8 @@
 # ./system/services/mouse-and-keyboard.nix
 
-  #------------------------------------#
-  #  Mouse and Keyboard Configuration  #
-  #------------------------------------#
+#------------------------------------#
+#  Mouse and Keyboard Configuration  #
+#------------------------------------#
 
 { config, pkgs, ... }:
 

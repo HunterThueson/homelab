@@ -1,9 +1,5 @@
 # ./system/display/login-manager.nix
 
-  #################################
-  #  Login Manager Configuration  #
-  #################################
-
 { ... }:
 
 {

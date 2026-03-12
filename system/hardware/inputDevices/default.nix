@@ -1,6 +1,6 @@
 # ./system/hardware/inputDevices/default.nix
 
-{ config, ... }:
+{ ... }:
 
 {
   imports = [

@@ -1,18 +1,17 @@
 #  ~/.nixos/flake.nix
 
-{
-
 #----------------------------------#
 #  Hunter Thueson's NixOS Homelab  #
 #----------------------------------#
 
 # for high-level management of my NixOS homelab and its dependencies
 
+{
   description = "Hunter Thueson's NixOS System Configuration(s)";
 
-#----------#
-#  Inputs  #
-#----------#
+  #----------#
+  #  Inputs  #
+  #----------#
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
@@ -37,9 +36,9 @@
     };
   };
 
-#-----------#
-#  Outputs  #
-#-----------#
+  #-----------#
+  #  Outputs  #
+  #-----------#
 
   outputs = inputs @ { self, nixpkgs, home-manager, nixvim, stylix, ... }:
 
@@ -90,22 +89,5 @@
 
     };
 
-    #homeConfigurations."hunter@hephaestus" = home-manager.lib.homeManagerConfiguration {
-      #inherit system;
-      #pkgs = nixpkgs.legacyPackages.${system};
-
-      #modules = [
-        #{
-          #wayland.windowManager.hyprland = {
-            #enable = true;
-            #package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-            #portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-
-          #};
-        #}
-      #];
-    #};
-
   };
-
 }

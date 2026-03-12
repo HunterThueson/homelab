@@ -1,17 +1,16 @@
 # ./home/ash.nix
-#
+ 
 # User configuration file for: Ash
-#
-
+ 
 { config, pkgs, inputs, ... }:
 
 {
   home.username = "ash";
   home.homeDirectory = "/home/ash";
 
-  ###########################
-  ##  Shell Configuration  ##
-  ###########################
+  #-----------------------#
+  #  Shell Configuration  #
+  #-----------------------#
 
   programs.bash = {
     enable = true;
@@ -30,9 +29,9 @@
     enable = false;
   };
 
-  #############################
-  ##  Package Configuration  ##
-  #############################
+  #-------------------------#
+  #  Package Configuration  #
+  #-------------------------#
 
   home.packages = with pkgs; [
     firefox                             # web browser
@@ -46,9 +45,9 @@
     speedcrunch                         # calculator
   ];
   
-  ################
-  ##  Services  ##
-  ################
+  #------------#
+  #  Services  #
+  #------------#
 
   services = {
     unclutter = {

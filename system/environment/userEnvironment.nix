@@ -1,8 +1,8 @@
 # ./system/environment/default.nix
 
-  #-----------------------#
-  #  Environment Modules  #
-  #-----------------------#
+#-----------------------#
+#  Environment Modules  #
+#-----------------------#
 
 { config, pkgs, ... }:
 

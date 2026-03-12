@@ -1,6 +1,10 @@
 # ./home/programs/nixvim.nix
 
-# For configuring Nixvim
+#------------------------#
+#  Nixvim Configuration  #
+#------------------------#
+
+# Manage Neovim configuration with Nix syntax
 
 { config, lib, pkgs, nixvim, ... }:
 

@@ -1,37 +1,20 @@
 # ./system/display/xorg.nix
 
-# XOrg/XServer configuration
+#------------------------------#
+#  XOrg/XServer configuration  #
+#------------------------------#
 
-###############################
-#  Fixing DPI/Scaling Issues  #
-###############################
-
-# the following calculations are for a landscape-landscape setup
-# Target DPI: 153.9
-# to find scaling factor: divide target dpi by current dpi
-#   153.9 / 123.42 = 1.24696
-# to find target virtual resolution: multiply current resolution x and y by scaling factor
-#   2560 * 1.24696 = 3192.2176 (rounded down)
-#   1440 * 1.24696 = 1795.6224 (rounded up)
-# Virtual resolution of: 7032 x 2160
-#   x = 3840 + 3192 = 7032 (since we are having the monitors side by side)
-#   y = 2160 (since one monitor is already bigger than the other)
-# Now we figure out the vertical offset for monitor 2:
-#   2160 - 1796 = 364
-#   364 / 2 = 182
-
-{ config, pkgs, inputs, ... }:
-
-let
-  inherit (pkgs) lib;
-in
+{ config, pkgs, lib, ... }:
 
 {
   services.xserver = {
     enable = lib.mkDefault true;
     verbose = 7;                                            # increase verbosity of X logs
 
-    # Monitor configuration
+    #-------------------------#
+    #  Monitor Configuration  #
+    #-------------------------#
+
     displayManager.xserverArgs = [ "-dpi 154" ];            # set screen dpi
     virtualScreen = {
       x = 7032;                                             # strange screen size is due to the way I'm adjusting dpi for different resolution
@@ -67,3 +50,19 @@ in
     ];
   };
 }
+
+# NOTE: On Fixing DPI/Scaling Issues
+
+# the following calculations are for a landscape-landscape setup
+# Target DPI: 153.9
+# to find scaling factor: divide target dpi by current dpi
+#   153.9 / 123.42 = 1.24696
+# to find target virtual resolution: multiply current resolution x and y by scaling factor
+#   2560 * 1.24696 = 3192.2176 (rounded down)
+#   1440 * 1.24696 = 1795.6224 (rounded up)
+# Virtual resolution of: 7032 x 2160
+#   x = 3840 + 3192 = 7032 (since we are having the monitors side by side)
+#   y = 2160 (since one monitor is already bigger than the other)
+# Now we figure out the vertical offset for monitor 2:
+#   2160 - 1796 = 364
+#   364 / 2 = 182

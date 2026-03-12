@@ -1,9 +1,8 @@
-#  ./.nixos/sys/nvidia.nix
-#
-#  ---------------------------------
-#  |  Nvidia Configuration Options |
-#  ---------------------------------
-#
+# ./system/hardware/gpu/nvidia.nix
+
+#----------------------------#
+#  Nvidia GPU Configuration  #
+#----------------------------#
 
 { config, pkgs, ... }:
 
@@ -59,5 +58,4 @@ environment.systemPackages = with pkgs; [
   cudatoolkit
 ];
 
-} # EOF
-
+}

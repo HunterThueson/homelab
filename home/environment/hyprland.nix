@@ -1,5 +1,9 @@
 # ./home/environment/hyprland.nix
 
+#-----------------------------------------#
+#  Hyprland Window Manager Configuration  #
+#-----------------------------------------#
+
 { config, pkgs, lib, osConfig, inputs, self, ... }:
 
 let
@@ -20,15 +24,13 @@ in
       extraPortals = [ inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland ];
     };
 
-    #xdg.configFile."uwsm/env".source = "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh"; 
-
     wayland = {
       windowManager.hyprland = {
         enable = true;
         xwayland.enable = true;                             # Enable XWayland. Overrides the enableXWayland option of the package. Default value
         systemd = {
           enable = true;                                    # conflicts with UWSM?
-          enableXdgAutostart = true;                       # Enable autostart of applications using systemd-xdg-autostart-generator (disabled for now because I don't know what it does and that's the default)
+          enableXdgAutostart = true;                        # Enable autostart of applications using systemd-xdg-autostart-generator (disabled for now because I don't know what it does and that's the default)
           variables = [ "--all" ];
         };
         package = null;                                     # According to the Home Manager manual, this should be null if I used the NixOS module to install Hyprland

@@ -1,14 +1,13 @@
 # ./system/environment/desktop/plasma.nix
 
-  #----------------------------#
-  #  KDE Plasma Configuration  #
-  #----------------------------#
+#----------------------------#
+#  KDE Plasma Configuration  #
+#----------------------------#
 
 { config, pkgs, lib, ... }:
 
 let
   cfg = config;
-  inherit lib;
 in
 
 {

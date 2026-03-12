@@ -1,14 +1,13 @@
 # ./system/environment/editor/vim.nix
 
-  #---------------------#
-  #  Vim Configuration  #
-  #---------------------#
+#---------------------#
+#  Vim Configuration  #
+#---------------------#
 
-{ config, pkgs, ... }: 
+{ config, lib, ... }: 
 
 let
   cfg = config;
-  inherit (pkgs) lib;
 in
 
 with lib;

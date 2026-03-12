@@ -5,11 +5,10 @@
 #------------------------#
 
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let 
   cfg = config;
-  inherit (pkgs) lib;
   tuiTimeFormat = "\"%A, %Y- %-m- %d -- %-I: %M ... %S\"";
   tuiTheme = "\"border=red;text=magenta;time=red;container=black;prompt=magenta;input=red;greet=magenta;action=magenta;button=red\"";
   tuiGreeting = "\"\"Do not meddle in the affairs of wizards, for they are subtle and quick to anger.\" -J.R.R. Tolkien\"";

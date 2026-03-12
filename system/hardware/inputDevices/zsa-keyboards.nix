@@ -1,8 +1,8 @@
 # ./system/hardware/inputDevices/zsa-keyboards.nix
 
-  #-----------------------------#
-  #  ZSA Keyboard Configuration #
-  #-----------------------------#
+#-----------------------------#
+#  ZSA Keyboard Configuration #
+#-----------------------------#
 
 { config, pkgs, ... }:
 

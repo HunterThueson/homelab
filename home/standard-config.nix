@@ -1,69 +1,63 @@
 # ./home/standard-config.nix
-#
-# configuration options to be applied to all users by default
-# 
 
-{ config, pkgs, lib, inputs, osConfig, ... }:
+# configuration options to be applied to all users by default
+
+{ config, pkgs, ... }:
 
 let
   cfg = config;
 in
 
 {
+  # Must be declared per user and changed for each new version of NixOS (per guy on Discord)
+  home.stateVersion = "25.11";
 
-# Must be declared per user and changed for each new version of NixOS (per guy on Discord)
-home.stateVersion = "25.11";
+  # Let home-manager install and manage itself
+  programs.home-manager.enable = true;
 
-# Let home-manager install and manage itself
-programs.home-manager.enable = true;
-
-# Extra directories to add to PATH
-home.sessionPath = [
-  "/usr/local/bin/"
-  "$HOME/bin/"
-  "$HOME/.cargo/bin/"
-];
-
-############################
-## Keyboard Configuration ##
-############################
-
-home.keyboard = {
-  layout = "us";
-  options = [ "ctrl:nocaps" ];
-};
-
-#########################
-## Shell Configuration ##
-#########################
-
-#  Note: `bash` must be enabled per-user in their respective [user].nix file in
-#  order to allow each user to use a different shell (such as `fish` or `zsh`):
-#
-#   programs.bash.enable = true;
-#
-
-programs.bash = {
-  historyFile = "$HOME/docs/archive/.bash_history";                             # Location of the bash history file
-  historyIgnore = [                                                             # List of commands that should not be saved to the history list
-    "ls"
-    "exa"
-    "cd"
-    "exit"
-    "clear"
+  # Extra directories to add to PATH
+  home.sessionPath = [
+    "/usr/local/bin/"
+    "$HOME/bin/"
+    "$HOME/.cargo/bin/"
   ];
-  sessionVariables = rec {                                                      # Environment variables that will be set for the Bash session
-    XDG_CONFIG_HOME = "$HOME/.config";
-    XDG_CACHE_HOME = "$HOME/.cache";
-    STARSHIP_CONFIG = "${XDG_CONFIG_HOME}/starship.toml";
-    STARSHIP_CACHE = "${XDG_CACHE_HOME}/starship";
+
+  #--------------------------#
+  #  Keyboard Configuration  #
+  #--------------------------#
+
+  home.keyboard = {
+    layout = "us";
+    options = [ "ctrl:nocaps" ];
   };
 
-  ###################
-  ## Shell Options ##
-  ###################
+  #-----------------------#
+  #  Shell Configuration  #
+  #-----------------------#
 
-  shellOptions = [
+  #  Note: `bash` must be enabled per-user in their respective [user].nix file in
+  #  order to allow each user to use a different shell (such as `fish` or `zsh`):
+  #
+  #   programs.bash.enable = true;
+  #
+
+  programs.bash = {
+    historyFile = "$HOME/docs/archive/.bash_history";                             # Location of the bash history file
+    historyIgnore = [                                                             # List of commands that should not be saved to the history list
+      "ls"
+      "eza"
+      "cd"
+      "exit"
+      "clear"
+    ];
+    sessionVariables = rec {                                                      # Environment variables that will be set for the Bash session
+      XDG_CONFIG_HOME = "$HOME/.config";
+      XDG_CACHE_HOME = "$HOME/.cache";
+      STARSHIP_CONFIG = "${XDG_CONFIG_HOME}/starship.toml";
+      STARSHIP_CACHE = "${XDG_CACHE_HOME}/starship";
+    };
+
+    shellOptions = [
     # Append to history file rather than replacing it
     "histappend"
 
@@ -76,76 +70,88 @@ programs.bash = {
 
     # Warn if closing shell with running jobs
     "checkjobs"
-  ];
+    ];
 
-  ###############
-  ## ~/.bashrc ##
-  ###############
+    #-------------#
+    #  ~/.bashrc  #
+    #-------------#
 
-  bashrcExtra = ''
-    # Teleport to $HOME
-    cdd () {
-      cd $HOME
-      clear
-      sleep 0.01
-      eza -DG --icons=auto --group-directories-first
-    }
+    bashrcExtra = ''
+      # Teleport to $HOME
+      cdd () {
+        cd $HOME
+        clear
+        sleep 0.01
+        eza -DG --icons=auto --group-directories-first
+      }
 
-    # Teleport to config directory
-    cdc () {
-      cd $XDG_CONFIG_HOME
-      clear
-      eza -DG --icons=auto --group-directories-first
-    }
+      # Teleport to config directory
+      cdc () {
+        cd $XDG_CONFIG_HOME
+        clear
+        eza -DG --icons=auto --group-directories-first
+      }
 
-    # `gh` wrapper to make listing issues easier
-    gh () {
-      if [[ $@ == "issue list" ]]; then
-        command gh issue list -L 100
-      else
-        command gh "$@"
-      fi
-    }
+      # `gh` wrapper to make listing issues easier
+      gh () {
+        if [[ $@ == "issue list" ]]; then
+          command gh issue list -L 100
+        else
+          command gh "$@"
+        fi
+      }
 
-  '';
+    '';
 
-  #####################
-  ## ~/.bash_aliases ##
-  #####################
+    #-------------------#
+    #  ~/.bash_aliases  #
+    #-------------------#
 
-  shellAliases = {
+    shellAliases = {
 
-    # `ls` quality-of-life improvements
-    ls = "eza -G --color=auto --icons=auto --group-directories-first";          # replace `ls` with `eza` (faster, written in Rust)
-    lsa = "eza -Gau --git --time-style long-iso --color=always --icons";        # more info about hidden files (w/ git status)
-    lsd = "eza -D --color=auto --icons=auto";                                   # list only directories
-    lst = "eza -T --color=auto --icons=auto --group-directories-last";          # list recursively through directories and output as a tree
+      # `ls` quality-of-life improvements
+      ls = "eza -G --color=auto --icons=auto --group-directories-first";          # replace `ls` with `eza` (faster, written in Rust)
+      lsa = "eza -Gau --git --time-style long-iso --color=always --icons";        # more info about hidden files (w/ git status)
+      lsd = "eza -D --color=auto --icons=auto";                                   # list only directories
+      lst = "eza -T --color=auto --icons=auto --group-directories-last";          # list recursively through directories and output as a tree
 
-    # Drop-in program replacements
-    find = "fd";                                                                # replace `find` with `fd` (faster, written in -- you guessed it -- Rust)
-    
-    # Navigation
-    ghs = "git status";
-    
-    # Terminal clearing
-    cl = "clear";                                                               # because typing `clear` just takes too long
+      # Drop-in program replacements
+      find = "fd";                                                                # replace `find` with `fd` (faster, written in -- you guessed it -- Rust)
+      
+      # Navigation
+      ghs = "git status";
+      
+      # Terminal clearing
+      cl = "clear";                                                               # because typing `clear` just takes too long
+    };
+
   };
 
-};
+  #-------------------#
+  #  Starship Prompt  #
+  #-------------------#
 
-# Enable Starship prompt for all users
-programs.starship = {
-  enable = true;
-  enableBashIntegration = true;
-};
-  
-programs.alacritty = {
-  enable = true;
-};
+  programs.starship = {
+    enable = true;
+    settings = {
+      "$schema" = "https://starship.rs/config-schema.json";
 
-programs.firefox = {
-  enable = true;
-};
+      add_newline = true;
+
+      character = {
+        success_symbol = "[└─➜](bold green)";
+        error_symbol = "[└─✗](bold red)";
+      };
+    };
+  }; 
+
+  programs.alacritty = {
+    enable = true;
+  };
+
+  programs.firefox = {
+    enable = true;
+  };
 
 }
 

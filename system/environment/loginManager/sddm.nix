@@ -4,10 +4,9 @@
 #  SDDM Configuration  #
 #----------------------#
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
-  inherit (pkgs) lib;
   cfg = config;
 in
 
@@ -19,7 +18,7 @@ with lib;
       enableHidpi = true;
       autoNumlock = true;
       wayland.enable = true;
-      defaultSession = "";
+      defaultSession = lib.mkDefault "";
     };
   };
 }

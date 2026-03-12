@@ -1,14 +1,13 @@
 # ./system/services/emacs-daemon.nix
 
-  ################################
-  #  Emacs Daemon Configuration  #
-  ################################
+#-----------------------#
+#  Emacs Configuration  #
+#-----------------------#
 
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   cfg = config;
-  inherit (pkgs) lib;
 in
 
 with lib;
@@ -17,7 +16,15 @@ with lib;
     environment.systemPackages = with pkgs; [
       emacs
     ];
+
+    # Emacs daemon
     services.emacs = {
+      enable = true;
+      package = pkgs.emacs;
+    };
+
+    # Emacs client
+    programs.emacs = {
       enable = true;
       package = pkgs.emacs;
     };

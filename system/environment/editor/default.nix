@@ -4,4 +4,5 @@
 
 {
   (import ./vim.nix);
+  (import ./emacs.nix);
 }

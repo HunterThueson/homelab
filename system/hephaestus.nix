@@ -30,7 +30,7 @@ in
 
     ./hardware/hephaestus.nix                           # per-system hardware configuration
     ./hardware/inputDevices
-    ./hardware/GPU/nvidia.nix                           # Nvidia GPU configuration
+    ./hardware/gpu/nvidia.nix                           # Nvidia GPU configuration
 
     ./boot/loader.nix                                   # Bootloader configuration
 

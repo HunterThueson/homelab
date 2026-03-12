@@ -1,10 +1,10 @@
 # ./system/services/openvpn.nix
 
-  ###########################
-  #  OpenVPN Configuration  #
-  ###########################
+#-------------------------#
+#  OpenVPN Configuration  #
+#-------------------------#
 
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, ... }:
 
 {
   services.openvpn.servers = {

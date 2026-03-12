@@ -1,7 +1,7 @@
 # ./home/hunter.nix
-#
+
 # User configuration file for: Hunter
-#
+
 
 { config, pkgs, inputs, ... }:
 
@@ -9,9 +9,9 @@
   home.username = "hunter";
   home.homeDirectory = "/home/hunter";
 
-  ###########################
-  ##  Shell Configuration  ##
-  ###########################
+  #-----------------------#
+  #  Shell Configuration  #
+  #-----------------------#
 
   programs.bash = {
     enable = true;
@@ -49,9 +49,9 @@
     };
   };
 
-  #############################
-  ##  Package Configuration  ##
-  #############################
+  #-------------------------#
+  #  Package Configuration  #
+  #-------------------------#
 
   home.packages = with pkgs; [
     firefox                                                 # web browser
@@ -69,9 +69,9 @@
     speedcrunch                                             # calculator
   ];
   
-  ################
-  ##  Services  ##
-  ################
+  #------------#
+  #  Services  #
+  #------------#
 
   services = {
     unclutter = {

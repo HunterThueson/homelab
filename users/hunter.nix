@@ -1,8 +1,8 @@
 # ./users/hunter.nix
 
-  #------------------#
-  #  Hunter Thueson  #
-  #------------------#
+#------------------#
+#  Hunter Thueson  #
+#------------------#
 
 { config, pkgs, ... }:
 

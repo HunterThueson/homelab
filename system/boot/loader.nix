@@ -1,25 +1,24 @@
 # ./system/boot/loader.nix
 
-########################
+#----------------------#
 #  Bootloader Options  #
-########################
+#----------------------#
 
 { config, pkgs, inputs, ... }:
 
 {
+  #------------------------------------#
+  #  Current Bootloader: systemd-boot  #
+  #------------------------------------#
 
   #  Enable whichever bootloader you want to use here
-
-  #------------------------------------#
-  #  Current bootloader: systemd-boot  #
-  #------------------------------------#
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.grub.enable = false;
 
-  ##########################
-  #  General boot options  #
-  ##########################
+  #------------------------#
+  #  General Boot Options  #
+  #------------------------#
 
   boot = {
     kernelPackages = pkgs.linuxPackages;                                    # Use the default, stable Linux kernel
@@ -31,9 +30,9 @@
     };
   };
 
-  ########
-  # Grub #
-  ########
+  #--------#
+  #  Grub  #
+  #--------#
 
   boot.loader.grub = {                                                      # Use the GRUB 2 boot loader
     device = "/dev/disk/by-id/nvme-eui.0025384141427eb8";                   # ID of my BOOT (!) DISK (not partition!)
@@ -52,14 +51,13 @@
     '';
   };
 
-  ################
-  # systemd-boot #
-  ################
+  #----------------#
+  #  systemd-boot  #
+  #----------------#
 
   boot.loader.systemd-boot = {                                              # Use the systemd-boot boot loader
     memtest86.enable = true;                                                # Enable Memtest86
     configurationLimit = 25;                                                # Limit the number of systemd-boot menu entries
     editor = false;                                                         # Disable editing kernel cmd line before boot -- security risk (root access)
   };
-
 }

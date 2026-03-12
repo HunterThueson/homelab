@@ -1,16 +1,14 @@
 # ./system/environment/hyprland.nix
 
-  ###########################################
-  #  Hyprland Window Manager Configuration  #
-  ###########################################
+#-----------------------------------------#
+#  Hyprland Window Manager Configuration  #
+#-----------------------------------------#
 
 { config, pkgs, lib, inputs, home, self, ... }:
 
 let
   cfg = config.programs.hyprland;
-  inherit inputs;
   inherit home;
-  self = inputs.self;
 in
 
 {
@@ -63,9 +61,9 @@ in
 }
 # >EOF
 
-    ########################
+    #----------------------#
     #  TODO: The Big List  #
-    ########################
+    #----------------------#
 
     # Hyprland ships incredibly bare-bones; the idea is to give you control, at the price of needing to do a lot
     # more work. There are a lot of things most DEs ship with that Hyprland does not. Let's make a list of all the
@@ -105,9 +103,9 @@ in
 
     # Quickshell        (this one's going to be a beast to learn, but it'll be incredibly rewarding once I do.)
 
-    #####################
+    #-------------------#
     #  Random Bullshit  #
-    #####################
+    #-------------------#
 
     # I haven't the SLIGHTEST FUCKIN CLUE what this does
     #wayland.windowManager.hyprland.settings = {

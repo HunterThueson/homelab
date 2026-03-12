@@ -6,20 +6,20 @@
 # (including root) by default. User-specific packages should be declared elsewhere.
 #
 
-###############################
+#-----------------------------#
 #  Environment configuration  #
-###############################
+#-----------------------------#
 
 { config, pkgs, ... }:
 
 {
 
-# Enable LACT daemon (for managing GPU)
+  # Enable LACT daemon (for managing GPU)
   services.lact.enable = true;
 
-##############
-## Packages ##
-##############
+  #------------#
+  #  Packages  #
+  #------------#
 
   environment.systemPackages = with pkgs; [
 

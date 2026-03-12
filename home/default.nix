@@ -9,8 +9,9 @@
   home-manager.backupFileExtension = "backup";              # move existing files by appending ext. instead of throwing errors
 
   home-manager.sharedModules = [
-    ( import ./standard-config.nix )
-    ( import ./programs/alacritty/alacritty.nix )
+    (import ./standard-config.nix)
+    (import ./programs/alacritty/alacritty.nix)
+    (import ./environment/starship.nix)
   ];
 
   # User modules

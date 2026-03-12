@@ -1,8 +1,8 @@
 # ./system/environment/nix-config.nix
 
-  #----------------------------------------#
-  #  Nix Language & Nixpkgs Configuration  #
-  #----------------------------------------#
+#----------------------------------------#
+#  Nix Language & Nixpkgs Configuration  #
+#----------------------------------------#
 
 { config, pkgs, inputs, ... }:
 
@@ -30,5 +30,4 @@
     "@wheel"
     "@wizard"
   ];
-
 }

@@ -1,8 +1,8 @@
 # ./home/programs/neovim.nix
 
-##########################
+#------------------------#
 #  Neovim Configuration  #
-##########################
+#------------------------#
 
 { config, pkgs, ... }:
 
@@ -13,9 +13,9 @@
       vimAlias = true;
       configure = {
   
-        ###############
-        ### Plugins ###
-        ###############
+        #-----------#
+        #  Plugins  #
+        #-----------#
     
         packages.myPlugins = with pkgs.vimPlugins; {
           start = [
@@ -27,9 +27,9 @@
           opt = [];
         };
     
-        ###############
-        ### Options ###
-        ###############
+        #-----------#
+        #  Options  #
+        #-----------#
     
         customRC = ''
           set nocompatible                                  " Disable vi compatibility mode as it can sometimes cause issues
