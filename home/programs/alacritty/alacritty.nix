@@ -4,7 +4,7 @@
   #  Alacritty Configuration  #
   #############################
 
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 {
   programs.alacritty.settings = {
@@ -20,7 +20,7 @@
     window = {                                    # window options
       decorations = "none";
       dynamic_padding = true;
-      opacity = 0.97;
+      opacity = lib.mkForce 0.97;
       title = "Alacritty";
       class = {
         general = "Alacritty";
@@ -50,16 +50,16 @@
     font = {                                      # font options
       size = 9;
       bold = {
-        family = "FiraCode Nerd Font";
-        style = "Retina Bold";
+        family = lib.mkForce "FiraCode Nerd Font";
+        style = lib.mkForce "Retina Bold";
       };
       italic = {
-        family = "FiraCode Nerd Font";
-        style = "Retina Italic";
+        family = lib.mkForce "FiraCode Nerd Font";
+        style = lib.mkForce "Retina Italic";
       };
       normal = {
-        family = "FiraCode Nerd Font";
-        style = "Retina";
+        family = lib.mkForce "FiraCode Nerd Font";
+        style = lib.mkForce "Retina";
       };
     };
   };

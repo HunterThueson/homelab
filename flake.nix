@@ -2,12 +2,11 @@
 
 {
 
-#--------------------------------------------------#
-#  Hunter Thueson's NixOS System Configuration(s)  #
-#--------------------------------------------------#
+#----------------------------------#
+#  Hunter Thueson's NixOS Homelab  #
+#----------------------------------#
 
-# for high-level management of my NixOS system configuration(s) and their
-# dependencies
+# for high-level management of my NixOS homelab and its dependencies
 
   description = "Hunter Thueson's NixOS System Configuration(s)";
 
@@ -23,13 +22,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixvim = {
-      url = "github:nix-community/nixvim/nixos-25.11";
+    stylix = {
+      url = "github:nix-community/stylix/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     hyprland = {
       url = "github:hyprwm/Hyprland";
+    };
+
+    nixvim = {
+      url = "github:nix-community/nixvim/nixos-25.11";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -37,7 +41,7 @@
 #  Outputs  #
 #-----------#
 
-  outputs = inputs @ { self, nixpkgs, home-manager, nixvim, ... }:
+  outputs = inputs @ { self, nixpkgs, home-manager, nixvim, stylix, ... }:
 
   let
     system = "x86_64-linux";
@@ -53,13 +57,15 @@
     nixosConfigurations = {
 
       hephaestus = lib.nixosSystem {
-        inherit system;
+        system = "x86_64-linux";
         specialArgs = { inherit inputs; };                                    # pass flake inputs to all submodules
         modules = [
 
           ./system/hephaestus.nix                                             # Per-host entrypoint
 
           home-manager.nixosModules.home-manager (import ./home)              # Home Manager
+
+          stylix.nixosModules.stylix (import ./environment/stylix.nix)        # Stylix
 
           nixvim.nixosModules.nixvim (import ./home/programs/nixvim.nix)      # Nixvim
 
@@ -68,11 +74,13 @@
       };
 
       artemis = lib.nixosSystem {
-        inherit system;
+        system = "x86_64-linux";
         specialArgs = { inherit inputs; };
         modules = [
 
           home-manager.nixosModules.home-manager (import ./home)              # Home Manager
+
+          stylix.nixosModules.stylix (import ./environment/stylix.nix)        # Stylix
 
           nixvim.nixosModules.nixvim (import ./home/programs/nixvim.nix)      # Nixvim
 
