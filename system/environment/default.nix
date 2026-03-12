@@ -7,5 +7,6 @@
     ./desktop 
     ./userEnvironment.nix
     ./nix-config.nix
+    ./packages.nix
   ];
 }

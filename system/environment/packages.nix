@@ -1,26 +1,12 @@
-# ./system/bandaid.nix
-#
-# This configuration file is imported by /etc/nixos/configuration.nix, and should contain
-# all of the environment configuration and package management logic used in the NixOS
-# system configuration. Packages imported in this file will be available to all users
-# (including root) by default. User-specific packages should be declared elsewhere.
-#
+# ./system/environment/packages.nix
 
-#-----------------------------#
-#  Environment configuration  #
-#-----------------------------#
+#------------#
+#  Packages  #
+#------------#
 
 { config, pkgs, ... }:
 
 {
-
-  # Enable LACT daemon (for managing GPU)
-  services.lact.enable = true;
-
-  #------------#
-  #  Packages  #
-  #------------#
-
   environment.systemPackages = with pkgs; [
 
   # Version control
@@ -90,11 +76,5 @@
     python313Packages.beautifulsoup4
     python313Packages.types-beautifulsoup4
   ];
-
-  # Enable all bluez plugins
-  hardware.bluetooth.package = pkgs.bluezFull;
-
-  environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
-
 }
 

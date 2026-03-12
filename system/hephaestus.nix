@@ -26,8 +26,6 @@ in
 
     inputs.hyprland.nixosModules.default                # Hyprland NixOS module
 
-    ./bandaid.nix                                       # band-aid
-
     ./hardware/hephaestus.nix                           # per-system hardware configuration
     ./hardware/inputDevices
     ./hardware/gpu/nvidia.nix                           # Nvidia GPU configuration
@@ -121,11 +119,16 @@ in
       };
     };
   };
+
   #------------#
   #  Services  #
   #------------#
 
-  services.printing.enable = true;                                              # Enable printing
+  services.printing.enable = true;                          # Enable printer support
+
+  hardware.bluetooth.package = pkgs.bluezFull;              # Enable bluetooth
+
+  services.lact.enable = true;                              # Enable LACT GPU monitoring daemon
 
   #---------#
   #  Steam  #
@@ -137,6 +140,12 @@ in
     dedicatedServer.openFirewall = true;                    # Open ports in the firewall for Source Dedicated Server
     localNetworkGameTransfers.openFirewall = true;          # Open ports in the firewall for Steam Local Network Game Transfers
   };
+
+  #---------------#
+  #  Environment  #
+  #---------------#
+
+  environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
 
   ###############
   # This value determines the NixOS release from which the default
