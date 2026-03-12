@@ -110,19 +110,23 @@ in
     shellAliases = {
 
       # `ls` quality-of-life improvements
-      ls = "eza -G --color=auto --icons=auto --group-directories-first";          # replace `ls` with `eza` (faster, written in Rust)
-      lsa = "eza -Gau --git --time-style long-iso --color=always --icons";        # more info about hidden files (w/ git status)
-      lsd = "eza -D --color=auto --icons=auto";                                   # list only directories
-      lst = "eza -T --color=auto --icons=auto --group-directories-last";          # list recursively through directories and output as a tree
+      ls = "eza -G --color=auto --icons=auto --group-directories-first";              # replace `ls` with `eza` (faster, written in Rust)
+      lsa = "eza -Gau --git --time-style long-iso --color=always --icons";            # more info about hidden files (w/ git status)
+      lsd = "eza -D --color=auto --icons=auto";                                       # list only directories
+      lst = "eza -T --color=auto --icons=auto --group-directories-last";              # list recursively through directories and output as a tree
 
       # Drop-in program replacements
-      find = "fd";                                                                # replace `find` with `fd` (faster, written in -- you guessed it -- Rust)
+      find = "fd";                                                                    # replace `find` with `fd` (faster, written in -- you guessed it -- Rust)
       
       # Navigation
       ghs = "git status";
       
       # Terminal clearing
-      cl = "clear";                                                               # because typing `clear` just takes too long
+      cl = "clear";                                                                   # because typing `clear` just takes too long
+      cls = "clear && eza -G --color=auto --icons=auto --group-directories-first";    # clear && ls
+      clsa = "clear && eza -Gau --git --time-style long-iso --color=always --icons";  # clear && lsa
+      clsd = "clear && eza -D --color=auto --icons=auto";                             # clear && lsd
+      clst = "clear && eza -T --color=auto --icons=auto --group-directories-last";    # clear && lst
     };
 
   };
