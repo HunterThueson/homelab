@@ -10,7 +10,7 @@
   programs.starship = {
     enable = true;
     settings = {
-      schema = "https://starship.rs/config-schema.json";
+      "$schema" = "https://starship.rs/config-schema.json";
 
       add_newline = true;
 
@@ -19,5 +19,5 @@
         error_symbol = "[└─✗](bold red)";
       };
     };
-  };
+  }; 
 }
