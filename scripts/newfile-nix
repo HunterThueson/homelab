@@ -68,7 +68,16 @@ fi
 
 filename="${name%%.nix}"              # trim file extension if supplied
 title=$(make_title "$filename")
-header=$(make_header "$title")
+
+# If this is a default.nix file, disable header
+if [[ "${title}" == "Default" ]]; then
+  header=""
+else
+  header=$(make_header "$title")
+fi
+
+header_block=${header:+$'\n'$header$'\n'}
+
 shift
 
 if [[ $# == 0 ]]
@@ -99,6 +108,15 @@ fi
 
 filepath="${filedir}/$filename.nix"
 
+# if cfg support is enabled, add an extra variable declaration before function body
+if [[ $cfg_support == true ]]; then
+  cfg_string='  cfg = config;'
+else
+  cfg_string=""
+fi
+
+cfg_block=${cfg_string:+$'\nlet\n'$cfg_string$'\nin\n'}
+
 # Prompt for confirmation if file already exists
 if [[ -e "$filepath" ]]; then
     read -r -p "$filepath already exists. Overwrite? [y/N] " confirm
@@ -110,37 +128,14 @@ fi
 #----------#
 #  Output  #
 #----------#
-
-# if cfg support is enabled, add an extra variable declaration before function body
-if [[ $cfg_support == true ]]; then
 command cat <<EOF >$filepath
 # $filepath
-
-$header
-
+$header_block
 $inputs_string
-
-let
-  cfg = config;
-in
-
+$cfg_block
 {
 
 }
 EOF
 
-else
-command cat <<EOF >$filepath
-# $filepath
-
-$header
-
-$inputs_string
-
-{
-
-}
-EOF
-
-fi
 exit 0
