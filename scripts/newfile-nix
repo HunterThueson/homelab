@@ -69,13 +69,33 @@ fi
 filename="${name%%.nix}"              # trim file extension if supplied
 title=$(make_title "$filename")
 
-# If this is a default.nix file, disable header and add imports block
+filepath="${filedir}/$filename.nix"
+
+#--------------------------------#
+#  Special module type handling  #
+#--------------------------------#
+
+# If this is a default.nix file, we don't want a header but want an imports block in contents
+# If this is a schema.nix file, we want a "Schema" header and an options block in contents
+# If this is a backend.nix file, we want a "Backend" header and a config block in contents
+# If it's just a generic .nix file, we want a header but nothing in contents
+
+imports_block=$'  imports = [\n\n  ];'
+options_block=$'  options = lib.mkOption {\n\n  };'
+config_block=$'  config = {\n\n  };'
+
 if [[ "${title}" == "Default" ]]; then
   header=""
-  imports_block=$'  imports = [\n\n  ];'
+  contents_block=${imports_block}
+elif [[ "${title}" == "Schema" ]]; then
+  header=$(make_header "$title")
+  contents_block=${options_block}
+elif [[ "${title}" == "Backend" ]]; then
+  header=$(make_header "$title")
+  contents_block=${config_block}
 else
   header=$(make_header "$title")
-  imports_block=""
+  contents_block=""
 fi
 
 header_block=${header:+$'\n'$header$'\n'}
@@ -108,8 +128,6 @@ then
   inputs_string="$inputs_string... }:"
 fi
 
-filepath="${filedir}/$filename.nix"
-
 # if cfg support is enabled, add an extra variable declaration before function body
 if [[ $cfg_support == true ]]; then
   cfg_string='  cfg = config;'
@@ -131,12 +149,12 @@ fi
 #  Output  #
 #----------#
 command cat <<EOF >$filepath
-# ./$filepath
+# $filepath
 $header_block
 $inputs_string
 $cfg_block
 {
-$imports_block
+$contents_block
 }
 EOF
 
