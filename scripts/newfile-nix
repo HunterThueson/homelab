@@ -99,6 +99,14 @@ fi
 
 filepath="${filedir}/$filename.nix"
 
+# Prompt for confirmation if file already exists
+if [[ -e "$filepath" ]]; then
+    read -r -p "$filepath already exists. Overwrite? [y/N] " confirm
+    if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
+        fatal "aborting"
+    fi
+fi
+
 #----------#
 #  Output  #
 #----------#
