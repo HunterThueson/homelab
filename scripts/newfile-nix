@@ -10,6 +10,10 @@
 # inputs for the module
 #
 
+#-------------#
+#  Functions  #
+#-------------#
+
 # exit the program and output the error message passed to the function
 fatal () {
   echo $1
@@ -42,6 +46,10 @@ make_header () {
   printf '#%s#\n#  %s  #\n#%s#\n' "$dashes" "$title" "$dashes"
 }
 
+#---------#
+#  Setup  #
+#---------#
+
 # Make sure there's at least 1 argument (the file name)
 if [[ $# < 1 ]]
 then
@@ -73,10 +81,17 @@ fi
 if [[ $# > 0 ]]
 then 
   inputs_string="{ "
+  cfg_support=false;
 
+  # Check whether one of the args is "config". If so, enable cfg support
   for arg in "$@"
   do
-    inputs_string+="${arg%,}, "      # trim commas from arguments if supplied
+    case "$1" in
+      "config") inputs_string+="${arg%,}, "; cfg_support=true;;
+      "config,") inputs_string+="${arg%,}, "; cfg_support=true;;
+      *) inputs_string+="${arg%,}, ";;
+    esac
+    shift
   done
 
   inputs_string="$inputs_string... }:"
@@ -84,7 +99,29 @@ fi
 
 filepath="${filedir}/$filename.nix"
 
-# Now we make a title out of the given filename and pass that to make_header
+#----------#
+#  Output  #
+#----------#
+
+# if cfg support is enabled, add an extra variable declaration before function body
+if [[ $cfg_support == true ]]; then
+command cat <<EOF >$filepath
+# $filepath
+
+$header
+
+$inputs_string
+
+let
+  cfg = config;
+in
+
+{
+
+}
+EOF
+
+else
 command cat <<EOF >$filepath
 # $filepath
 
@@ -97,4 +134,5 @@ $inputs_string
 }
 EOF
 
+fi
 exit 0
