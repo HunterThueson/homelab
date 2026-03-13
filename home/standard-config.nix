@@ -18,6 +18,7 @@ in
   # Extra directories to add to PATH
   home.sessionPath = [
     "/usr/local/bin/"
+    "/etc/nixos/scripts"
     "$HOME/bin/"
     "$HOME/.cargo/bin/"
   ];

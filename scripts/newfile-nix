@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+
+#---------------#
+#  newfile-nix  #
+#---------------#
+
+#
+# Quickly create new .nix files with common defaults already written by passing
+# one or more arguments, the first being the filename and the rest as required
+# inputs for the module
+#
+
+# exit the program and output the error message passed to the function
+fatal () {
+  echo $1
+  exit 1
+}
+
+# convert the given filename into title-case for the header
+make_title () {
+  local input="$1"
+  local words
+  local word
+  local title
+
+  words="${input//[-_]/ }"      # change delimiters to spaces
+
+  for word in $words; do
+    title+="${word^} "                # convert first letter of each word to upper
+  done
+  title="${title% }"                  # trim trailing space
+
+  echo "$title"
+}
+
+# create a 3-line header like the one at the top of this file with
+# enough dashes to keep each line the same length as the others
+make_header () {
+  local title="$1"
+  local len=${#title}
+  local dashes=$(printf '%*s' "$((len + 4))" '' | tr ' ' '-')
+  printf '#%s#\n#  %s  #\n#%s#\n' "$dashes" "$title" "$dashes"
+}
+
+# Make sure there's at least 1 argument (the file name)
+if [[ $# < 1 ]]
+then
+  fatal "not enough arguments"
+fi
+
+NAME="$1"
+FILENAME=${NAME%%.nix}                # trim file extension if supplied
+TITLE=$(make_title "$FILENAME")
+HEADER=$(make_header "$TITLE")
+shift
+
+if [[ $# == 0 ]]
+then
+  INPUTS="{ ... }:"                     # default value if no inputs are supplied
+fi
+
+# Here we create a string formatted as "{ $1, $2, $3, ... }:" containing all arguments
+# (if inputs are provided)
+if [[ $# > 0 ]]
+then 
+  INPUTS="{ "
+
+  for arg in "$@"
+  do
+    INPUTS+="$arg, "
+  done
+
+  INPUTS="$INPUTS... }:"
+fi
+
+# $INPUTS is now a string we can use as the inputs part of our .nix file 
+
+FILEPATH="./$FILENAME.nix"
+
+# Now we make a title out of the given filename and pass that to make_header
+cat <<EOF >$FILEPATH
+# $FILEPATH
+
+$HEADER
+
+$INPUTS
+
+{
+
+}
+EOF
+
+exit 0
