@@ -38,7 +38,7 @@ make_title () {
 make_header () {
   local title="$1"
   local len=${#title}
-  local dashes=$(printf '%*s' "$((len + 4))" '' | tr ' ' '-')
+  local dashes=$(printf '%*s' "$((len + 4))" '' | command tr ' ' '-')
   printf '#%s#\n#  %s  #\n#%s#\n' "$dashes" "$title" "$dashes"
 }
 
@@ -48,42 +48,49 @@ then
   fatal "not enough arguments"
 fi
 
-NAME="$1"
-FILENAME=${NAME%%.nix}                # trim file extension if supplied
-TITLE=$(make_title "$FILENAME")
-HEADER=$(make_header "$TITLE")
+input_path="$1"
+
+if [[ "$1" == */* ]]; then            # if the filename contains a slash
+  name="${input_path##*/}"            # trim leading folders from path
+  filedir="${input_path%/*}"          # find target file directory
+else
+  name="${input_path}"
+  filedir="$PWD"
+fi
+
+filename="${name%%.nix}"              # trim file extension if supplied
+title=$(make_title "$filename")
+header=$(make_header "$title")
 shift
 
 if [[ $# == 0 ]]
 then
-  INPUTS="{ ... }:"                     # default value if no inputs are supplied
+  inputs_string="{ ... }:"            # default value if no inputs are supplied
 fi
 
 # Here we create a string formatted as "{ $1, $2, $3, ... }:" containing all arguments
 # (if inputs are provided)
 if [[ $# > 0 ]]
 then 
-  INPUTS="{ "
+  inputs_string="{ "
 
   for arg in "$@"
   do
-    INPUTS+="$arg, "
+    inputs_string+="$arg, "
   done
 
-  INPUTS="$INPUTS... }:"
+  inputs_string="$inputs_string... }:"
 fi
 
-# $INPUTS is now a string we can use as the inputs part of our .nix file 
-
-FILEPATH="./$FILENAME.nix"
+filepath="${filedir}/$filename.nix"
 
 # Now we make a title out of the given filename and pass that to make_header
-cat <<EOF >$FILEPATH
-# $FILEPATH
+command cat <<EOF >$filepath
+# $filepath
 
-$HEADER
+$header
 
-$INPUTS
+$inputs_string
 
 {
 
