@@ -11,6 +11,9 @@
 {
   programs.nixvim = {
     enable = true;
+    imports = [
+      ./treesitter.nix
+    ];
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;

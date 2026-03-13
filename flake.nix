@@ -57,16 +57,16 @@
 
       hephaestus = lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit inputs; };                                    # pass flake inputs to all submodules
+        specialArgs = { inherit inputs; };                                            # pass flake inputs to all submodules
         modules = [
 
-          ./system/hephaestus.nix                                             # Per-host entrypoint
+          ./system/hephaestus.nix                                                     # Per-host entrypoint
 
-          home-manager.nixosModules.home-manager (import ./home)              # Home Manager
+          home-manager.nixosModules.home-manager (import ./home)                      # Home Manager
 
-          stylix.nixosModules.stylix (import ./environment/stylix.nix)        # Stylix
+          stylix.nixosModules.stylix (import ./environment/stylix.nix)                # Stylix
 
-          nixvim.nixosModules.nixvim (import ./home/programs/nixvim.nix)      # Nixvim
+          nixvim.nixosModules.nixvim (import ./environment/editor/vim/nixvim.nix)     # Nixvim
 
         ];
 
@@ -77,11 +77,11 @@
         specialArgs = { inherit inputs; };
         modules = [
 
-          home-manager.nixosModules.home-manager (import ./home)              # Home Manager
+          home-manager.nixosModules.home-manager (import ./home)                      # Home Manager
 
-          stylix.nixosModules.stylix (import ./environment/stylix.nix)        # Stylix
+          stylix.nixosModules.stylix (import ./environment/stylix.nix)                # Stylix
 
-          nixvim.nixosModules.nixvim (import ./home/programs/nixvim.nix)      # Nixvim
+          nixvim.nixosModules.nixvim (import ./environment/editor/vim/nixvim.nix)     # Nixvim
 
         ];
 
