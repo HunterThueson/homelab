@@ -69,11 +69,13 @@ fi
 filename="${name%%.nix}"              # trim file extension if supplied
 title=$(make_title "$filename")
 
-# If this is a default.nix file, disable header
+# If this is a default.nix file, disable header and add imports block
 if [[ "${title}" == "Default" ]]; then
   header=""
+  imports_block=$'  imports = [\n\n  ];'
 else
   header=$(make_header "$title")
+  imports_block=""
 fi
 
 header_block=${header:+$'\n'$header$'\n'}
@@ -129,12 +131,12 @@ fi
 #  Output  #
 #----------#
 command cat <<EOF >$filepath
-# $filepath
+# ./$filepath
 $header_block
 $inputs_string
 $cfg_block
 {
-
+$imports_block
 }
 EOF
 
