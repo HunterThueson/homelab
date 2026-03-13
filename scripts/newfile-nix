@@ -76,7 +76,7 @@ then
 
   for arg in "$@"
   do
-    inputs_string+="$arg, "
+    inputs_string+="${arg%,}, "      # trim commas from arguments if supplied
   done
 
   inputs_string="$inputs_string... }:"
