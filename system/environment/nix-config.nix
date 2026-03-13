@@ -30,4 +30,9 @@
     "@wheel"
     "@wizard"
   ];
+
+  # Ensure the Wizard group can edit /etc/nixos/ across reboots
+  systemd.tmpfiles.rules = [
+    "d /etc/nixos 0770 root wizard - -"
+  ];
 }
