@@ -67,11 +67,18 @@
     realesrgan-ncnn-vulkan
     upscayl-ncnn
 
-  # Old School Runescape                                    # installing at system level to see if that allows access to GPU
-    runelite                                                # third-party client for Old School Runescape (a game for masochists)
     wineWow64Packages.full                                  # fix dependency issue with bolt launcher
-    bolt-launcher                                           # third-party client for Jagex Launcher on Linux
     jdk17                                                   # fix dependency issue with bolt launcher
+
+  # Bolt Launcher (Old School Runescape)                    -- overrides a few session variables for this program to reduce flickering
+    (bolt-launcher.overrideAttrs (old: {
+      nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ makeWrapper ];
+      postInstall = (old.postInstall or "") + ''
+        wrapProgram $out/bin/bolt-launcher \
+          --set _JAVA_AWT_WM_NONREPARENTING 1 \
+          --set MESA_VK_DEVICE_SELECT_FORCE_DEFAULT_DEVICE 1
+      '';
+    }))
 
     python313Packages.beautifulsoup4
     python313Packages.types-beautifulsoup4

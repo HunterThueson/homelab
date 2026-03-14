@@ -34,8 +34,7 @@ in
 
     ./environment                                       # User environment modules
 
-    ./display/xorg.nix                                  # Enable dual monitor setup (hopefully)
-    ./display/fonts.nix                                 # Configure system fonts
+    ./display                                           # Display modules
     
     ../users                                            # User management
 
