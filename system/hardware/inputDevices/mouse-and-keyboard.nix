@@ -11,7 +11,6 @@
     enable = true;                                            # Enable the X11 windowing system
     exportConfiguration = true;                               # Symlink the X server configuration under /etc/X11/xorg.conf
     xkb = {
-      options = "ctrl:nocaps";                                # Disable CAPS Lock & replace with Ctrl
       layout = "us";                                          # Configure X11 keymap layout
     };
   };
