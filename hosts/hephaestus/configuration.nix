@@ -1,4 +1,4 @@
-# ./system/hephaestus.nix
+# ./hosts/hephaestus/configuration.nix
 
     #--------------#             ------------------------------
     #  Hephaestus  #     AKA     |  Hunter's Home Desktop PC  |
@@ -26,7 +26,7 @@ in
 
     inputs.hyprland.nixosModules.default                # Hyprland NixOS module
 
-    ./hardware/hephaestus.nix                           # per-system hardware configuration
+    ./hardware.nix                                      # Auto-generated hardware configuration (via nixos-generate-config)
     ./hardware/inputDevices
     ./hardware/gpu/nvidia.nix                           # Nvidia GPU configuration
 

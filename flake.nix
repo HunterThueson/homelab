@@ -1,4 +1,4 @@
-#  ~/.nixos/flake.nix
+#  /etc/nixos/flake.nix
 
 #----------------------------------#
 #  Hunter Thueson's NixOS Homelab  #
@@ -45,6 +45,7 @@
   let
     system = "x86_64-linux";
     inherit (nixpkgs) lib;
+    flakeRoot = ./.;
   in 
 
   {
@@ -57,10 +58,10 @@
 
       hephaestus = lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit inputs; };                                            # pass flake inputs to all submodules
+        specialArgs = { inherit inputs flakeRoot; };
         modules = [
 
-          ./system/hephaestus.nix                                                     # Per-host entrypoint
+          ./hosts/hephaestus                                                          # Per-host entrypoint
 
           home-manager.nixosModules.home-manager (import ./home)                      # Home Manager
 
@@ -74,7 +75,7 @@
 
       artemis = lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
+        specialArgs = { inherit inputs flakeRoot; };
         modules = [
 
           home-manager.nixosModules.home-manager (import ./home)                      # Home Manager
