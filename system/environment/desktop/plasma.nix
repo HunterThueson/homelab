@@ -14,12 +14,28 @@ in
   config = lib.mkIf (cfg.specialisation != {}) {
     services.desktopManager.plasma6.enable = lib.mkDefault true;
     services.desktopManager.plasma6.enableQt5Integration = lib.mkDefault true;
+<<<<<<< Updated upstream
     services.displayManager.defaultSession = "plasma";
+=======
+
+    services.displayManager.defaultSession = "plasma";
+
+>>>>>>> Stashed changes
     environment.systemPackages = with pkgs; [
       wlr-protocols
       kdePackages.plasma-wayland-protocols
       kdePackages.wayland-protocols
       cosmic-protocols
     ];
+
+    # XDG Portals (required for Flatpak on Wayland)
+    xdg.portal = {
+      enable = true;
+      extraPortals = with pkgs; [
+        kdePackages.xdg-desktop-portal-kde
+        xdg-desktop-portal-gtk
+      ];
+      config.common.default = "kde";
+    };
   };
 }

@@ -30,6 +30,13 @@
     # Cursor
     XCURSOR_SIZE = "32";
 
+<<<<<<< Updated upstream
+=======
+    # Force XWayland to use the Nvidia EGL backend
+    LIBGL_ALWAYS_SOFTWARE = "0";
+    __EGL_VENDOR_LIBRARY_FILENAMES = "${pkgs.mesa}/share/glvnd/egl_vendor.d/50_mesa.json";
+
+>>>>>>> Stashed changes
   };
 
 }

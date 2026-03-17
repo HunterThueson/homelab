@@ -12,16 +12,16 @@
     (import ./standard-config.nix)
     (import ./programs/alacritty/alacritty.nix)
     (import ./environment/starship.nix)
+    (import ../system/services/kanshi.nix)
+    (import ./environment/hyprland.nix)
   ];
 
   # User modules
   home-manager.users.hunter.imports = [
     ./hunter.nix
-    ./environment/hyprland.nix
   ];
 
   home-manager.users.ash.imports = [
     ./ash.nix
-    ./environment/hyprland.nix
   ];
 }

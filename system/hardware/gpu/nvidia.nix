@@ -43,9 +43,20 @@
   ];
 
   environment.sessionVariables = {
+
+    # XWayland / Java
     _JAVA_AWT_WM_NONREPARENTING = "1";
+
+    # Wayland native hints
     NIXOS_OZONE_WL = "1";
+
+    # Vulkan GPU selection
     MESA_VK_DEVICE_SELECT_FORCE_DEFAULT_DEVICE = "1";
+
+    # Enable GSync
+    __GL_GSYNC_ALLOWED = "1";
+    __GL_VRR_ALLOWED = "1";
+
   };
 
   environment.systemPackages = with pkgs; [

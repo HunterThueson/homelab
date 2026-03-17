@@ -34,13 +34,17 @@
       url = "github:nix-community/nixvim/nixos-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nix-flatpak = {
+      url = "github:gmodena/nix-flatpak/?ref=latest";
+    };
   };
 
   #-----------#
   #  Outputs  #
   #-----------#
 
-  outputs = inputs @ { self, nixpkgs, home-manager, nixvim, stylix, ... }:
+  outputs = inputs @ { self, nixpkgs, home-manager, nixvim, stylix, nix-flatpak, ... }:
 
   let
     system = "x86_64-linux";
@@ -67,6 +71,8 @@
           stylix.nixosModules.stylix (import ./environment/stylix.nix)                # Stylix
 
           nixvim.nixosModules.nixvim (import ./environment/editor/vim/nixvim.nix)     # Nixvim
+
+          nix-flatpak.nixosModules.nix-flatpak                                        # Nix-Flatpak
 
         ];
 
