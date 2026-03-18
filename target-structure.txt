@@ -1,0 +1,101 @@
+.
+├── flake.lock
+├── flake.nix
+├── LICENSE
+├── README.md
+├── environment
+│   ├── packages.nix
+│   ├── colors
+│   │   ├── electro-swing.toml
+│   │   └── electro-swing.yaml
+│   ├── desktop
+│   │   ├── default.nix
+│   │   ├── hyprland.nix
+│   │   └── plasma.nix
+│   ├── editor
+│   │   ├── default.nix
+│   │   ├── emacs.nix
+│   │   └── vim
+│   │       ├── default.nix
+│   │       ├── nixvim.nix
+│   │       └── treesitter.nix
+│   ├── games
+│   │   ├── default.nix
+│   │   └── old-school-runescape.nix
+│   ├── services
+│   │   ├── default.nix
+│   │   ├── firefly-iii.nix
+│   │   └── openvpn.nix
+│   ├── shell
+│   │   ├── default.nix
+│   │   └── starship.nix
+│   ├── terminal
+│   │   ├── default.nix
+│   │   └── alacritty.nix
+│   └── themes
+│       ├── fonts.nix
+│       ├── stylix.nix
+│       └── colors
+│           ├── electro-swing.toml
+│           └── electro-swing.yaml
+├── hosts
+│   ├── artemis
+│   │   ├── configuration.nix
+│   │   ├── default.nix
+│   │   └── hardware.nix
+│   └── hephaestus
+│       ├── configuration.nix
+│       ├── default.nix
+│       └── hardware.nix
+├── modules
+│   ├── default.nix
+│   ├── hostSettings
+│   │   ├── backend.nix
+│   │   ├── default.nix
+│   │   └── schema.nix
+│   ├── roleSettings
+│   │   ├── backend.nix
+│   │   ├── default.nix
+│   │   └── schema.nix
+│   ├── groupSettings
+│   │   ├── backend.nix
+│   │   ├── default.nix
+│   │   └── schema.nix
+│   └── userSettings
+│       ├── backend.nix
+│       ├── default.nix
+│       └── schema.nix
+├── scripts
+│   ├── newfile-nix
+│   ├── newhost-nix
+│   ├── newmodule-nix
+│   └── newuser-nix
+├── system
+│   ├── default.nix
+│   ├── boot
+│   │   ├── default.nix
+│   │   ├── grub.nix
+│   │   └── systemd-boot.nix
+│   ├── display
+│   │   ├── default.nix
+│   │   ├── wayland.nix
+│   │   └── xorg.nix
+│   ├── hardware
+│   │   ├── default.nix
+│   │   ├── gpu
+│   │   │   ├── default.nix
+│   │   │   └── nvidia.nix
+│   │   └── inputDevices
+│   │       ├── default.nix
+│   │       ├── mouse-and-keyboard.nix
+│   │       └── zsa-keyboards.nix
+│   ├── login-manager
+│   │   ├── default.nix
+│   │   ├── greetd.nix
+│   │   └── sddm.nix
+│   └── nix
+│       └── default.nix
+└── users
+    ├── ash.nix
+    ├── default.nix
+    └── hunter.nix
