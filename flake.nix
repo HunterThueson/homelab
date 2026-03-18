@@ -78,6 +78,8 @@
         specialArgs = { inherit inputs flakeRoot; };
         modules = [
 
+          ./hosts/artemis
+
           home-manager.nixosModules.home-manager (import ./home)                      # Home Manager
 
           stylix.nixosModules.stylix (import ./environment/stylix.nix)                # Stylix
