@@ -26,7 +26,6 @@ in
 
     inputs.hyprland.nixosModules.default                # Hyprland NixOS module
 
-    ./hardware.nix                                      # Auto-generated hardware configuration (via nixos-generate-config)
     ./hardware/inputDevices
     ./hardware/gpu/nvidia.nix                           # Nvidia GPU configuration
 

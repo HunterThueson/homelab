@@ -2,4 +2,5 @@
 
 {
     (import ./configuration.nix)
+    (import ./hardware.nix)
 }
