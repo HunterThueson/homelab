@@ -47,9 +47,9 @@
     inherit (nixpkgs) lib;
     flakeRoot = ./.;
     mkHosts = import ./lib/mkHosts.nix { inherit inputs lib flakeRoot; };
-    keyboardPresets = import ./lib/presets/keyboards.nix { inherit lib; };
-    monitorPresets  = import ./lib/presets/monitors.nix { inherit lib; };
-    gpuPresets      = import ./lib/presets/gpus.nix { inherit lib; };
+    keyboardPresets = import ./lib/presets/keyboards.nix { inherit inputs lib flakeRoot; };
+    monitorPresets  = import ./lib/presets/monitors.nix { inherit inputs lib flakeRoot; };
+    gpuPresets      = import ./lib/presets/gpus.nix { inherit inputs lib flakeRoot; };
   in 
 
   {
