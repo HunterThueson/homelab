@@ -1,4 +1,4 @@
-# ./modules/hostSettings/default.nix
+# modules/hostSettings/default.nix
 
 { ... }:
 

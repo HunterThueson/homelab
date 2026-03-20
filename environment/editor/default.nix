@@ -1,8 +1,10 @@
-# ./system/environment/editor/default.nix
+# environment/editor/default.nix
 
-{ config, pkgs, ... }:
+{ ... }:
 
 {
-  (import ./vim.nix);
-  (import ./emacs.nix);
+  imports = [
+    ./emacs.nix
+    ./vim
+  ];
 }

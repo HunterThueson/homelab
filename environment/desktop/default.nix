@@ -1,6 +1,6 @@
-# ./system/environment/desktop/default.nix
+# environment/desktop/default.nix
 
-{ config, ... }:
+{ ... }:
 
 {
   imports = [

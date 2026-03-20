@@ -4,10 +4,29 @@
 #  Treesitter  #
 #--------------#
 
-{ config, ... }:
+{ config, lib, ... }:
+
+let
+  cfg = config.userSettings;
+in
 
 {
-  plugins.treesitter-textobjects = {
+  plugins.treesitter = lib.mkIf (cfg.editor == "vim";) {
+    enable = true;
+    settings = {
+      highlight.enable = true;
+      incremental_selection = {
+        enable = true;
+        keymaps = {
+          init_selection = "<Enter>";
+          node_incremental = "<Enter>";
+          node_decremental = "<Backspace>";
+        };
+      };
+    };
+  };
+
+  plugins.treesitter-textobjects = lib.mkIf (cfg.editor == "vim";) {
     enable = true;
     select = {
       enable = true;
@@ -35,21 +54,6 @@
         "[f" = "@function.outer";
         "[c" = "@class.outer";
         "[a" = "@parameter.inner";
-      };
-    };
-  };
-
-  plugins.treesitter = {
-    enable = true;
-    settings = {
-      highlight.enable = true;
-      incremental_selection = {
-        enable = true;
-        keymaps = {
-          init_selection = "<Enter>";
-          node_incremental = "<Enter>";
-          node_decremental = "<Backspace>";
-        };
       };
     };
   };

@@ -1,12 +1,12 @@
 # ./home/default.nix
 
-{ config, pkgs, home-manager, inputs, ... }:
+{ config, pkgs, home-manager, inputs, flakeRoot, ... }:
 
 {
-  home-manager.useGlobalPkgs = true;                        # make sure NixOS and Home Manager are using the same `nixpkgs`
-  home-manager.useUserPackages = true;                      # enable installation of user packages
-  home-manager.extraSpecialArgs = { inherit inputs; };      # pass flake inputs to all modules
-  home-manager.backupFileExtension = "backup";              # move existing files by appending ext. instead of throwing errors
+  home-manager.useGlobalPkgs = true;                                  # make sure NixOS and Home Manager are using the same `nixpkgs`
+  home-manager.useUserPackages = true;                                # enable installation of user packages
+  home-manager.extraSpecialArgs = { inherit inputs flakeRoot; };      # pass flake inputs to all modules
+  home-manager.backupFileExtension = "backup";                        # move existing files by appending ext. instead of throwing errors
 
   home-manager.sharedModules = [
     (import ./standard-config.nix)

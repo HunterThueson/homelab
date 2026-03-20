@@ -21,7 +21,8 @@
 │   │       └── treesitter.nix
 │   ├── games
 │   │   ├── default.nix
-│   │   └── old-school-runescape.nix
+│   │   ├── old-school-runescape.nix
+│   │   └── steam.nix
 │   ├── services
 │   │   ├── default.nix
 │   │   ├── firefly-iii.nix
@@ -33,6 +34,7 @@
 │   │   ├── default.nix
 │   │   └── alacritty.nix
 │   └── themes
+│       ├── default.nix
 │       ├── fonts.nix
 │       ├── stylix.nix
 │       └── colors
@@ -47,11 +49,20 @@
 │       ├── configuration.nix
 │       ├── default.nix
 │       └── hardware.nix
+├── lib
+│   ├── default.nix
+│   ├── mkHost.nix
+│   └── presets
+│       ├── default.nix
+│       ├── gpus.nix
+│       ├── keyboards.nix
+│       └── monitors.nix
 ├── modules
 │   ├── default.nix
 │   ├── hostSettings
 │   │   ├── backend.nix
 │   │   ├── default.nix
+│   │   ├── hardware-options.nix
 │   │   └── schema.nix
 │   ├── roleSettings
 │   │   ├── backend.nix

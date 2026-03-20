@@ -8,6 +8,13 @@
 
 {
   options.hostSettings = lib.mkOption {
-
+    type = lib.types.submodule {
+      options = {
+        system = lib.mkOption { type = lib.types.enum [ "x86_64-linux" "aarch64-linux" ]; };
+        type   = lib.mkOption { type = lib.types.enum [ "desktop" "laptop" "server" ]; };
+        role   = lib.mkOption { type = lib.types.listOf (lib.types.enum [ "workstation" "gaming" "writing" "media" "server" ]); };
+        hardware = lib.mkOption { type = lib.types.submodule (import ./hardware-options.nix); };
+      };
+    };
   };
 }

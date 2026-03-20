@@ -1,4 +1,4 @@
-#  /etc/nixos/flake.nix
+# flake.nix
 
 #----------------------------------#
 #  Hunter Thueson's NixOS Homelab  #
@@ -46,51 +46,75 @@
     system = "x86_64-linux";
     inherit (nixpkgs) lib;
     flakeRoot = ./.;
+    mkHosts = import ./lib/mkHosts.nix { inherit inputs lib flakeRoot; };
+    keyboardPresets = import ./lib/presets/keyboards.nix { inherit lib; };
+    monitorPresets  = import ./lib/presets/monitors.nix { inherit lib; };
+    gpuPresets      = import ./lib/presets/gpus.nix { inherit lib; };
   in 
 
   {
 
-    #---------#
-    #  Hosts  #
-    #---------#
+    nixosConfigurations = mkHosts {
+      hephaestus = {
+        users = [ "hunter" "ash" ];
 
-    nixosConfigurations = {
+        hostSettings = {
+          system = "x86_64-linux";
+          type = "desktop";
+          role = [ "workstation" "gaming" "writing" ];
+          hardware = {
+            gpu = {
+              enable = true;
+              model = gpuPresets.nvidia.rtx3090;
+            };
+            keyboard = {
+              layout = "qwerty";
+              model = keyboardPresets.zsa.moonlander;
+            };
+            display = {
+              alignment = "center";
+              monitors = [
+                {
+                  name = "Gigabyte M28U";
+                  resolution = "3840x2160@144";
+                  orientation = "landscape";
+                  placement = "primary";
+                }
 
-      hephaestus = lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs flakeRoot; };
-        modules = [
-
-          ./hosts/hephaestus                                                          # Per-host entrypoint
-
-          home-manager.nixosModules.home-manager (import ./home)                      # Home Manager
-
-          stylix.nixosModules.stylix (import ./environment/stylix.nix)                # Stylix
-
-          nixvim.nixosModules.nixvim (import ./environment/editor/vim/nixvim.nix)     # Nixvim
-
-        ];
-
+                {
+                  name = "Dell S2417DG";
+                  resolution = "2560x1440@144";
+                  orientation = "portrait";
+                  placement = {
+                    position = "right-of"; 
+                    relativeTo = "primary";
+                  };
+                }
+              ];
+            };
+          };
+        };
       };
 
-      artemis = lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs flakeRoot; };
-        modules = [
+      # for comparison:
+      artemis = {
+        users = [ "hunter" ];
 
-          ./hosts/artemis
-
-          home-manager.nixosModules.home-manager (import ./home)                      # Home Manager
-
-          stylix.nixosModules.stylix (import ./environment/stylix.nix)                # Stylix
-
-          nixvim.nixosModules.nixvim (import ./environment/editor/vim/nixvim.nix)     # Nixvim
-
-        ];
-
+        hostSettings = {
+          system = "x86_64-linux";
+          type = "laptop";
+          role = [ "workstation" "gaming" "writing" ];
+          hardware = {
+            touchpad.enable = true;                   # assigning the role "laptop" should do this by default, this just shows it's overrideable
+            bluetooth.enable = true;
+            keyboard = {
+              layout = "qwerty";
+              model = keyboardPresets.lenovoThinkPad."built-in";
+            };
+            monitors = [ monitorPresets.lenovoThinkPad."built-in" ];
+          };
+        };
       };
-
     };
-
   };
 }

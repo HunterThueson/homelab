@@ -1,13 +1,13 @@
-# ./modules/userSettings/backend.nix
+# modules/userSettings/backend.nix
 
 #-----------#
 #  Backend  #
 #-----------#
 
-{ config, lib, pkgs, flakeRoot, ... }:
+{ config, lib, pkgs, flakeRoot, home-manager, ... }:
 
 let
-  users = config.userSettings;
+  myUsers = config.userSettings;
   shellMap = {
     bash = pkgs.bash;
     zsh = pkgs.zsh;
@@ -22,10 +22,10 @@ in
       isNormalUser    = true;
       description     = cfg.fullName;
       hashedPassword  = cfg.hashedPassword;
-      shell           = shellmap.${cfg.shell} or pkgs.bash;
+      shell           = shellMap.${cfg.shell} or pkgs.bash;
       extraGroups     = lib.optionals cfg.administrator [ "wheel" "networkmanager" ]
                      ++ cfg.extraGroups;
-    } // cfg.extraSysConfig) users;
+    } // cfg.extraSysConfig) myUsers;
 
     # Home Manager level -- one entry per user, generated automatically
     home-manager.users = lib.mapAttrs (username: cfg: {
@@ -38,6 +38,6 @@ in
         userName  = cfg.fullName;
         userEmail = cfg.email;
       };
-    } // cfg.extraHomeConfig) users;
+    } // cfg.extraHomeConfig) myUsers;
   };
 }

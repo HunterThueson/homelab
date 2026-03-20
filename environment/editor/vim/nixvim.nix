@@ -1,4 +1,4 @@
-# ./home/programs/nixvim.nix
+# environment/editor/vim/nixvim.nix
 
 #------------------------#
 #  Nixvim Configuration  #
@@ -8,12 +8,20 @@
 
 { config, lib, pkgs, nixvim, ... }:
 
+let
+  cfg = config.userSettings;
+in
+
 {
+  # Conditional imports are bad practice so we import here no matter what
   programs.nixvim = {
-    enable = true;
     imports = [
       ./treesitter.nix
     ];
+  };
+
+  programs.nixvim = lib.mkIf (cfg.editor == "vim";) {
+    enable = true;
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;

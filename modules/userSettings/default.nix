@@ -1,4 +1,4 @@
-# ./modules/userSettings/default.nix
+# modules/userSettings/default.nix
 
 { ... }:
 

@@ -8,52 +8,73 @@
 
 {
   options.userSettings = lib.mkOption {
-    type = lib.types.attrsOf (lib.types.submodule {
+    type = lib.types.attrsOf (lib.types.submodule ({ name, ...}: {
       options = {
-        name        = lib.mkOption { type = lib.types.str; };
+
+        name = lib.mkOption { 
+          type    = lib.types.str;
+          default = name;
+        };
+        description = lib.mkOption { type = lib.types.str; };
         fullName    = lib.mkOption { type = lib.types.str; };
-        email       = lib.mkOption { type = lib.types.str; };
+        email       = lib.mkOption { type = lib.types.nullOr lib.types.str; default = null; };
 
-        administrator  = lib.mkOption { type = lib.types.bool; default = false; };
-        extraGroups    = lib.mkOption { type = lib.types.listOf lib.types.str; default = []; };
-        hashedPassword = lib.mkOption { type = lib.types.str; };
+        administrator       = lib.mkOption { type = lib.types.bool; default = false; };
+        extraGroups         = lib.mkOption { type = lib.types.listOf lib.types.str; default = []; };
+        hashedPasswordFile  = lib.mkOption { type = lib.types.path; };
 
-        terminal   = lib.mkOption { type = lib.types.str; default = "alacritty"; };
-        shell      = lib.mkOption { type = lib.types.str; default = "bash"; };
-        enableGit  = lib.mkOption { type = lib.types.bool; default = false; };
+        terminal  = lib.mkOption { type = lib.types.str; default = "alacritty"; };
+        shell     = lib.mkOption { type = lib.types.enum [ "bash" "fish" "zsh" ]; default = "bash"; };
+        editor    = lib.mkOption { type = lib.types.enum [ "vim" "emacs" ]; default = "vim"; };
+        enableGit = lib.mkOption { type = lib.types.bool; default = false; };
 
-        windowManager = lib.mkOption { type = lib.types.nullOr lib.types.str; default = null; };
-        theme         = lib.mkOption { type = lib.types.nullOr lib.types.str; default = null; };
-        colorScheme   = lib.mkOption { type = lib.types.nullOr lib.types.str; default = null; };
-
-        packages   = lib.mkOption { type = lib.types.listOf lib.types.package; default = []; };
-
-        browser    = lib.mkOption { type = lib.types.str; default = "firefox"; };
-
-        editor = lib.mkOption {
+        desktop = lib.mkOption {
           type = lib.types.submodule {
             options = {
-              terminal = lib.mkOption { type = lib.types.str; default = "vim"; };
-              gui      = lib.mkOption { type = lib.types.str; default = "emacs"; };
+              environment = lib.mkOption {
+                type        = lib.types.enum [ "hyprland" "niri" "plasma" "plasmax11" ];
+                default     = "hyprland";
+                description = "Set the user's desktop environment";
+              };
+              theme = lib.mkOption {
+                type        = lib.types.nullOr lib.types.enum [ "default" ];
+                default     = null;
+                description = "Set the user's theme (for window decorations, border styles, etc.)";
+              };
+              colorScheme = lib.mkOption {
+                type        = lib.types.nullOr lib.types.enum [ "electro-swing" ];
+                default     = null;
+                description = "Set the user's color scheme";
+              };
+              wallpaper = lib.mkOption {
+                type        = lib.types.nullOr lib.types.path;
+                default     = null;
+                description = "Set the user's wallpaper";
+              };
             };
           };
-          default = {};
         };
+
+        browser = lib.mkOption { type = lib.types.str; default = "firefox"; };
+
+        packages = lib.mkOption { type = lib.types.listOf lib.types.package; default = []; };
 
         services = lib.mkOption {
           type = lib.types.submodule {
             options = {
-              vpn        = lib.mkOption { type = lib.types.str; default = "openvpn"; };
-              database   = lib.mkOption { type = lib.types.str; default = "ngnix"; };
+              vpn      = lib.mkOption { type = lib.types.str; default = "openvpn"; };
+              database = lib.mkOption { type = lib.types.str; default = "ngnix"; };
             };
           };
           default = {};
         };
 
-        extraSysConfig  = lib.mkOption { type = lib.types.attrs; default = {}; };
-        extraHomeConfig = lib.mkOption { type = lib.types.attrs; default = {}; };
+        extraHomeConfig   = lib.mkOption { type = lib.types.attrs; default = {}; };
+        extraShellConfig  = lib.mkOption { type = lib.types.attrs; default = {}; };
+        extraSysConfig    = lib.mkOption { type = lib.types.attrs; default = {}; };
       };
-    });
+    }));
+
     default = {};
   };
 }
