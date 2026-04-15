@@ -121,14 +121,26 @@ in
   };
 
   #------------#
-  #  Services  #
+  #  Printing  #
   #------------#
 
-  services.printing.enable = true;                          # Enable printer support
+  services.printing = {
+    enable = true;
+    drivers = with pkgs; [
+      cups-filters                                          # Additional backends, filters, and other software for the core CUPS distribution
+      cups-browsed                                          # Daemon for browsing the Bonjour broadcasts of shared, remote CUPS printers
+      gutenprint                                            # Open source drivers for a large variety of printers
+      gutenprint-bin                                        # Some additional CUPS drivers including Canon drivers
+      gtklp                                                 # GTK-based graphical frontend for CUPS
+    ];
+  };
 
-  hardware.bluetooth.package = pkgs.bluezFull;              # Enable bluetooth
-
-  services.lact.enable = true;                              # Enable LACT GPU monitoring daemon
+  # Enable auto-discovery of network printers
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;                                        # Enable the mDNS NSS (Name Service Switch) plugin for IPv4
+    openFirewall = true;                                    # Open the firewall for UDP port 5353. Enables discovery of network devices
+  };
 
   #---------#
   #  Steam  #
