@@ -91,11 +91,11 @@ in
 
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
-    useXkbConfig = true;                                                        # Use X keyboard config in TTY, etc. (for disabling CAPS)
+    useXkbConfig = true;                                    # Use X keyboard config in TTY, etc. (for disabling CAPS)
   };
 
   #----------------------#
-  #  User configuration  #                                                      # Only hard-coding users here for the time being until I figure out a better way
+  #  User configuration  #                                  # Only hard-coding users here for the time being until I figure out a better way
   #----------------------#
 
   users = {
@@ -156,6 +156,8 @@ in
   #---------------#
   #  Environment  #
   #---------------#
+
+  services.lact.enable = true;                              # Enable LACT GPU monitoring daemon
 
   environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
 

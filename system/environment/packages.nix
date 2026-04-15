@@ -13,9 +13,6 @@
     git                                                     # version control utility
     gh                                                      # GitHub CLI
 
-  # X11 tools
-    xorg.xdpyinfo                                           # get information about X display(s)
-
   # Terminal
     alacritty                                               # GPU-accelerated terminal emulator
     starship                                                # blazing fast, highly customizable prompt for any shell
@@ -24,24 +21,12 @@
     ripgrep                                                 # modern replacement for `grep` written in Rust
     killall                                                 # kill programs with ease
     fd                                                      # modern replacement for `find` written in Rust
-    parted                                                  # CLI partition management
     unzip                                                   # extract stuff / unzip file archive
-    ffmpeg_6-full                                           # video transcoding utility (and a dependency for many other programs)
-    instaloader                                             # utility for downloading photos & videos from Instagram
 
   # System info/monitoring
     neofetch                                                # display system info
     gtop                                                    # graphical `top`
     btop                                                    # another fancy `top`
-
-  # GUI
-    gparted                                                 # GUI partition management
-
-  # the Rust programming language 
-    cargo                                                   # downloads your Rust project's dependencies and builds your project
-    rustup                                                  # the Rust toolchain installer
-    rustc                                                   # the Rust language itself
-    rustfmt                                                 # a tool for formatting Rust code according to style guidelines
 
   # Networking
     wget                                                    # download files from the command line
@@ -49,39 +34,52 @@
     openvpn                                                 # connect to VPN
   
   # Hardware utilities
+    parted                                                  # CLI partition management utility
+    gparted                                                 # GUI partition management utility
+    cryptsetup                                              # LUKS for dm-crypt
+    ctmg                                                    # Encrypted container manager for Linux using cryptsetup
     openrgb                                                 # open source RGB lighting control utility
-    parted
-    cryptsetup
 
-  # Misc dependencies
+  # Media utilities
+    ffmpeg_6-full                                           # video transcoding utility (and a dependency for many other programs)
+    instaloader                                             # utility for downloading photos & videos from Instagram
+
+  # Misc dependencies (TODO: review whether this is necessary)
     libsecret                                               # dependency for mailspring
     binutils                                                # dependency for `make`
     xorriso                                                 # dependency for `make iso`
     libsForQt5.qtstyleplugin-kvantum                        # dependency for Kvantum (KDE themes)
 
-  # Graphics management software
-    nvtopPackages.full
+  # Graphics monitoring utilities
+    nvtopPackages.full                                      # htop-like task monitor for AMD, Adreno, Intel and NVIDIA GPUs
     lact                                                    # Linux GPU Control Application (LACT)
+    xorg.xdpyinfo                                           # get information about X display(s)
 
-  # AI image upscaling software (Real-ESRGAN)
-    realesrgan-ncnn-vulkan
-    upscayl-ncnn
+  # AI 
+    claude-code                                             # AI helper Claude
+    realesrgan-ncnn-vulkan                                  # AI image upscaler (Real-ESRGAN)
+    upscayl-ncnn                                            # AI image upscaler (Real-ESRGAN)
 
-    wineWow64Packages.full                                  # fix dependency issue with bolt launcher
-    jdk17                                                   # fix dependency issue with bolt launcher
+  # Games
+    bolt-launcher                                           # Alternative launcher for Runescape
+    wineWow64Packages.full                                  # Fix dependency issue with bolt-launcher (I think?)
+    jdk17                                                   # TODO: review whether this is necessary)
 
-  # Bolt Launcher (Old School Runescape)                    -- overrides a few session variables for this program to reduce flickering
-    (bolt-launcher.overrideAttrs (old: {
-      nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ makeWrapper ];
-      postInstall = (old.postInstall or "") + ''
-        wrapProgram $out/bin/bolt-launcher \
-          --set _JAVA_AWT_WM_NONREPARENTING 1 \
-          --set MESA_VK_DEVICE_SELECT_FORCE_DEFAULT_DEVICE 1
-      '';
-    }))
+  # Programming & development tools
 
-    python313Packages.beautifulsoup4
-    python313Packages.types-beautifulsoup4
+    # TODO: rewrite this section into a proper shell.nix and become a REAL Nix developer
+
+    # Python 3
+      python314                                             # Python release 3.14.3
+      python313Packages.beautifulsoup4                      # Python web scraping utility for development
+      python313Packages.types-beautifulsoup4                # Typing stubs for beautifulsoup4
+
+    # Rust
+      cargo                                                 # Downloads dependencies and builds your Rust projects
+      rustup                                                # the Rust toolchain installer
+      rustc                                                 # the Rust language itself
+      rustfmt                                               # a tool for formatting Rust code according to style guidelines
+
   ];
 }
 
