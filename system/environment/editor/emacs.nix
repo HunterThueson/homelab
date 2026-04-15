@@ -1,32 +1,17 @@
-# ./system/services/emacs-daemon.nix
+# system/environment/editor/emacs.nix
 
 #-----------------------#
 #  Emacs Configuration  #
 #-----------------------#
 
-{ config, pkgs, lib, ... }:
+{ config, lib, ... }:
 
 let
   cfg = config;
 in
 
-with lib;
 {
-  mkIf (cfg.userEnvironment.editor == "emacs") {
-    environment.systemPackages = with pkgs; [
-      emacs
-    ];
-
-    # Emacs daemon
-    services.emacs = {
-      enable = true;
-      package = pkgs.emacs;
-    };
-
-    # Emacs client
-    programs.emacs = {
-      enable = true;
-      package = pkgs.emacs;
-    };
+  config = lib.mkIf (cfg.userEnvironment.editor == "emacs") {
+    environment.variables = { EDITOR = "emacsclient"; };
   };
 }

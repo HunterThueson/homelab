@@ -63,7 +63,7 @@ in
   # My custom module designed for switching configs easily
   userEnvironment = {
     loginManager = lib.mkDefault "sddm";
-    editor = "vim";
+    editor = "emacs";
   };
 
   #----------------------------#

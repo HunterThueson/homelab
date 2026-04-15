@@ -1,4 +1,4 @@
-# ./home/programs/nixvim.nix
+# home/programs/nixvim.nix
 
 #------------------------#
 #  Nixvim Configuration  #
@@ -14,7 +14,6 @@
     imports = [
       ./treesitter.nix
     ];
-    defaultEditor = true;
     viAlias = true;
     vimAlias = true;
 

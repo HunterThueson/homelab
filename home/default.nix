@@ -1,4 +1,4 @@
-# ./home/default.nix
+# home/default.nix
 
 { config, pkgs, home-manager, inputs, ... }:
 
@@ -12,6 +12,7 @@
     (import ./standard-config.nix)
     (import ./programs/alacritty/alacritty.nix)
     (import ./environment/starship.nix)
+    (import ../environment/editor/emacs)
   ];
 
   # User modules

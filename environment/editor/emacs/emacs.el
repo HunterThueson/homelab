@@ -1,6 +1,6 @@
 ;;; -*- lexical-binding: t -*-
 
-;; ./home/programs/emacs.el
+;; environment/editor/emacs/emacs.el
 ;;
 ;;  /---------------------\
 ;; >  Emacs Configuration  <
@@ -217,29 +217,48 @@ Exempt major modes are defined in `display-line-numbers-exempt-modes'."
 (use-package evil
   :init
   (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-i-jump nil)
+  (setq evil-want-keybinding t)   ; let evil handle its own mode bindings
+  (setq evil-want-C-u-scroll nil) ; keep C-u as Emacs universal argument
+  (setq evil-want-C-i-jump nil)   ; keep C-i / TAB as Emacs expects
   :config
   (evil-mode 1)
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-
   ;; Use visual line motions even outside of visual-line-mode buffers
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+  (evil-set-initial-state 'messages-buffer-mode 'normal))
 
-  (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal))
-
+;; Selectively enable evil keybindings in specific modes only.
+;; Add to this list as you discover you want hjkl in other places.
 (use-package evil-collection
   :after evil
   :config
-  (evil-collection-init))
+  (evil-collection-init '(dired magit)))
 
 ;;  --------------
 ;;  |  Org Mode  |
 ;;  --------------
 
-(use-package org)
+(use-package org
+  :config
+  (setq org-ellipsis " ▾")
+  (setq org-hide-emphasis-markers t))
+
+;;  ---------------
+;;  |  Org Roam   |
+;;  ---------------
+
+(use-package org-roam
+  :custom
+  (org-roam-directory (file-truename "~/docs"))
+  (org-roam-completion-everywhere t)
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+         ("C-c n j" . org-roam-dailies-capture-today))
+  :config
+  (org-roam-db-autosync-mode))
+
 
 (server-start)
