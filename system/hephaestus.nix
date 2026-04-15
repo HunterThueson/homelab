@@ -1,4 +1,4 @@
-# ./system/hephaestus.nix
+# system/hephaestus.nix
 
     #--------------#             ------------------------------
     #  Hephaestus  #     AKA     |  Hunter's Home Desktop PC  |
@@ -24,20 +24,20 @@ in
 {
   imports = [
 
-    inputs.hyprland.nixosModules.default                # Hyprland NixOS module
+    inputs.hyprland.nixosModules.default                    # Hyprland NixOS module
 
-    ./hardware/hephaestus.nix                           # per-system hardware configuration
+    ./hardware/hephaestus.nix                               # per-system hardware configuration
     ./hardware/inputDevices
-    ./hardware/gpu/nvidia.nix                           # Nvidia GPU configuration
+    ./hardware/gpu/nvidia.nix                               # Nvidia GPU configuration
 
-    ./boot/loader.nix                                   # Bootloader configuration
+    ./boot/loader.nix                                       # Bootloader configuration
 
-    ./environment                                       # User environment modules
+    ./environment                                           # User environment modules
 
-    ./display/xorg.nix                                  # Enable dual monitor setup (hopefully)
-    ./display/fonts.nix                                 # Configure system fonts
+    ./display/xorg.nix                                      # Enable dual monitor setup (hopefully)
+    ./display/fonts.nix                                     # Configure system fonts
     
-    ../users                                            # User management
+    ../users                                                # User management
 
   ];
 
@@ -71,9 +71,9 @@ in
   #----------------------------#
 
   time = {
-    timeZone = "America/Denver";                                                # Set your time zone.
-    hardwareClockInLocalTime = true;                                            # Keep the hardware clock in local time instead of UTC
-  };                                                                            # for compatibility with Windows Dual Boot
+    timeZone = "America/Denver";                            # Set your time zone.
+    hardwareClockInLocalTime = true;                        # Keep the hardware clock in local time instead of UTC
+  };                                                        # for compatibility with Windows Dual Boot
 
   #----------------------#
   #  Networking options  #
