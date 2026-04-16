@@ -43,7 +43,7 @@ in
   #
 
   programs.bash = {
-    historyFile = "$HOME/docs/archive/.bash_history";                             # Location of the bash history file
+    historyFile = "$HOME/.bash_history";                                          # Location of the bash history file
     historyIgnore = [                                                             # List of commands that should not be saved to the history list
       "ls"
       "eza"
@@ -89,6 +89,13 @@ in
       # Teleport to config directory
       cdc () {
         cd $XDG_CONFIG_HOME
+        clear
+        eza -DG --icons=auto --group-directories-first
+      }
+
+      # Teleport to Org Roam directory
+      cdw () {
+        cd $HOME/wiki
         clear
         eza -DG --icons=auto --group-directories-first
       }

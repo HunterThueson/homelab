@@ -25,5 +25,5 @@
   xdg.configFile."emacs/init.el".source = ./emacs.el;
 
   # Ensure org-roam directory exists
-  home.file."docs/.keep".text = "";
+  home.file."wiki/.keep".text = "";
 }

@@ -249,7 +249,7 @@ Exempt major modes are defined in `display-line-numbers-exempt-modes'."
 
 (use-package org-roam
   :custom
-  (org-roam-directory (file-truename "~/docs"))
+  (org-roam-directory (file-truename "~/wiki"))
   (org-roam-completion-everywhere t)
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
