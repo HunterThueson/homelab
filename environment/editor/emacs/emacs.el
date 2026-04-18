@@ -249,16 +249,33 @@ Exempt major modes are defined in `display-line-numbers-exempt-modes'."
 
 (use-package org-roam
   :custom
-  (org-roam-directory (file-truename "~/wiki"))
+  (org-roam-directory (file-truename "~/docs"))
+  (org-roam-dailies-directory "journal/")
   (org-roam-completion-everywhere t)
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n g" . org-roam-graph)
          ("C-c n i" . org-roam-node-insert)
          ("C-c n c" . org-roam-capture)
-         ("C-c n j" . org-roam-dailies-capture-today))
+         :map org-mode-map
+         ("C-M-i" . completion-at-point)
+         :map org-roam-dailies-map
+         ("n" . org-roam-dailies-capture-today)
+         ("d" . org-roam-dailies-goto-today)
+         ("Y" . org-roam-dailies-capture-yesterday)
+         ("y" . org-roam-dailies-goto-yesterday)
+         ("T" . org-roam-dailies-capture-tomorrow)
+         ("t" . org-roam-dailies-goto-tomorrow)
+         ("N" . org-roam-dailies-capture-date)
+         ("D" . org-roam-dailies-goto-date)
+         ("b" . org-roam-dailies-goto-previous-note)
+         ("f" . org-roam-dailies-goto-next-note))
+  :bind-keymap
+  ("C-c n d" . org-roam-dailies-map)
   :config
-  (org-roam-db-autosync-mode))
+  (require 'org-roam-dailies)
+  (org-roam-db-autosync-mode)
+  (load (expand-file-name "org-roam-templates.el" user-emacs-directory)))
 
 
 (server-start)

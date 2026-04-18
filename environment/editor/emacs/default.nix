@@ -23,7 +23,8 @@
 
   # Emacs 27+ uses ~/.config/emacs/ if ~/.emacs.d doesn't exist
   xdg.configFile."emacs/init.el".source = ./emacs.el;
+  xdg.configFile."emacs/org-roam-templates.el".source = ./org-roam-templates.el;
 
   # Ensure org-roam directory exists
-  home.file."wiki/.keep".text = "";
+  home.file."docs/.keep".text = "";
 }

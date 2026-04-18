@@ -78,14 +78,6 @@ in
     #-------------#
 
     bashrcExtra = ''
-      # Teleport to $HOME
-      cdd () {
-        cd $HOME
-        clear
-        sleep 0.01
-        eza -DG --icons=auto --group-directories-first
-      }
-
       # Teleport to config directory
       cdc () {
         cd $XDG_CONFIG_HOME
@@ -94,8 +86,8 @@ in
       }
 
       # Teleport to Org Roam directory
-      cdw () {
-        cd $HOME/wiki
+      cdd () {
+        cd $HOME/docs
         clear
         eza -DG --icons=auto --group-directories-first
       }
