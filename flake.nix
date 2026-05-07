@@ -72,27 +72,7 @@
               layout = "qwerty";
               model = keyboardPresets.zsa.moonlander;
             };
-            display = {
-              alignment = "center";
-              monitors = [
-                {
-                  name = "Gigabyte M28U";
-                  resolution = "3840x2160@144";
-                  orientation = "landscape";
-                  placement = "primary";
-                }
-
-                {
-                  name = "Dell S2417DG";
-                  resolution = "2560x1440@144";
-                  orientation = "portrait";
-                  placement = {
-                    position = "right-of"; 
-                    relativeTo = "primary";
-                  };
-                }
-              ];
-            };
+            display = monitorPresets.layouts."m28u-landscape--s2417dg-portrait-right";
           };
         };
       };

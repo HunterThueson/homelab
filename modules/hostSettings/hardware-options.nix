@@ -78,6 +78,7 @@
           model  = lib.mkOption {
             type = lib.types.submodule {
               options = {
+                manufacturer = lib.mkOption { type = lib.types.str; default = "generic"; };
                 size      = lib.mkOption { type = lib.types.enum [ "micro" "compact" "standard" "large" ]; default = "standard"; };
                 connector = lib.mkOption { type = lib.types.enum [ "builtin" "usb" "bluetooth" ]; default = "usb"; };
               };
@@ -123,6 +124,35 @@
               };
             });
             default = [];
+          };
+
+          xorg = lib.mkOption {
+            type = lib.types.submodule {
+              options = {
+                dpi = lib.mkOption { type = lib.types.nullOr lib.types.int; default = null; };
+                virtualScreen = lib.mkOption {
+                  type = lib.types.nullOr (lib.types.submodule {
+                    options = {
+                      x = lib.mkOption { type = lib.types.int; };
+                      y = lib.mkOption { type = lib.types.int; };
+                    };
+                  });
+                  default = null;
+                };
+                screenSection = lib.mkOption { type = lib.types.lines; default = ""; };
+                xrandrHeads = lib.mkOption {
+                  type = lib.types.listOf (lib.types.submodule {
+                    options = {
+                      output = lib.mkOption { type = lib.types.str; };
+                      primary = lib.mkOption { type = lib.types.bool; default = false; };
+                      monitorConfig = lib.mkOption { type = lib.types.lines; default = ""; };
+                    };
+                  });
+                  default = [];
+                };
+              };
+            };
+            default = {};
           };
         };
       });

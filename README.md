@@ -48,7 +48,7 @@ The `modules/` directory contains **option schemas only** — it defines *what* 
 ├── lib/
 │   ├── mkHosts.nix            # Builds nixosSystem for each host; detects dual-export modules
 │   ├── mkHomes.nix            # Builds standalone homeConfigurations for fast HM iteration
-│   └── presets/               # Hardware preset attrsets (GPUs, keyboards, monitors)
+│   └── presets/               # Hardware preset attrsets (GPUs, keyboards, monitor layouts)
 │
 ├── modules/                   # Option schemas only (no implementation)
 │   ├── hostSettings/          # Host-level options (type, role, hardware, display)
@@ -56,9 +56,10 @@ The `modules/` directory contains **option schemas only** — it defines *what* 
 │
 ├── system/                    # System-level backend implementation via hostSettings + userSettings
 │   ├── boot/                  # Bootloader: GRUB or systemd-boot (via hostSettings.hardware.boot)
-│   ├── display/               # Display server (Wayland, Xorg)
+│   ├── display/               # Xorg (via hostSettings.hardware.display), Wayland
 │   ├── hardware/              # GPU, input devices, printers
-│   │   └── gpu/               # Generic multi-GPU support (Nvidia, AMD, Intel)
+│   │   ├── gpu/               # Generic multi-GPU support (Nvidia, AMD, Intel)
+│   │   └── inputDevices/      # Keyboard layout, touchpad, ZSA (via hostSettings.hardware)
 │   ├── login-manager/         # greetd or SDDM (via hostSettings.loginManager)
 │   ├── nix/                   # Nix daemon settings, garbage collection
 │   └── users.nix              # Creates user accounts from userSettings
