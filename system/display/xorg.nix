@@ -21,7 +21,7 @@
       y = 2160;                                             # monitors in my current setup
     };
     screenSection = ''
-      Option    "MetaModes" "DP-4: 3840x2160_144 +0+0 { ForceCompositionPipeline=On, AllowGSYNCCompatible=On }, DP-2: 2560x1440_144 +3840+182 { ViewPortIn=3192x1796, ViewPortOut=2560x1440, ForceCompositionPipeline=On, AllowGSYNC=On }"
+      Option    "MetaModes" "DP-4: 3840x2160_144 +0+0 { ForceCompositionPipeline=On, AllowGSYNCCompatible=On }, HDMI-0: 2560x1440_60 +3840+182 { ViewPortIn=3192x1796, ViewPortOut=2560x1440, ForceCompositionPipeline=On }"
     '';
     xrandrHeads = [
 
@@ -39,11 +39,10 @@
 
       # Dell Ultrasharp S2417DG @ 2560x1440
       {
-        output = "DP-2";
+        output = "HDMI-0";
         monitorConfig = ''
-          Modeline "2560x1440_144.00"  807.69  2560 2784 3072 3584  1440 1441 1444 1565  -HSync +Vsync
           Option "DPMS" "true"
-          Option "PreferredMode" "2560x1440_144.00"
+          Option "PreferredMode" "2560x1440_60.00"
           Option "Position" "3840 182"
         '';
       }

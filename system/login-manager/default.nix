@@ -1,8 +1,14 @@
-# ./system/display/login-manager.nix
+# system/login-manager/default.nix
+
+#-----------------#
+#  Login Manager  #
+#-----------------#
 
 { ... }:
 
 {
-  (import ./sddm.nix);
-  (import ./greetd.nix);
+  imports = [
+    ./sddm.nix
+    ./greetd.nix
+  ];
 }

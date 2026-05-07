@@ -3,9 +3,13 @@
 { ... }:
 
 {
-  (import ./boot);
-  (import ./display);
-  (import ./environment);
-  (import ./hardware);
-  (import ./services);
+  imports = [
+    ./boot
+    ./display
+    ./hardware
+    ./login-manager
+    ./nix
+    ./system-programs.nix
+    ./users.nix
+  ];
 }

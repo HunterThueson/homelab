@@ -1,6 +1,6 @@
 # system/boot/default.nix
 
-{ ... }:
+{ pkgs, ... }:
 
 {
   imports = [

@@ -5,6 +5,7 @@
 {
   imports = [
     ./gpu
-    ./input-devices
+    ./inputDevices
+    ./printers.nix
   ];
 }
