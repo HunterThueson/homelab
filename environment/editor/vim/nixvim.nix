@@ -4,54 +4,56 @@
 #  Nixvim Configuration  #
 #------------------------#
 
-# Manage Neovim configuration with Nix syntax
+# Manage Neovim configuration with Nix syntax.
+# Enables when any user has editor.terminal = "vim"
 
-{ config, lib, pkgs, nixvim, ... }:
+{ config, lib, pkgs, ... }:
 
 let
-  cfg = config.userSettings;
-in
+  users = config.userSettings;
 
-{
-  # Conditional imports are bad practice so we import here no matter what
-  programs.nixvim = {
-    imports = [
-      ./treesitter.nix
-    ];
-  };
+  # Check if any user wants vim as their terminal editor
+  anyUserWantsVim = lib.any (u: u.editor.terminal == "vim") (lib.attrValues users);
 
-  programs.nixvim = lib.mkIf (cfg.editor == "vim";) {
-    enable = true;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
+in {
+  imports = [
+    ./treesitter.nix
+  ];
 
-    plugins = {
-      nix.enable = true;                  # enable syntax highlighting for *.nix files
-      lightline.enable = true;            # fancy status line
-      lspconfig.enable = true;            # install default configs for many language servers
-      lastplace.enable = true;            # intelligently return to the last place you were editing a given file
-    };
+  config = lib.mkIf anyUserWantsVim {
+    programs.nixvim = {
+      enable = true;
+      defaultEditor = true;
+      viAlias = true;
+      vimAlias = true;
 
-    opts = {
-      clipboard = "unnamedplus";          # always use system clipboard
+      plugins = {
+        nix.enable = true;
+        lightline.enable = true;
+        lspconfig.enable = true;
+        lastplace.enable = true;
+      };
 
-      # Appearance Options
-      number = true;                      # show line numbers
-      relativenumber = true;              # show relative line numbers
-      ruler = true;                       # show current position of cursor in bottom right corner
-      wrap = false;                       # don't wrap; allow lines to extend as far as needed
+      opts = {
+        clipboard = "unnamedplus";
 
-      # Formatting Options
-      autoindent = true;
-      expandtab = true;
-      tabstop = 2;
-      shiftwidth = 2;
+        # Appearance
+        number = true;
+        relativenumber = true;
+        ruler = true;
+        wrap = false;
 
-      # Search & History Options
-      incsearch = true;                   # start highlighting results as soon as you start typing
-      hlsearch = true;                    # highlight results when searching
-      history = 700;                      # remember much further into the past
+        # Formatting
+        autoindent = true;
+        expandtab = true;
+        tabstop = 2;
+        shiftwidth = 2;
+
+        # Search & History
+        incsearch = true;
+        hlsearch = true;
+        history = 700;
+      };
     };
   };
 }

@@ -1,15 +1,31 @@
 # environment/default.nix
 
-{ ... }:
+# List of environment module paths.
+# Imported by both mkHosts.nix and mkHomes.nix.
+#
+# Each file is either:
+#   - A plain HM module (function)        → injected into HM only
+#   - A dual-export { nixos; home; }       → nixos part added to NixOS, home part to HM
+#
+# Listed individually (not by directory) so mkHosts/mkHomes can detect dual-exports.
 
-{
-  imports = [
-    ./desktop
-    ./editor
-    ./games
-    ./services
-    ./shell
-    ./terminal
-    ./themes
-  ];
-}
+[
+  ./home-base.nix
+
+  # Desktop environments
+  ./desktop/hyprland.nix
+  ./desktop/plasma.nix
+
+  # Editors (vim/nixvim is system-level, in system/system-programs.nix)
+  ./editor/emacs
+
+  # Shell
+  ./shell/starship.nix
+
+  # Terminal
+  ./terminal/alacritty.nix
+
+  # Themes
+  ./themes/fonts.nix
+  ./themes/stylix.nix
+]
