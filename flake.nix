@@ -43,18 +43,16 @@
   outputs = inputs @ { self, nixpkgs, home-manager, nixvim, stylix, ... }:
 
   let
-    system = "x86_64-linux";
     inherit (nixpkgs) lib;
     flakeRoot = ./.;
     mkHosts = import ./lib/mkHosts.nix { inherit inputs lib flakeRoot; };
-    keyboardPresets = import ./lib/presets/keyboards.nix { inherit inputs lib flakeRoot; };
-    monitorPresets  = import ./lib/presets/monitors.nix { inherit inputs lib flakeRoot; };
-    gpuPresets      = import ./lib/presets/gpus.nix { inherit inputs lib flakeRoot; };
-  in 
+    mkHomes = import ./lib/mkHomes.nix { inherit inputs lib flakeRoot; };
+    keyboardPresets = import ./lib/presets/keyboards.nix;
+    monitorPresets  = import ./lib/presets/monitors.nix { inherit lib; };
+    gpuPresets      = import ./lib/presets/gpus.nix;
 
-  {
-
-    nixosConfigurations = mkHosts {
+    # Shared host definitions — consumed by both mkHosts and mkHomes
+    hostDefs = {
       hephaestus = {
         users = [ "hunter" "ash" ];
 
@@ -63,10 +61,7 @@
           type = "desktop";
           role = [ "workstation" "gaming" "writing" ];
           hardware = {
-            gpu = {
-              enable = true;
-              model = gpuPresets.nvidia.rtx3090;
-            };
+            gpu = [ gpuPresets."rtx3090" ];
             keyboard = {
               layout = "qwerty";
               model = keyboardPresets.zsa.moonlander;
@@ -106,15 +101,22 @@
           role = [ "workstation" "gaming" "writing" ];
           hardware = {
             touchpad.enable = true;                   # assigning the role "laptop" should do this by default, this just shows it's overrideable
-            bluetooth.enable = true;
+            bluetooth = true;
             keyboard = {
               layout = "qwerty";
               model = keyboardPresets.lenovoThinkPad."built-in";
             };
-            monitors = [ monitorPresets.lenovoThinkPad."built-in" ];
+            display = {
+              monitors = [ monitorPresets.lenovoThinkPad."built-in" ];
+            };
           };
         };
       };
     };
+
+  in
+  {
+    nixosConfigurations = mkHosts hostDefs;
+    homeConfigurations  = mkHomes hostDefs;
   };
 }
