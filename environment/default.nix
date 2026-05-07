@@ -10,17 +10,18 @@
 # Listed individually (not by directory) so mkHosts/mkHomes can detect dual-exports.
 
 [
-  ./home-base.nix
-
   # Desktop environments
   ./desktop/hyprland.nix
   ./desktop/plasma.nix
 
-  # Games (enabled by hostSettings.role containing "gaming")
-  ./games
+  # Development tools
+  ./dev
 
   # Editors (dual-export: system-level enabling + per-user HM config)
   ./editor
+
+  # Games (enabled by hostSettings.role containing "gaming")
+  ./games
 
   # Shell (dual-export: system-level enabling + per-user prompt config)
   ./shell

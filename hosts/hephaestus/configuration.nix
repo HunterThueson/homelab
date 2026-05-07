@@ -60,7 +60,4 @@
   #---------------#
 
   environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
-
-  # State version - do not change
-  system.stateVersion = "21.11";
 }

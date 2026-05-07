@@ -49,10 +49,13 @@ let
             # Set this user's settings
             { config.userSettings = userData; }
 
-            # Set username and home directory
+            # HM plumbing
             {
               home.username = username;
               home.homeDirectory = "/home/${username}";
+              home.stateVersion = hostConfig.stateVersion;
+              home.packages = userData.packages;
+              programs.home-manager.enable = true;
             }
           ];
         }

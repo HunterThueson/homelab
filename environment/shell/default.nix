@@ -20,6 +20,9 @@
   };
 
   home = { ... }: {
-    imports = [ ./starship.nix ];
+    imports = [
+      ./bash.nix
+      ./starship.nix
+    ];
   };
 }

@@ -71,9 +71,10 @@ hostDefinitions: lib.mapAttrs (hostname: hostConfig:
     # NixOS parts from dual-export environment modules
     ] ++ nixosFromEnv ++ [
 
-    # Set hostSettings and userSettings (NixOS-level)
+    # Set hostSettings, userSettings, and stateVersion (NixOS-level)
       { config.hostSettings = hostConfig.hostSettings; }
       { config.userSettings = userDataAttrs; }
+      { config.system.stateVersion = hostConfig.stateVersion; }
 
     # Set up Home Manager — inject HM parts per-user
       {
@@ -83,6 +84,9 @@ hostDefinitions: lib.mapAttrs (hostname: hostConfig:
           users = lib.mapAttrs (username: userData: {
             imports = hmModules;
             userSettings = userData;
+            home.stateVersion = hostConfig.stateVersion;
+            home.packages = userData.packages;
+            programs.home-manager.enable = true;
           }) userDataAttrs;
         };
       }

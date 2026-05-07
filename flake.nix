@@ -55,6 +55,7 @@
     hostDefs = {
       hephaestus = {
         users = [ "hunter" "ash" ];
+        stateVersion = "21.11";
 
         hostSettings = {
           system = "x86_64-linux";
@@ -94,6 +95,7 @@
       # for comparison:
       artemis = {
         users = [ "hunter" ];
+        stateVersion = "25.11";
 
         hostSettings = {
           system = "x86_64-linux";

@@ -64,11 +64,11 @@ The `modules/` directory contains **option schemas only** — it defines *what* 
 │   └── users.nix              # Creates user accounts from userSettings
 │
 ├── environment/               # User-level backends (HM modules or dual-export)
-│   ├── home-base.nix          # Base HM config: stateVersion, packages, git
 │   ├── desktop/               # Hyprland, Plasma (dual-export)
+│   ├── dev/                   # Development tools: Git (HM module)
 │   ├── editor/                # Emacs + Nixvim (dual-export)
 │   ├── games/                 # Steam, OSRS (dual-export, enabled by "gaming" role)
-│   ├── shell/                 # Zsh/Fish enabling + Starship prompt (dual-export)
+│   ├── shell/                 # Bash, Zsh/Fish enabling, Starship (dual-export)
 │   ├── terminal/              # Alacritty (HM module)
 │   └── themes/                # Fonts, Stylix (dual-export)
 │
