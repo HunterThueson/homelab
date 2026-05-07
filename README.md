@@ -46,6 +46,7 @@ The `modules/` directory contains **option schemas only** — it defines *what* 
 ├── flake.nix                  # Hub: defines hosts and users with simple syntax
 │                                and wires everything together
 ├── lib/
+│   ├── default.nix            # Single import for all lib utilities (mkHosts, mkHomes, presets)
 │   ├── mkHosts.nix            # Builds nixosSystem for each host; detects dual-export modules
 │   ├── mkHomes.nix            # Builds standalone homeConfigurations for fast HM iteration
 │   └── presets/               # Hardware preset attrsets (GPUs, keyboards, monitor layouts)

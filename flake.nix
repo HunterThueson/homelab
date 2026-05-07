@@ -45,11 +45,8 @@
   let
     inherit (nixpkgs) lib;
     flakeRoot = ./.;
-    mkHosts = import ./lib/mkHosts.nix { inherit inputs lib flakeRoot; };
-    mkHomes = import ./lib/mkHomes.nix { inherit inputs lib flakeRoot; };
-    keyboardPresets = import ./lib/presets/keyboards.nix;
-    monitorPresets  = import ./lib/presets/monitors.nix { inherit lib; };
-    gpuPresets      = import ./lib/presets/gpus.nix;
+    inherit (import ./lib { inherit inputs lib flakeRoot; })
+      mkHosts mkHomes keyboardPresets monitorPresets gpuPresets;
 
     # Shared host definitions — consumed by both mkHosts and mkHomes
     hostDefs = {
