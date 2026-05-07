@@ -7,7 +7,7 @@ Personal NixOS flake managing two hosts, multiple users, and a shared pool of sy
 | Host | Type | Role | Hardware |
 |------|------|------|----------|
 | **hephaestus** | Desktop | Workstation, gaming, writing | RTX 3090, ZSA Moonlander, dual monitors |
-| **artemis** | Laptop | Workstation, gaming, writing | Lenovo ThinkPad |
+| **artemis** | Laptop | Workstation, gaming, writing | Lenovo ThinkPad X1 Carbon Gen 12 |
 
 ---
 
@@ -143,17 +143,16 @@ home-manager switch --flake .#hunter@hephaestus
 
 ## What's Next
 
-- Wire remaining `environment/` module stubs to `userSettings` (desktop, themes)
-- Wire remaining `system/` modules to `hostSettings` (login manager, display, boot)
-- Customize Hyprland workspaces, window rules, and keybinds
+- Test on real hardware (`nixos-rebuild switch`) and fix runtime issues
+- Update artemis `hardware.nix` with real UUIDs and deploy
+- Derive xorg config algorithmically from monitor schema (DPI, MetaModes, virtualScreen)
+- Make Hyprland monitor/env config dynamic instead of hardcoded in hyprland.conf
+- Flesh out Wayland display config (gate on desktop environment type)
 - Implement `roleSettings` and `groupSettings` for role-based defaults
-- Automate garbage collection, flake updates, and file backups
 - Set up `sops-nix` for secrets management
 - Build a custom desktop environment with Quickshell
 - Create a live ISO for deploying new hosts
-- Update artemis `hardware.nix` with real UUIDs and deploy
-- Write documentation for all features, options, and modules (project wiki)
-- Test on real hardware and iterate
+- Automate garbage collection, flake updates, and file backups
 
 ---
 
