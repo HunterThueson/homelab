@@ -1,86 +1,31 @@
-# ./hosts/hephaestus/configuration.nix
+# hosts/hephaestus/configuration.nix
 
-    #--------------#             ------------------------------
-    #  Hephaestus  #     AKA     |  Hunter's Home Desktop PC  |
-    #--------------#             ------------------------------
+#--------------#
+#  Hephaestus  #     AKA     Hunter's Home Desktop PC
+#--------------#
 
-# This file acts as an entry-point for host-specific configuration options. This
-# helps avoid cluttering up `flake.nix` while still allowing easy alterations.
+# Host-specific configuration. Module imports now come from system/ and environment/
+# via mkHosts.nix. This file only contains config unique to this host.
 
-# Eventually, this file will contain a lot of `cfg.[some-option].enable = true;`
-# type lines; I still need to write the logic that allows easy toggling of my custom
-# options, but once that's done this file will essentially control the whole system.
-
-# Q: Why is it named Hephaestus?
-# A: Because Hephaestus is the god of the forge, and this system is where I forge my tools.
-
-{ config, pkgs, inputs, ... }:
-
-let
-  host = "hephaestus";
-  inherit (pkgs) lib;
-in
+{ config, pkgs, lib, ... }:
 
 {
-  imports = [
-
-    inputs.hyprland.nixosModules.default                # Hyprland NixOS module
-
-    ./hardware/inputDevices
-    ./hardware/gpu/nvidia.nix                           # Nvidia GPU configuration
-
-    ./boot/loader.nix                                   # Bootloader configuration
-
-    ./environment                                       # User environment modules
-
-    ./display/xorg.nix                                  # Enable dual monitor setup (hopefully)
-    ./display/fonts.nix                                 # Configure system fonts
-    
-    ../users                                            # User management
-
-  ];
-
-  #-------------------#
-  #  Desktop Manager  #
-  #-------------------#
-
-  specialisation = {
-    hyprTest.configuration = {
-      system.nixos.tags = [ "hyprTest" ];
-      services.desktopManager.plasma6.enable = false;
-      services.desktopManager.plasma6.enableQt5Integration = false;
-      programs.hyprland.enable = true;
-
-      environment.sessionVariables = {
-        NIXOS_OZONE_WL = "1";
-      };
-
-      userEnvironment.loginManager = "sddm";
-    };
-  };
-
-  # My custom module designed for switching configs easily
-  userEnvironment = {
-    loginManager = lib.mkDefault "sddm";
-    editor = "vim";
-  };
-
   #----------------------------#
   #  Time/clock configuration  #
   #----------------------------#
 
   time = {
-    timeZone = "America/Denver";                                                # Set your time zone.
-    hardwareClockInLocalTime = true;                                            # Keep the hardware clock in local time instead of UTC
-  };                                                                            # for compatibility with Windows Dual Boot
+    timeZone = "America/Denver";
+    hardwareClockInLocalTime = true;  # For Windows dual boot compatibility
+  };
 
   #----------------------#
   #  Networking options  #
   #----------------------#
 
   networking = {
+    hostName = "hephaestus";
     networkmanager.enable = true;
-    hostName = "${host}";
     useDHCP = false;
   };
 
@@ -89,56 +34,47 @@ in
   #-----------------------------------#
 
   i18n.defaultLocale = "en_US.UTF-8";
-  console = {
-    useXkbConfig = true;                                                        # Use X keyboard config in TTY, etc. (for disabling CAPS)
-  };
+  console.useXkbConfig = true;
 
-  #----------------------#
-  #  User configuration  #                                                      # Only hard-coding users here for the time being until I figure out a better way
-  #----------------------#
+  #--------------#
+  #  Bluetooth   #
+  #--------------#
 
-  users = {
-    mutableUsers = false;
-    users = {
-      hunter = {
-        description = "Hunter";
-        isNormalUser = true;
-        home = "/home/hunter";
-        createHome = true;
-        extraGroups = [ "wheel" "video" "networkmanager" "wizard" ];
-        hashedPassword = "$6$rounds=500000$ilzR8OoFwfvEOzfO$iJ9QJzjIINDW8ON33jTIIxe/B2XcB3MnCR7/qaA6NC2Sw6efZvX2HJ4l3vif8/ggmAv/4GutT8Xt4/wAgLW0H.";
-      };
-      ash = {
-        description = "Ash";
-        isNormalUser = true;
-        home = "/home/ash";
-        createHome = true;
-        extraGroups = [ "wheel" "video" "networkmanager" "wizard" ];
-        hashedPassword = "$6$rounds=9999999$FThVWftaj3S0ShgC$C2HOgr7dst7/rnTy2NhLt5aiOOifhZ4cvg1XZ513VBMvxNg3fUGdH/ajdlnSHSKoxSpfoN84EqD3f6cOSL2/y.";
-      };
-    };
-  };
-
-  #------------#
-  #  Services  #
-  #------------#
-
-  services.printing.enable = true;                          # Enable printer support
-
-  hardware.bluetooth.package = pkgs.bluezFull;              # Enable bluetooth
-
-  services.lact.enable = true;                              # Enable LACT GPU monitoring daemon
+  hardware.bluetooth.enable = true;
 
   #---------#
-  #  Steam  #
+  #  Games  #
   #---------#
 
   programs.steam = {
     enable = true;
-    remotePlay.openFirewall = true;                         # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true;                    # Open ports in the firewall for Source Dedicated Server
-    localNetworkGameTransfers.openFirewall = true;          # Open ports in the firewall for Steam Local Network Game Transfers
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
+    localNetworkGameTransfers.openFirewall = true;
   };
+
+  programs.java = {
+    enable = true;
+    package = pkgs.jdk17;
+  };
+
+  #---------------------#
+  #  Hardware Packages  #
+  #---------------------#
+
+  environment.systemPackages = with pkgs; [
+    # Hardware utilities
+    lact                                                    # Linux GPU Control Application
+    nvtopPackages.full                                      # htop-like task monitor for GPUs
+    openrgb                                                 # open source RGB lighting control
+    xorg.xdpyinfo                                          # get information about X display(s)
+
+    # Games
+    bolt-launcher                                           # alternative launcher for Runescape
+    wineWow64Packages.full                                  # Wine compatibility layer (bolt-launcher dep)
+  ];
+
+  services.lact.enable = true;
 
   #---------------#
   #  Environment  #
@@ -146,15 +82,6 @@ in
 
   environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
 
-  ###############
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-
-  # Did you read the comment?
+  # State version - do not change
   system.stateVersion = "21.11";
-
 }
