@@ -42,36 +42,15 @@
 
   hardware.bluetooth.enable = true;
 
-  #---------#
-  #  Games  #
-  #---------#
-
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-    localNetworkGameTransfers.openFirewall = true;
-  };
-
-  programs.java = {
-    enable = true;
-    package = pkgs.jdk17;
-  };
-
   #---------------------#
   #  Hardware Packages  #
   #---------------------#
 
   environment.systemPackages = with pkgs; [
-    # Hardware utilities
     lact                                                    # Linux GPU Control Application
     nvtopPackages.full                                      # htop-like task monitor for GPUs
     openrgb                                                 # open source RGB lighting control
     xorg.xdpyinfo                                          # get information about X display(s)
-
-    # Games
-    bolt-launcher                                           # alternative launcher for Runescape
-    wineWow64Packages.full                                  # Wine compatibility layer (bolt-launcher dep)
   ];
 
   services.lact.enable = true;

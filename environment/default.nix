@@ -16,6 +16,9 @@
   ./desktop/hyprland.nix
   ./desktop/plasma.nix
 
+  # Games (enabled by hostSettings.role containing "gaming")
+  ./games
+
   # Editors (dual-export: system-level enabling + per-user HM config)
   ./editor
 
