@@ -9,7 +9,6 @@
     ./hardware
     ./login-manager
     ./nix
-    ./system-programs.nix
     ./users.nix
   ];
 }

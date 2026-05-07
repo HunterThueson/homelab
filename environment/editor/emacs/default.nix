@@ -6,7 +6,7 @@
 
 # Pure HM module — works in both NixOS-managed and standalone HM.
 # Enables Emacs when userSettings.editor.gui == "emacs".
-# System-level enabling (services.emacs) is in system/system-programs.nix.
+# System-level enabling (services.emacs) is in environment/editor/default.nix.
 
 { config, lib, pkgs, ... }:
 

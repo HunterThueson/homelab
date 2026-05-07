@@ -16,11 +16,11 @@
   ./desktop/hyprland.nix
   ./desktop/plasma.nix
 
-  # Editors (vim/nixvim is system-level, in system/system-programs.nix)
-  ./editor/emacs
+  # Editors (dual-export: system-level enabling + per-user HM config)
+  ./editor
 
-  # Shell
-  ./shell/starship.nix
+  # Shell (dual-export: system-level enabling + per-user prompt config)
+  ./shell
 
   # Terminal
   ./terminal/alacritty.nix
