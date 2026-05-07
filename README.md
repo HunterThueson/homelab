@@ -65,7 +65,7 @@ The `modules/` directory contains **option schemas only** — it defines *what* 
 │   └── users.nix              # Creates user accounts from userSettings
 │
 ├── environment/               # User-level backends (HM modules or dual-export)
-│   ├── desktop/               # Hyprland, Plasma (dual-export)
+│   ├── desktop/               # Hyprland (keybinds, window rules, hyprland.conf), Plasma (dual-export)
 │   ├── dev/                   # Development tools: Git (HM module)
 │   ├── editor/                # Emacs + Nixvim (dual-export)
 │   ├── games/                 # Steam, OSRS (dual-export, enabled by "gaming" role)

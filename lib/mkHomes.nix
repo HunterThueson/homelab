@@ -34,6 +34,7 @@ let
 
       hmModules = [
         "${flakeRoot}/modules/userSettings/hm-schema.nix"
+        inputs.hyprland.homeManagerModules.default
       ] ++ hmFromEnv;
 
     in

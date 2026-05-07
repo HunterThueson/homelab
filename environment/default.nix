@@ -1,35 +1,21 @@
 # environment/default.nix
 
-# List of environment module paths.
+# Master list of environment module paths.
 # Imported by both mkHosts.nix and mkHomes.nix.
 #
-# Each file is either:
+# Each entry resolves to either:
 #   - A plain HM module (function)        → injected into HM only
 #   - A dual-export { nixos; home; }       → nixos part added to NixOS, home part to HM
 #
-# Listed individually (not by directory) so mkHosts/mkHomes can detect dual-exports.
+# Directories with multiple modules return a list (via import);
+# directories whose default.nix IS the module are listed as paths.
 
+(import ./desktop) ++           # [ hyprland, plasma ] — dual-export
+(import ./terminal) ++          # [ alacritty ] — HM modules
+(import ./themes) ++            # [ fonts, stylix ] — dual-export
 [
-  # Desktop environments
-  ./desktop/hyprland.nix
-  ./desktop/plasma.nix
-
-  # Development tools
-  ./dev
-
-  # Editors (dual-export: system-level enabling + per-user HM config)
-  ./editor
-
-  # Games (enabled by hostSettings.role containing "gaming")
-  ./games
-
-  # Shell (dual-export: system-level enabling + per-user prompt config)
-  ./shell
-
-  # Terminal
-  ./terminal/alacritty.nix
-
-  # Themes
-  ./themes/fonts.nix
-  ./themes/stylix.nix
+  ./dev                         # git — HM module
+  ./editor                      # emacs + vim — dual-export
+  ./games                       # steam, osrs — dual-export
+  ./shell                       # bash, starship, zsh/fish enabling — dual-export
 ]

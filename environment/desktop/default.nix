@@ -1,10 +1,9 @@
 # environment/desktop/default.nix
 
-{ ... }:
+# List of desktop environment module paths.
+# Each file is a dual-export { nixos; home; }.
 
-{
-  imports = [
-    ./plasma.nix
-    ./hyprland.nix
-  ];
-}
+[
+  ./hyprland
+  ./plasma.nix
+]

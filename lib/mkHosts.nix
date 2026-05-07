@@ -46,9 +46,10 @@ hostDefinitions: lib.mapAttrs (hostname: hostConfig:
       in if builtins.isAttrs mod && mod ? home then mod.home else m
     ) envModules;
 
-    # HM modules: schema + extracted home modules
+    # HM modules: schema + flake HM modules + extracted home modules
     hmModules = [
       "${flakeRoot}/modules/userSettings/hm-schema.nix"
+      inputs.hyprland.homeManagerModules.default
     ] ++ hmFromEnv;
 
   in
@@ -81,6 +82,7 @@ hostDefinitions: lib.mapAttrs (hostname: hostConfig:
         home-manager = {
           useGlobalPkgs = true;
           useUserPackages = true;
+          extraSpecialArgs = { inherit inputs flakeRoot; };
           users = lib.mapAttrs (username: userData: {
             imports = hmModules;
             userSettings = userData;
