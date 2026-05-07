@@ -1,19 +1,22 @@
 # system/login-manager/sddm.nix
 
-#----------------------#
-#  SDDM Configuration  #
-#----------------------#
+#--------#
+#  SDDM  #
+#--------#
 
-# TODO: Implement based on hostSettings.loginManager or similar option
+# Enables SDDM when hostSettings.loginManager = "sddm".
 
-{ config, pkgs, lib, ... }:
+{ config, lib, ... }:
 
-{
-  # Stub - SDDM configuration will be implemented when login manager option is added to schema
-  # config = lib.mkIf (config.hostSettings.loginManager == "sddm") {
-  #   services.displayManager.sddm = {
-  #     enable = true;
-  #     ...
-  #   };
-  # };
+let
+  cfg = config.hostSettings;
+in {
+  config = lib.mkIf (cfg.loginManager == "sddm") {
+    services.displayManager.sddm = {
+      enable = true;
+      enableHidpi = true;
+      autoNumlock = true;
+      wayland.enable = true;
+    };
+  };
 }

@@ -4,16 +4,19 @@
 #  systemd-boot  #
 #----------------#
 
-{ config, pkgs, lib, ... }:
+# Enables systemd-boot when hostSettings.hardware.boot.loader = "systemd-boot".
+
+{ config, lib, ... }:
 
 let
-  cfg = config;
-in
-
-{
-  boot.loader.systemd-boot = {                                              # Use the systemd-boot boot loader
-    memtest86.enable = true;                                                # Enable Memtest86
-    configurationLimit = 25;                                                # Limit the number of systemd-boot menu entries
-    editor = false;                                                         # Disable editing kernel cmd line before boot -- security risk (root access)
+  cfg = config.hostSettings.hardware.boot;
+in {
+  config = lib.mkIf (cfg.loader == "systemd-boot") {
+    boot.loader.systemd-boot = {
+      enable = true;
+      memtest86.enable = true;
+      configurationLimit = 25;
+      editor = false;                   # Disable editing kernel cmd line — security risk
+    };
   };
 }

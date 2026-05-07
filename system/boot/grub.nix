@@ -1,30 +1,34 @@
 # system/boot/grub.nix
 
 #--------#
-#  Grub  #
+#  GRUB  #
 #--------#
+
+# Enables GRUB 2 bootloader when hostSettings.hardware.boot.loader = "grub".
+# Requires hostSettings.hardware.boot.device to be set to the boot disk.
 
 { config, pkgs, lib, ... }:
 
 let
-  cfg = config;
-in
+  cfg = config.hostSettings.hardware.boot;
+in {
+  config = lib.mkIf (cfg.loader == "grub") {
+    boot.loader.grub = {
+      enable = true;
+      device = cfg.device;
+      efiSupport = true;
+      useOSProber = true;
+      configurationLimit = 25;
 
-{
-  boot.loader.grub = {                                                      # Use the GRUB 2 boot loader
-    device = "/dev/disk/by-id/nvme-eui.0025384141427eb8";                   # ID of my BOOT (!) DISK (not partition!)
-    efiSupport = true;
-    useOSProber = true;
-    configurationLimit = 25;                                                # Limit the number of GRUB menu entries
-
-    # Enable Memtest86 (unfree) EFI-compatible system diagnostics utility
-    extraFiles = {
-      "memtest86.efi" = "${pkgs.memtest86-efi}/BOOTX64.efi";
+      # Memtest86 (unfree) EFI-compatible system diagnostics
+      extraFiles = {
+        "memtest86.efi" = "${pkgs.memtest86-efi}/BOOTX64.efi";
+      };
+      extraEntries = ''
+        menuentry "Memtest86" {
+          chainloader @bootRoot@/memtest86.efi
+        }
+      '';
     };
-    extraEntries = ''
-      menuentry "Memtest86" {
-        chainloader @bootRoot@/memtest86.efi
-      }
-    '';
   };
 }

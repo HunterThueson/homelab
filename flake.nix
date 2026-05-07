@@ -61,7 +61,12 @@
           system = "x86_64-linux";
           type = "desktop";
           role = [ "workstation" "gaming" "writing" ];
+          loginManager = "sddm";
           hardware = {
+            boot = {
+              loader = "systemd-boot";
+              device = "/dev/disk/by-id/nvme-eui.0025384141427eb8";
+            };
             gpu = [ gpuPresets."rtx3090" ];
             keyboard = {
               layout = "qwerty";
@@ -101,7 +106,9 @@
           system = "x86_64-linux";
           type = "laptop";
           role = [ "workstation" "gaming" "writing" ];
+          loginManager = "sddm";
           hardware = {
+            boot.loader = "systemd-boot";
             touchpad.enable = true;                   # assigning the role "laptop" should do this by default, this just shows it's overrideable
             bluetooth = true;
             keyboard = {

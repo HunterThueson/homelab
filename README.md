@@ -55,11 +55,11 @@ The `modules/` directory contains **option schemas only** — it defines *what* 
 │   └── userSettings/          # User-level options (editor, shell, desktop, packages)
 │
 ├── system/                    # System-level backend implementation via hostSettings + userSettings
-│   ├── boot/                  # Bootloader configuration
+│   ├── boot/                  # Bootloader: GRUB or systemd-boot (via hostSettings.hardware.boot)
 │   ├── display/               # Display server (Wayland, Xorg)
 │   ├── hardware/              # GPU, input devices, printers
 │   │   └── gpu/               # Generic multi-GPU support (Nvidia, AMD, Intel)
-│   ├── login-manager/         # greetd, SDDM (stub, not yet wired)
+│   ├── login-manager/         # greetd or SDDM (via hostSettings.loginManager)
 │   ├── nix/                   # Nix daemon settings, garbage collection
 │   └── users.nix              # Creates user accounts from userSettings
 │

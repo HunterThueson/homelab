@@ -8,6 +8,23 @@
 
 {
   options = {
+    boot = lib.mkOption {
+      type = lib.types.submodule {
+        options = {
+          loader = lib.mkOption {
+            type = lib.types.enum [ "grub" "systemd-boot" ];
+            default = "systemd-boot";
+          };
+          device = lib.mkOption {
+            type = lib.types.nullOr lib.types.str;
+            default = null;
+            description = "Disk device for GRUB installation (e.g. /dev/disk/by-id/...). Required when loader = grub.";
+          };
+        };
+      };
+      default = {};
+    };
+
     bluetooth = lib.mkOption { type = lib.types.bool; default = false; };
 
     gpu = lib.mkOption {
