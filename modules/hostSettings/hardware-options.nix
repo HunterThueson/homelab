@@ -11,16 +11,48 @@
     bluetooth = lib.mkOption { type = lib.types.bool; default = false; };
 
     gpu = lib.mkOption {
+      type = lib.types.listOf (lib.types.submodule {
+        options = {
+        # Whether to enable support for the GPU
+          enable   = lib.mkOption { type = lib.types.bool; default = false; };
+
+        # Device information
+          description = lib.mkOption { type = lib.types.str; default = ""; };
+          manufacturer = lib.mkOption { type = lib.types.enum [ "amd" "intel" "nvidia" ]; default = "intel"; };
+          mode = lib.mkOption { type = lib.types.enum [ "onboard" "discrete" "hybrid" ]; default = "onboard"; };
+
+        # Graphics settings
+          enable32Bit = lib.mkOption { type = lib.types.bool; default = false; };
+          extraDrivers = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            default = [];
+            description = "Package attribute names for graphics drivers (resolved to both 64-bit and 32-bit)";
+          };
+          extraPackages = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            default = [];
+            description = "Package attribute names for extra system packages";
+          };
+          kernelParams = lib.mkOption { type = lib.types.listOf lib.types.str; default = []; };
+          sessionVariables = lib.mkOption { type = lib.types.attrs; default = {}; };
+
+        # Extra system-level configuration to set when this GPU is active
+          extraSysConfig = lib.mkOption { type = lib.types.attrs; default = {}; };
+        };
+      });
+      default = [];
+    };
+
+    touchpad = lib.mkOption {
       type = lib.types.submodule {
         options = {
           enable = lib.mkOption { type = lib.types.bool; default = false; };
-          model  = lib.mkOption { type = lib.types.nullOr (lib.types.enum [ "rtx3090" ]); default = null; };
+          # TODO: add ability to declaritively set the touchpad sensitivity
+          # TODO: add option for allowing taps on the pad to act as a mouse click
         };
       };
       default = {};
     };
-
-    touchpad = lib.mkOption { type = lib.types.bool; default = false; };
 
     keyboard = lib.mkOption {
       type = lib.types.submodule {
