@@ -35,6 +35,7 @@ let
       hmModules = [
         "${flakeRoot}/modules/userSettings/hm-schema.nix"
         inputs.hyprland.homeManagerModules.default
+        inputs.stylix.homeModules.stylix
       ] ++ hmFromEnv;
 
     in
@@ -54,7 +55,7 @@ let
             {
               home.username = username;
               home.homeDirectory = "/home/${username}";
-              home.stateVersion = hostConfig.stateVersion;
+              home.stateVersion = hostConfig.hmStateVersion or hostConfig.stateVersion;
               home.packages = userData.packages;
               programs.home-manager.enable = true;
             }

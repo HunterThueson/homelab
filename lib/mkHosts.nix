@@ -88,7 +88,9 @@ hostDefinitions: lib.mapAttrs (hostname: hostConfig:
             imports = hmModules;
             userSettings = userData;
             home.stateVersion = hostConfig.hmStateVersion or hostConfig.stateVersion;
-            home.packages = userData.packages;
+            home.packages = userData.packages ++ [
+              inputs.home-manager.packages.${hostConfig.hostSettings.system}.default
+            ];
             programs.home-manager.enable = true;
           }) userDataAttrs;
         };
