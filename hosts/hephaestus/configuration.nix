@@ -50,7 +50,10 @@
     lact                                                    # Linux GPU Control Application
     nvtopPackages.full                                      # htop-like task monitor for GPUs
     openrgb                                                 # open source RGB lighting control
-    xorg.xdpyinfo                                          # get information about X display(s)
+    xorg.xdpyinfo                                           # get information about X display(s)
+    gparted                                                 # GUI partition management
+    parted                                                  # CLI partition management
+    cryptsetup                                              # disk encryption utilities
   ];
 
   services.lact.enable = true;
