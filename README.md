@@ -7,7 +7,7 @@ Personal NixOS flake managing two hosts, multiple users, and a shared pool of sy
 | Host | Type | Role | Hardware |
 |------|------|------|----------|
 | **hephaestus** | Desktop | Workstation, gaming, writing | RTX 3090, ZSA Moonlander, dual monitors |
-| **artemis** | Laptop | Workstation, gaming, writing | Lenovo ThinkPad X1 Carbon Gen 12 |
+| **artemis** | Laptop | Workstation, writing | Lenovo ThinkPad X1 Carbon Gen 12 |
 
 ---
 
@@ -15,12 +15,12 @@ Personal NixOS flake managing two hosts, multiple users, and a shared pool of sy
 
 ### Hub-and-spoke
 
-`flake.nix` is the hub. It defines each host's users and settings, then hands them to two builder functions:
+`flake.nix` is the hub. It defines each host and user as pure data, then hands them to two builder functions:
 
 - **`mkHosts`** builds full NixOS systems (`nixos-rebuild switch`) — system config + Home Manager for all users
 - **`mkHomes`** builds standalone Home Manager configs (`home-manager switch`) — just one user's environment, no root required, much faster iteration
 
-Both consume the same host definitions and the same pool of modules. The difference is scope: `mkHosts` wires everything; `mkHomes` only wires the user-facing parts.
+Both consume the same host and user definitions and the same pool of modules. The difference is scope: `mkHosts` wires everything; `mkHomes` only wires the user-facing parts.
 
 ### The two layers
 
@@ -35,7 +35,15 @@ Some features straddle both layers — Hyprland needs a NixOS module enabled *an
 
 ### Schemas vs backends
 
-The `modules/` directory contains **option schemas only** — it defines *what* can be configured (GPU type, desktop environment, editor preference, etc.) but doesn't *do* anything. The actual implementation lives in `system/` and `environment/`, which read the schema values and configure the system accordingly. This separation means you can read `modules/` to understand the interface and `system/`/`environment/` to understand the implementation.
+The `modules/` directory contains **option schemas only** — it defines *what* can be configured (GPU type, desktop environment, editor preference, user roles, etc.) but doesn't *do* anything. The actual implementation lives in `system/` and `environment/`, which read the schema values and configure the system accordingly. This separation means you can read `modules/` to understand the interface and `system/`/`environment/` to understand the implementation.
+
+### Roles
+
+Users can be assigned roles (`wizard`, `developer`, `gamer`, `filmmaker`, `writer`) which automatically enable relevant features. Role modules live in `modules/userSettings/roles/` and use the dual-export pattern:
+
+- **wizard** — creates the `wizard` group, manages `/etc/nixos` permissions, auto-enables git, adds the `cdn` shell function for quick navigation to `/etc/nixos/`
+- **gamer** — enables Steam runtime, installs game clients (Discord, Bolt Launcher)
+- Other roles are defined in the schema but not yet implemented as modules
 
 ---
 
@@ -43,8 +51,8 @@ The `modules/` directory contains **option schemas only** — it defines *what* 
 
 ```
 .
-├── flake.nix                  # Hub: defines hosts and users with simple syntax
-│                                and wires everything together
+├── flake.nix                  # Hub: defines hosts and users as pure data,
+│                                wires everything together
 ├── lib/
 │   ├── default.nix            # Single import for all lib utilities (mkHosts, mkHomes, presets)
 │   ├── mkHosts.nix            # Builds nixosSystem for each host; detects dual-export modules
@@ -53,30 +61,33 @@ The `modules/` directory contains **option schemas only** — it defines *what* 
 │
 ├── modules/                   # Option schemas only (no implementation)
 │   ├── hostSettings/          # Host-level options (type, role, hardware, display)
-│   └── userSettings/          # User-level options (editor, shell, desktop, packages)
+│   └── userSettings/          # User-level options (editor, shell, desktop, browser, roles)
+│       └── roles/             # Dual-export role modules (wizard, gamer, writer, etc.)
 │
 ├── system/                    # System-level backend implementation via hostSettings + userSettings
 │   ├── boot/                  # Bootloader: GRUB or systemd-boot (via hostSettings.hardware.boot)
 │   ├── display/               # Xorg (via hostSettings.hardware.display), Wayland
-│   ├── hardware/              # GPU, input devices, printers
+│   ├── hardware/              # GPU, input devices, networking, printers
 │   │   ├── gpu/               # Generic multi-GPU support (Nvidia, AMD, Intel)
 │   │   └── inputDevices/      # Keyboard layout, touchpad, ZSA (via hostSettings.hardware)
 │   ├── login-manager/         # greetd or SDDM (via hostSettings.loginManager)
 │   ├── nix/                   # Nix daemon settings, garbage collection
-│   └── users.nix              # Creates user accounts from userSettings
+│   └── users.nix              # Creates user accounts from userSettings (groups, SDDM nickname)
 │
 ├── environment/               # User-level backends (HM modules or dual-export)
+│   ├── browser/               # Firefox (HM module, reads userSettings.browser)
 │   ├── desktop/               # Hyprland (keybinds, window rules, hyprland.conf), Plasma (dual-export)
-│   ├── dev/                   # Development tools: Git (HM module)
-│   ├── editor/                # Emacs + Nixvim (dual-export)
-│   ├── games/                 # Steam, OSRS (dual-export, enabled by "gaming" role)
-│   ├── shell/                 # Bash, Zsh/Fish enabling, Starship (dual-export)
+│   ├── dev/                   # Developer tooling - Git config, GitHub CLI, Python/Rust support, etc.
+│   ├── editor/                # Emacs + Org-Roam, Nixvim (dual-export)
+│   ├── games/                 # Steam, OSRS, Discord (dual-export, gated on "gamer" role)
+│   ├── services/              # Firefly III, OpenVPN (currently stubs)
+│   ├── shell/                 # Bash, Starship prompt (dual-export)
 │   ├── terminal/              # Alacritty (HM module)
-│   └── themes/                # Fonts, Stylix (dual-export)
+│   └── themes/                # Colors, fonts, Stylix, wallpaper management, etc. (dual-export)
 │
-├── users/                     # Plain functions returning user data attrsets
-│   ├── hunter.nix
-│   └── ash.nix
+├── users/                     # Per-user HM module directories
+│   ├── hunter/                # packages.nix, services.nix, future overrides (Firefox, etc.)
+│   └── ash/                   # packages.nix, services.nix
 │
 └── hosts/                     # Per-host hardware config and overrides
     ├── hephaestus/
@@ -89,19 +100,26 @@ The `modules/` directory contains **option schemas only** — it defines *what* 
 
 ### Adding a host
 
-Define it in `flake.nix` with its users and settings:
+Define it in `flake.nix` with its settings:
 
 ```nix
 hostDefs = {
   my-new-host = {
     users = [ "hunter" ];
+    stateVersion = "25.11";
+
     hostSettings = {
       system = "x86_64-linux";
       type = "laptop";
       role = [ "workstation" ];
+      loginManager = "sddm";
       hardware = {
+        boot.loader = "systemd-boot";
         gpu = [ gpuPresets."integrated-intel" ];
-        keyboard.layout = "qwerty";
+        keyboard = {
+          layout = "qwerty";
+          model = keyboardPresets.lenovoThinkPad."built-in";
+        };
       };
     };
   };
@@ -112,22 +130,24 @@ Then create `hosts/my-new-host/` with a `default.nix`, `configuration.nix` (host
 
 ### Adding a user
 
-Create `users/my-user.nix` as a plain function:
+Define the user's identity and preferences in `flake.nix`:
 
 ```nix
-{ pkgs, ... }:
-{
-  description = "My User";
-  fullName = "My Name";
-  email = "me@example.com";
-  shell = "bash";
-  editor.terminal = "vim";
-  desktop.environment = "hyprland";
-  packages = with pkgs; [ firefox spotify ];
-}
+userDefs = {
+  my-user = {
+    nickname    = "My User";
+    fullName    = "My Name";
+    email       = "me@example.com";
+    role        = [ "wizard" "developer" ];
+    shell       = "bash";
+    editor      = { terminal = "vim"; gui = "emacs"; };
+    desktop     = { environment = "plasmax11"; colorScheme = "electro-swing"; };
+    browser.name = "firefox";
+  };
+};
 ```
 
-Then add the username to a host's `users` list in `flake.nix`. The system automatically creates the user account, sets up Home Manager, and applies all environment modules based on the user's preferences.
+Then create `users/my-user/` with a `default.nix` that imports `packages.nix` and `services.nix` for user-specific packages and HM services. Add the username to a host's `users` list in `flake.nix`. The system automatically creates the user account, sets up Home Manager, and applies all environment modules based on the user's preferences and roles.
 
 ### Two rebuild paths
 
@@ -143,16 +163,21 @@ home-manager switch --flake .#hunter@hephaestus
 
 ## What's Next
 
-- Test on real hardware (`nixos-rebuild switch`) and fix runtime issues
-- Update artemis `hardware.nix` with real UUIDs and deploy
-- Derive xorg config algorithmically from monitor schema (DPI, MetaModes, virtualScreen)
-- Make Hyprland monitor/env config dynamic instead of hardcoded in hyprland.conf
-- Flesh out Wayland display config (gate on desktop environment type)
-- Implement `roleSettings` and `groupSettings` for role-based defaults
-- Set up `sops-nix` for secrets management
-- Build a custom desktop environment with Quickshell
-- Create a live ISO for deploying new hosts
+- Implement easy-to-use shell wrapper functions for `nixos-rebuild` and `home-manager switch`
+- Set up `sops-nix` for secrets management (replace hashed passwords in flake.nix)
 - Automate garbage collection, flake updates, and file backups
+- Implement host type modules (desktop, laptop, server) with type-specific defaults
+- Implement remaining role modules (gamer, developer, filmmaker, writer) with role-specific defaults
+- Create a live ISO for deploying new hosts
+- Update artemis `hardware.nix` with real UUIDs and deploy to laptop
+- Create & deploy a new server host for use as a personal NAS/web server
+- Declaratively configure Firefox preferences - default values for all users & user-specific overrides
+- Wire remaining environment/ modules to userSettings (remaining shell options, desktop fine-tuning)
+- Wire remaining system/ modules to hostSettings (inputDevices, display, login-manager refinements)
+- Gate the `cdd` shell function behind whether a user has Emacs enabled (currently always goes to `~/docs`)
+- Add a new `cdj` shell function for teleporting to the Org Mode dailies directory (default: `~/docs/journal`)
+- Make monitor config dynamic instead of hardcoded in hyprland.conf, add monitor presets
+- Build a custom desktop environment with Quickshell
 
 ---
 
@@ -164,24 +189,26 @@ This configuration has been my daily driver and learning project since **July 20
 
 **Early 2026** — Added Emacs configuration (Evil mode, Org-Roam, Magit, capture templates), printer support, hardware monitoring tools (LACT, nvtop), development toolchains (Rust, Python), and continued refining the system. Also began planning a structural rework to support multi-host deployment and faster iteration — the configuration had grown organically and needed a more principled architecture. All of this work was done manually.
 
-**April-May 2026** — Executed the structural rework on the `structural-rework` branch. This is where AI was used — see disclosure below.
+**April-May 2026** — Executed the structural rework on the `structural-rework` branch, then merged it back into `master`. This is where AI was used — see disclosure below.
 
 ### AI Usage Disclosure
 
-The structural rework (the `rework(...)` commits) was done with assistance from Claude, an AI assistant by Anthropic. I want to be transparent about what that means and doesn't mean.
+The structural rework (the `rework(...)` and `merge(...)` commits) was done with assistance from Claude, an AI assistant by Anthropic. I want to be transparent about what that means and doesn't mean.
 
 **What I did:**
 - Designed the hub-and-spoke architecture and the separation between `modules/`, `system/`, and `environment/`
-- Made all architectural decisions: the dual-export pattern (my preference over splitting config across directories), the perceptual boundary principle for `environment/` vs `system/`, standalone Home Manager separation, and the coupled+fast-path rebuild strategy
+- Made all architectural decisions: the dual-export pattern (my preference over splitting config across directories), the perceptual boundary principle for `environment/` vs `system/`, standalone Home Manager separation, the coupled+fast-path rebuild strategy, per-user HM module directories, and user identity data in flake.nix
 - Defined the option schemas and decided what should be configurable vs hardcoded
+- Designed the role system and decided the wizard role's responsibilities (group permissions, auto-git, `cdn` function)
 - Reviewed all generated code and directed revisions
 - Built the entire pre-rework codebase (4 years of commits) without AI assistance
 - Continued adding features on `master` during the rework period (Emacs overhaul, printer support, hardware tools) without AI assistance
 
 **What the AI did:**
 - Implemented the architectural decisions I made — writing the Nix module code for `mkHosts`, `mkHomes`, dual-export modules, schema definitions, and system backends
-- Helped debug evaluation errors during the rework (unfree package resolution, NixOS vs HM option conflicts, module detection logic)
-- Helped me understand Nix patterns I wasn't familiar with (like `attrsOf submodule`, `lib.mkMerge`, and the mechanics of standalone Home Manager)
+- Helped debug evaluation errors during the rework (unfree package resolution, NixOS vs HM option conflicts, module detection logic, infinite recursion in role-based defaults)
+- Helped me understand Nix patterns I wasn't familiar with (like `attrsOf submodule`, `lib.mkMerge`, `lib.mkDefault`, and the mechanics of standalone Home Manager)
+- Assisted with the merge back into `master` (conflict resolution, preserving master-only features)
 
 **Why I used AI for this:**
 I'm learning NixOS with the goal of working with it professionally. The rework involved restructuring dozens of interdependent files simultaneously — the kind of change where a single syntax error in one file breaks evaluation of everything, and where the feedback loop of "change, rebuild, debug, repeat" across that many files would have taken weeks of evenings. I used AI to accelerate the implementation so I could focus on understanding the design patterns and architectural tradeoffs rather than fighting Nix syntax for every line. Now that the structure is in place, future development will be manual — the whole point of this rework was to make the codebase easier to understand and extend, and I intend to do that myself.
