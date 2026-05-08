@@ -53,6 +53,7 @@
       hephaestus = {
         users = [ "hunter" "ash" ];
         stateVersion = "21.11";
+        hmStateVersion = "25.11";
 
         hostSettings = {
           system = "x86_64-linux";

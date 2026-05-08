@@ -31,7 +31,7 @@
     colorScheme = "electro-swing";
   };
 
-  browser = "firefox";
+  browser.name = "firefox";
 
   packages = with pkgs; [
 

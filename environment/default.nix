@@ -10,6 +10,7 @@
 # Directories with multiple modules return a list (via import);
 # directories whose default.nix IS the module are listed as paths.
 
+(import ./browser) ++           # [ firefox ] — HM modules
 (import ./desktop) ++           # [ hyprland, plasma ] — dual-export
 (import ./terminal) ++          # [ alacritty ] — HM modules
 (import ./themes) ++            # [ fonts, stylix ] — dual-export

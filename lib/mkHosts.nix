@@ -64,10 +64,11 @@ hostDefinitions: lib.mapAttrs (hostname: hostConfig:
       inputs.stylix.nixosModules.stylix
       inputs.hyprland.nixosModules.default
 
-    # Schemas, system backend, host-specific config
+    # Schemas, system backend, host-specific config, user groups
       "${flakeRoot}/modules"
       "${flakeRoot}/system"
       "${flakeRoot}/hosts/${hostname}"
+      "${flakeRoot}/users/groups"
 
     # NixOS parts from dual-export environment modules
     ] ++ nixosFromEnv ++ [
@@ -86,7 +87,7 @@ hostDefinitions: lib.mapAttrs (hostname: hostConfig:
           users = lib.mapAttrs (username: userData: {
             imports = hmModules;
             userSettings = userData;
-            home.stateVersion = hostConfig.stateVersion;
+            home.stateVersion = hostConfig.hmStateVersion or hostConfig.stateVersion;
             home.packages = userData.packages;
             programs.home-manager.enable = true;
           }) userDataAttrs;

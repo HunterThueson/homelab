@@ -63,7 +63,43 @@
     };
   };
 
-  browser = lib.mkOption { type = lib.types.enum [ "firefox" ]; default = "firefox"; };
+  browser = lib.mkOption {
+    type = lib.types.submodule {
+      options = {
+        name = lib.mkOption {
+          type        = lib.types.enum [ "firefox" ];
+          default     = "firefox";
+          description = "Which browser to install and configure.";
+        };
+        extensions = lib.mkOption {
+          type        = lib.types.listOf lib.types.str;
+          default     = [];
+          description = "List of browser extension/add-on IDs to install.";
+        };
+        profiles = lib.mkOption {
+          type        = lib.types.attrs;
+          default     = {};
+          description = "Browser profiles";
+        };
+        policies = lib.mkOption {
+          type        = lib.types.attrs;
+          default     = {};
+          description = "Policies";
+        };
+        settings = lib.mkOption {
+          type        = lib.types.attrs;
+          default     = {};
+          description = "Browser-specific settings (about:config for Firefox, etc.)";
+        };
+        extraConfig = lib.mkOption {
+          type        = lib.types.attrs;
+          default     = {};
+          description = "Extra HM programs.<browser> config to merge in.";
+        };
+      };
+    };
+    default = {};
+  };
 
   packages = lib.mkOption { type = lib.types.listOf lib.types.package; default = []; };
 
