@@ -76,10 +76,7 @@
     python313Packages.types-beautifulsoup4                  # Typing stubs for beautifulsoup4
 
     # Rust
-    cargo                                                   # Downloads dependencies and builds your Rust projects
-    rustup                                                  # the Rust toolchain installer
-    rustc                                                   # the Rust language itself
-    rustfmt                                                 # a tool for formatting Rust code according to style guidelines
+    rustup                                                  # the Rust toolchain installer (manages cargo, rustc, rustfmt)
 
     # Build tools
     binutils                                                # dependency for `make`
