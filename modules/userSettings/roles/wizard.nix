@@ -1,4 +1,4 @@
-# ./users/role/wizard.nix
+# ./modules/userSettings/roles/wizard.nix
 
 #-----------#
 #  Wizards  #

@@ -25,7 +25,7 @@ let
 
       # Import module definition lists (each may contain plain or dual-export modules)
       envModules   = import "${flakeRoot}/environment";
-      roleModules  = import "${flakeRoot}/users/roles";
+      roleModules  = import "${flakeRoot}/modules/userSettings/roles";
       allModules   = envModules ++ roleModules;
 
       # Extract HM modules from all files (dual-export → .home, plain → as-is)

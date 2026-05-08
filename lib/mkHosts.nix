@@ -33,7 +33,7 @@ lib.mapAttrs (hostname: hostConfig:
 
     # Import module definition lists (each may contain plain or dual-export modules)
     envModules   = import "${flakeRoot}/environment";
-    roleModules  = import "${flakeRoot}/users/roles";
+    roleModules  = import "${flakeRoot}/modules/userSettings/roles";
     allModules   = envModules ++ roleModules;
 
     # Extract NixOS modules from dual-export files (skip HM-only modules)
