@@ -4,6 +4,7 @@
 
 {
   imports = [
-    ./optionsBridge.nix
+    ./userSettings
+    ./hostSettings
   ];
 }

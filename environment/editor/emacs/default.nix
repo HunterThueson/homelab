@@ -1,30 +1,41 @@
 # environment/editor/emacs/default.nix
 
-# Home-manager configuration for Emacs
+#-----------------------#
+#  Emacs Configuration  #
+#-----------------------#
 
-{ config, pkgs, lib, ... }:
+# Pure HM module — works in both NixOS-managed and standalone HM.
+# Enables Emacs when userSettings.editor.gui == "emacs".
+# System-level enabling (services.emacs) is in environment/editor/default.nix.
 
-{
-  programs.emacs = {
-    enable = true;
-    package = pkgs.emacs;
+{ config, lib, pkgs, ... }:
+
+let
+  user = config.userSettings;
+
+in {
+  config = lib.mkIf (user.editor.gui == "emacs") {
+    programs.emacs = {
+      enable = true;
+      package = pkgs.emacs;
+    };
+
+    # Start emacs daemon with graphical session
+    services.emacs.enable = true;
+
+    # Native dependencies for org-roam and other packages
+    home.packages = with pkgs; [
+      sqlite        # org-roam database
+      ripgrep       # faster searching (used by various packages)
+      graphviz      # org-roam graph visualization
+      fd            # faster find (projectile, etc.)
+    ];
+
+    # Emacs config files
+    xdg.configFile."emacs/init.el".source = ./emacs.el;
+    xdg.configFile."emacs/org-roam-templates.el".source = ./org-roam-templates.el;
+
+    # Ensure org-roam directory exists
+    home.file."docs/.keep".text = "";
   };
-
-  # Start emacs daemon with graphical session
-  services.emacs.enable = true;
-
-  # Native dependencies for org-roam and other packages
-  home.packages = with pkgs; [
-    sqlite        # org-roam database
-    ripgrep       # faster searching (used by various packages)
-    graphviz      # org-roam graph visualization
-    fd            # faster find (projectile, etc.)
-  ];
-
-  # Emacs 27+ uses ~/.config/emacs/ if ~/.emacs.d doesn't exist
-  xdg.configFile."emacs/init.el".source = ./emacs.el;
-  xdg.configFile."emacs/org-roam-templates.el".source = ./org-roam-templates.el;
-
-  # Ensure org-roam directory exists
-  home.file."docs/.keep".text = "";
 }
