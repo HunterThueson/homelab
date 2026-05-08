@@ -25,6 +25,7 @@ in {
     hashedPassword = user.hashedPassword;
     shell = shellMap.${user.shell} or pkgs.bash;
     extraGroups = lib.optionals user.administrator [ "wheel" "networkmanager" ]
+                  ++ lib.optionals (builtins.elem "wizard" user.role) [ "wizard" ]
                   ++ user.extraGroups;
   } // user.extraSysConfig) cfg;
 }

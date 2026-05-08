@@ -11,7 +11,7 @@
 
 {
   name        = lib.mkOption { type = lib.types.str; default = ""; };
-  description = lib.mkOption { type = lib.types.str; };
+  nickname    = lib.mkOption { type = lib.types.str; };
   fullName    = lib.mkOption { type = lib.types.str; };
   email       = lib.mkOption { type = lib.types.nullOr lib.types.str; default = null; };
 

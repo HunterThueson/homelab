@@ -23,20 +23,24 @@ let
         config.allowUnfree = true;
       };
 
-      # Import environment module definitions
-      envModules = import "${flakeRoot}/environment";
+      # Import module definition lists (each may contain plain or dual-export modules)
+      envModules   = import "${flakeRoot}/environment";
+      roleModules  = import "${flakeRoot}/users/roles";
+      allModules   = envModules ++ roleModules;
 
-      # Extract HM modules (dual-export → .home, plain → as-is)
-      hmFromEnv = map (m:
+      # Extract HM modules from all files (dual-export → .home, plain → as-is)
+      hmFromAll = lib.concatMap (m:
         let mod = import m;
-        in if builtins.isAttrs mod && mod ? home then mod.home else m
-      ) envModules;
+        in if builtins.isAttrs mod && mod ? home then [ mod.home ]
+           else if builtins.isFunction mod then [ m ]
+           else []
+      ) allModules;
 
       hmModules = [
         "${flakeRoot}/modules/userSettings/hm-schema.nix"
         inputs.hyprland.homeManagerModules.default
         inputs.stylix.homeModules.stylix
-      ] ++ hmFromEnv;
+      ] ++ hmFromAll;
 
     in
     lib.listToAttrs (map (username:

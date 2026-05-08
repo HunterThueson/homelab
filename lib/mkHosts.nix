@@ -31,26 +31,30 @@ hostDefinitions: lib.mapAttrs (hostname: hostConfig:
       lib.nameValuePair username (import "${flakeRoot}/users/${username}.nix" { inherit pkgs; })
     ) hostConfig.users);
 
-    # Import environment module definitions
-    envModules = import "${flakeRoot}/environment";
+    # Import module definition lists (each may contain plain or dual-export modules)
+    envModules   = import "${flakeRoot}/environment";
+    roleModules  = import "${flakeRoot}/users/roles";
+    allModules   = envModules ++ roleModules;
 
     # Extract NixOS modules from dual-export files (skip HM-only modules)
-    nixosFromEnv = lib.concatMap (m:
+    nixosFromDual = lib.concatMap (m:
       let mod = import m;
       in if builtins.isAttrs mod && mod ? nixos then [ mod.nixos ] else []
-    ) envModules;
+    ) allModules;
 
     # Extract HM modules from all files (dual-export → .home, plain → as-is)
-    hmFromEnv = map (m:
+    hmFromAll = lib.concatMap (m:
       let mod = import m;
-      in if builtins.isAttrs mod && mod ? home then mod.home else m
-    ) envModules;
+      in if builtins.isAttrs mod && mod ? home then [ mod.home ]
+         else if builtins.isFunction mod then [ m ]
+         else []
+    ) allModules;
 
     # HM modules: schema + flake HM modules + extracted home modules
     hmModules = [
       "${flakeRoot}/modules/userSettings/hm-schema.nix"
       inputs.hyprland.homeManagerModules.default
-    ] ++ hmFromEnv;
+    ] ++ hmFromAll;
 
   in
   inputs.nixpkgs.lib.nixosSystem {
@@ -64,14 +68,13 @@ hostDefinitions: lib.mapAttrs (hostname: hostConfig:
       inputs.stylix.nixosModules.stylix
       inputs.hyprland.nixosModules.default
 
-    # Schemas, system backend, host-specific config, user groups
+    # Schemas, system backend, host-specific config
       "${flakeRoot}/modules"
       "${flakeRoot}/system"
       "${flakeRoot}/hosts/${hostname}"
-      "${flakeRoot}/users/groups"
 
-    # NixOS parts from dual-export environment modules
-    ] ++ nixosFromEnv ++ [
+    # NixOS parts from dual-export modules (environment + groups)
+    ] ++ nixosFromDual ++ [
 
     # Set hostSettings, userSettings, and stateVersion (NixOS-level)
       { config.hostSettings = hostConfig.hostSettings; }
@@ -83,6 +86,7 @@ hostDefinitions: lib.mapAttrs (hostname: hostConfig:
         home-manager = {
           useGlobalPkgs = true;
           useUserPackages = true;
+          backupFileExtension = "bak";
           extraSpecialArgs = { inherit inputs flakeRoot; };
           users = lib.mapAttrs (username: userData: {
             imports = hmModules;

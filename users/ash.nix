@@ -10,15 +10,16 @@
 { pkgs, ... }:
 
 {
-  description = "Ash";
-  fullName = "Ash";
+  nickname = "Ash";
+  fullName = "Ashley Ellison";
+  email    = "ash.ellison@proton.me";
 
   administrator = true;
-  extraGroups = [ "wizard" ];
+  role = [ "wizard" "developer" "writer" ];
   hashedPassword = "$6$rounds=9999999$FThVWftaj3S0ShgC$C2HOgr7dst7/rnTy2NhLt5aiOOifhZ4cvg1XZ513VBMvxNg3fUGdH/ajdlnSHSKoxSpfoN84EqD3f6cOSL2/y.";
+  extraGroups = [];
 
   shell = "bash";
-  enableGit = false;
 
   desktop = {
     environment = "plasmax11";
@@ -44,7 +45,6 @@
     speedcrunch                                             # calculator
 
     # Terminal utilities
-    gh                                                      # GitHub CLI
     tldr                                                    # quickly summarize command usage
     killall                                                 # kill programs with ease
     wget                                                    # download files from the command line
@@ -82,10 +82,6 @@
   # Misc dependencies
     binutils                                                # dependency for `make`
     xorriso                                                 # dependency for `make iso`
-
-  # Version control
-    git                                                     # version control utility
-    gh                                                      # GitHub CLI
 
   # X11 tools
     xorg.xdpyinfo                                           # get information about X display(s)
