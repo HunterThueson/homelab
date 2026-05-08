@@ -48,7 +48,10 @@
     inherit (import ./lib { inherit inputs lib flakeRoot; })
       mkHosts mkHomes keyboardPresets monitorPresets gpuPresets;
 
-    # Shared user definitions — identity and preferences (no pkgs)
+    #--------------------#
+    #  User Definitions  #
+    #--------------------#
+
     userDefs = {
       hunter = {
         nickname       = "Hunter";
@@ -76,7 +79,10 @@
       };
     };
 
-    # Shared host definitions — consumed by both mkHosts and mkHomes
+    #--------------------#
+    #  Host Definitions  #
+    #--------------------#
+
     hostDefs = {
       hephaestus = {
         users = [ "hunter" "ash" ];
@@ -103,7 +109,6 @@
         };
       };
 
-      # for comparison:
       artemis = {
         users = [ "hunter" ];
         stateVersion = "25.11";
@@ -115,7 +120,6 @@
           loginManager = "sddm";
           hardware = {
             boot.loader = "systemd-boot";
-            touchpad.enable = true;                   # assigning the role "laptop" should do this by default, this just shows it's overrideable
             bluetooth = true;
             keyboard = {
               layout = "qwerty";
