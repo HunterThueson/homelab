@@ -58,7 +58,7 @@
         hostSettings = {
           system = "x86_64-linux";
           type = "desktop";
-          role = [ "workstation" "gaming" "writing" ];
+          role = [ "workstation" "writing" ];
           loginManager = "sddm";
           hardware = {
             boot = {
@@ -83,7 +83,7 @@
         hostSettings = {
           system = "x86_64-linux";
           type = "laptop";
-          role = [ "workstation" "gaming" "writing" ];
+          role = [ "workstation" "writing" ];
           loginManager = "sddm";
           hardware = {
             boot.loader = "systemd-boot";

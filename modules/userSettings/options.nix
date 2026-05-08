@@ -17,6 +17,16 @@
 
   administrator  = lib.mkOption { type = lib.types.bool; default = false; };
   extraGroups    = lib.mkOption { type = lib.types.listOf lib.types.str; default = []; };
+  role = lib.mkOption {
+    type = lib.types.listOf (lib.types.enum [
+      "wizard"      # NixOS system administrator / power user
+      "developer"   # software development tools and workflows
+      "gamer"       # gaming-related user config
+      "filmmaker"   # video editing, media production
+      "writer"      # writing tools (org-roam, typst, etc.)
+    ]);
+    default = [];
+  };
   hashedPassword = lib.mkOption { type = lib.types.str; default = ""; };
 
   # TODO: switch from hashedPassword to hashedPasswordFile once we enable `sops-nix` integration

@@ -12,7 +12,7 @@
       options = {
         system = lib.mkOption { type = lib.types.enum [ "x86_64-linux" "aarch64-linux" ]; };
         type   = lib.mkOption { type = lib.types.enum [ "desktop" "laptop" "server" ]; };
-        role   = lib.mkOption { type = lib.types.listOf (lib.types.enum [ "workstation" "gaming" "writing" "media" "server" ]); };
+        role   = lib.mkOption { type = lib.types.listOf (lib.types.enum [ "workstation" "writing" "media" "server" ]); };
 
         loginManager = lib.mkOption {
           type = lib.types.enum [ "greetd" "sddm" ];

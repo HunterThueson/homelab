@@ -4,14 +4,15 @@
 #  Steam  #
 #---------#
 
-# Enables Steam and related settings on hosts with the "gaming" role.
+# Enables the Steam runtime when any user on the host has the "gamer" role.
 
 { config, lib, ... }:
 
 let
-  hasGamingRole = builtins.elem "gaming" config.hostSettings.role;
+  users = lib.attrValues config.userSettings;
+  anyGamer = lib.any (u: builtins.elem "gamer" u.role) users;
 in {
-  config = lib.mkIf hasGamingRole {
+  config = lib.mkIf anyGamer {
     programs.steam = {
       enable = true;
       remotePlay.openFirewall = true;

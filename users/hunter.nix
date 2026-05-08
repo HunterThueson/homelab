@@ -16,6 +16,7 @@
 
   administrator = true;
   extraGroups = [ "wizard" ];
+  role = [ "wizard" "developer" "gamer" "writer" ];
   hashedPassword = "$6$rounds=500000$ilzR8OoFwfvEOzfO$iJ9QJzjIINDW8ON33jTIIxe/B2XcB3MnCR7/qaA6NC2Sw6efZvX2HJ4l3vif8/ggmAv/4GutT8Xt4/wAgLW0H.";
 
   editor = {
@@ -39,7 +40,6 @@
     spotify                                                 # music
     mailspring                                              # email client
       libsecret                                             # dependency for mailspring
-    discord                                                 # chat client
     gimp-with-plugins                                       # GNU Image Manipulation Program
       gimpPlugins.gmic                                      # GIMP plugin for the G'MIC image processing framework
     mpv                                                     # video playback

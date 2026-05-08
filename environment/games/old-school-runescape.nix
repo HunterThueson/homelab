@@ -4,23 +4,19 @@
 #  Old School Runescape  #
 #------------------------#
 
-# Installs Bolt Launcher (alternative OSRS client) and dependencies.
-# Enabled on hosts with the "gaming" role.
+# System-level dependencies for OSRS (Java runtime).
+# The client itself (bolt-launcher) is installed per-user via the "gamer" role.
 
 { config, pkgs, lib, ... }:
 
 let
-  hasGamingRole = builtins.elem "gaming" config.hostSettings.role;
+  users = lib.attrValues config.userSettings;
+  anyGamer = lib.any (u: builtins.elem "gamer" u.role) users;
 in {
-  config = lib.mkIf hasGamingRole {
+  config = lib.mkIf anyGamer {
     programs.java = {
       enable = true;
       package = pkgs.jdk17;
     };
-
-    environment.systemPackages = with pkgs; [
-      bolt-launcher                                           # alternative launcher for Runescape
-      wineWow64Packages.full                                  # Wine compatibility layer (bolt-launcher dep)
-    ];
   };
 }

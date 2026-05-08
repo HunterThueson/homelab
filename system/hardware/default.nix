@@ -6,6 +6,7 @@
   imports = [
     ./gpu
     ./inputDevices
+    ./networking.nix
     ./printers.nix
   ];
 }
