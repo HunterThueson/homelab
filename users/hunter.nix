@@ -108,5 +108,14 @@
   ];
 
   extraSysConfig = {};
-  extraHomeConfig = {};
+
+  extraHomeConfig = {
+    services = {
+      unclutter = {
+        enable = true;
+        extraOptions = [ "timeout 5" "ignore-scrolling" ];
+      };
+    };
+  };
+
 }
