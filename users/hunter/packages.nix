@@ -1,39 +1,9 @@
-# users/hunter.nix
-
-#------------------#
-#  Hunter Thueson  #
-#------------------#
-
-# Plain function returning user data attrset.
-# Consumed by both mkHosts.nix (NixOS) and mkHomes.nix (standalone HM).
+# users/hunter/packages.nix
 
 { pkgs, ... }:
 
 {
-  nickname = "Hunter";
-  fullName = "Hunter Thueson";
-  email    = "hunter.thueson@gmail.com";
-
-  administrator = true;
-  role = [ "wizard" "developer" "gamer" "writer" ];
-  hashedPassword = "$6$rounds=500000$ilzR8OoFwfvEOzfO$iJ9QJzjIINDW8ON33jTIIxe/B2XcB3MnCR7/qaA6NC2Sw6efZvX2HJ4l3vif8/ggmAv/4GutT8Xt4/wAgLW0H.";
-  extraGroups = [];
-
-  editor = {
-    terminal = "vim";
-    gui = "emacs";
-  };
-
-  shell = "bash";
-
-  desktop = {
-    environment = "plasmax11";
-    colorScheme = "electro-swing";
-  };
-
-  browser.name = "firefox";
-
-  packages = with pkgs; [
+  home.packages = with pkgs; [
 
     # Media & entertainment
     spotify                                                 # music
@@ -54,7 +24,7 @@
     wget                                                    # download files from the command line
     unzip                                                   # extract / unzip file archives
 
-  # System info/monitoring
+    # System info/monitoring
     neofetch                                                # display system info
     gtop                                                    # graphical `top`
     btop                                                    # another fancy `top`
@@ -80,36 +50,18 @@
     binutils                                                # dependency for `make`
     xorriso                                                 # dependency for `make iso`
 
-  # Networking
+    # Networking
     openvpn                                                 # connect to VPN
 
-  # Misc dependencies
-    binutils                                                # dependency for `make`
-    xorriso                                                 # dependency for `make iso`
-
-  # X11 tools
+    # X11 tools
     xorg.xdpyinfo                                           # get information about X display(s)
 
-  # Terminal
+    # Terminal
     alacritty                                               # GPU-accelerated terminal emulator
     starship                                                # blazing fast, highly customizable prompt for any shell
-    tldr                                                    # quickly summarize command usage
     eza                                                     # modern replacement for `ls` written in Rust
     ripgrep                                                 # modern replacement for `grep` written in Rust
-    killall                                                 # kill programs with ease
     fd                                                      # modern replacement for `find` written in Rust
 
   ];
-
-  extraSysConfig = {};
-
-  extraHomeConfig = {
-    services = {
-      unclutter = {
-        enable = true;
-        extraOptions = [ "timeout 5" "ignore-scrolling" ];
-      };
-    };
-  };
-
 }

@@ -11,7 +11,7 @@
 
 {
   name        = lib.mkOption { type = lib.types.str; default = ""; };
-  nickname    = lib.mkOption { type = lib.types.str; };
+  nickname    = lib.mkOption { type = lib.types.str; default = ""; };
   fullName    = lib.mkOption { type = lib.types.str; };
   email       = lib.mkOption { type = lib.types.nullOr lib.types.str; default = null; };
 
@@ -111,18 +111,4 @@
     default = {};
   };
 
-  packages = lib.mkOption { type = lib.types.listOf lib.types.package; default = []; };
-
-  services = lib.mkOption {
-    type = lib.types.submodule {
-      options = {
-        vpn      = lib.mkOption { type = lib.types.str; default = "openvpn"; };
-        database = lib.mkOption { type = lib.types.str; default = "ngnix"; };
-      };
-    };
-    default = {};
-  };
-
-  extraHomeConfig   = lib.mkOption { type = lib.types.attrs; default = {}; };
-  extraSysConfig    = lib.mkOption { type = lib.types.attrs; default = {}; };
 }

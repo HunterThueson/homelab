@@ -4,31 +4,31 @@
 #  mkHosts  #
 #-----------#
 
-# Map over hosts defined in flake.nix outputs and create nixosSystems for each
-# based on the value of [host].hostSettings; create all users assigned to given
-# [host] from those listed in [host].users.
+# Map over hosts defined in flake.nix and create nixosSystems for each.
 #
-# User data is loaded as plain attrsets from users/*.nix and assigned to both
-# config.userSettings (NixOS-level, for system/users.nix and system-programs)
-# and home-manager.users.*.userSettings (HM-level, for environment/ modules).
+# User identity/preferences come from flake.nix userDefs (pure data).
+# User-specific HM modules come from users/<username>/ directories.
+# Environment modules come from environment/ (shared across all users).
 #
-# Environment modules can be either:
+# Modules can be either:
 #   - A plain HM module (function) → injected into HM only
 #   - A dual-export attrset { nixos = <module>; home = <module>; } → nixos part
 #     added as a NixOS module, home part injected into HM
 
 { inputs, lib, flakeRoot, ... }:
 
-hostDefinitions: lib.mapAttrs (hostname: hostConfig:
+{ hosts, users }:
+
+lib.mapAttrs (hostname: hostConfig:
   let
     pkgs = import inputs.nixpkgs {
       system = hostConfig.hostSettings.system;
       config.allowUnfree = true;
     };
 
-    # Load user data as plain attrsets (users/*.nix are functions, not modules)
+    # Look up user data from flake.nix userDefs
     userDataAttrs = lib.listToAttrs (map (username:
-      lib.nameValuePair username (import "${flakeRoot}/users/${username}.nix" { inherit pkgs; })
+      lib.nameValuePair username users.${username}
     ) hostConfig.users);
 
     # Import module definition lists (each may contain plain or dual-export modules)
@@ -73,7 +73,7 @@ hostDefinitions: lib.mapAttrs (hostname: hostConfig:
       "${flakeRoot}/system"
       "${flakeRoot}/hosts/${hostname}"
 
-    # NixOS parts from dual-export modules (environment + groups)
+    # NixOS parts from dual-export modules (environment + roles)
     ] ++ nixosFromDual ++ [
 
     # Set hostSettings, userSettings, and stateVersion (NixOS-level)
@@ -89,10 +89,12 @@ hostDefinitions: lib.mapAttrs (hostname: hostConfig:
           backupFileExtension = "bak";
           extraSpecialArgs = { inherit inputs flakeRoot; };
           users = lib.mapAttrs (username: userData: {
-            imports = hmModules;
+            imports = hmModules ++ [
+              "${flakeRoot}/users/${username}"
+            ];
             userSettings = userData;
             home.stateVersion = hostConfig.hmStateVersion or hostConfig.stateVersion;
-            home.packages = userData.packages ++ [
+            home.packages = [
               inputs.home-manager.packages.${hostConfig.hostSettings.system}.default
             ];
             programs.home-manager.enable = true;
@@ -101,4 +103,4 @@ hostDefinitions: lib.mapAttrs (hostname: hostConfig:
       }
     ];
   }
-) hostDefinitions
+) hosts

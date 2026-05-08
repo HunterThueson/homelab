@@ -13,7 +13,7 @@
 
 { inputs, lib, flakeRoot, ... }:
 
-hostDefinitions:
+{ hosts, users }:
 
 let
   perHostUsers = lib.concatMapAttrs (hostname: hostConfig:
@@ -45,13 +45,15 @@ let
     in
     lib.listToAttrs (map (username:
       let
-        userData = import "${flakeRoot}/users/${username}.nix" { inherit pkgs; };
+        userData = users.${username};
       in
       lib.nameValuePair "${username}@${hostname}" (
         inputs.home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           extraSpecialArgs = { inherit inputs flakeRoot; };
           modules = hmModules ++ [
+            "${flakeRoot}/users/${username}"
+
             # Set this user's settings
             { config.userSettings = userData; }
 
@@ -60,13 +62,12 @@ let
               home.username = username;
               home.homeDirectory = "/home/${username}";
               home.stateVersion = hostConfig.hmStateVersion or hostConfig.stateVersion;
-              home.packages = userData.packages;
               programs.home-manager.enable = true;
             }
           ];
         }
       )
     ) hostConfig.users)
-  ) hostDefinitions;
+  ) hosts;
 
 in perHostUsers

@@ -1,34 +1,9 @@
-# users/ash.nix
-
-#-------#
-#  Ash  #
-#-------#
-
-# Plain function returning user data attrset.
-# Consumed by both mkHosts.nix (NixOS) and mkHomes.nix (standalone HM).
+# users/ash/packages.nix
 
 { pkgs, ... }:
 
 {
-  nickname = "Ash";
-  fullName = "Ashley Ellison";
-  email    = "ash.ellison@proton.me";
-
-  administrator = true;
-  role = [ "wizard" "developer" "writer" ];
-  hashedPassword = "$6$rounds=9999999$FThVWftaj3S0ShgC$C2HOgr7dst7/rnTy2NhLt5aiOOifhZ4cvg1XZ513VBMvxNg3fUGdH/ajdlnSHSKoxSpfoN84EqD3f6cOSL2/y.";
-  extraGroups = [];
-
-  shell = "bash";
-
-  desktop = {
-    environment = "plasmax11";
-    colorScheme = "electro-swing";
-  };
-
-  browser.name = "firefox";
-
-  packages = with pkgs; [
+  home.packages = with pkgs; [
 
     # Media & entertainment
     spotify                                                 # music
@@ -50,7 +25,7 @@
     wget                                                    # download files from the command line
     unzip                                                   # extract / unzip file archives
 
-  # System info/monitoring
+    # System info/monitoring
     neofetch                                                # display system info
     gtop                                                    # graphical `top`
     btop                                                    # another fancy `top`
@@ -76,36 +51,18 @@
     binutils                                                # dependency for `make`
     xorriso                                                 # dependency for `make iso`
 
-  # Networking
+    # Networking
     openvpn                                                 # connect to VPN
 
-  # Misc dependencies
-    binutils                                                # dependency for `make`
-    xorriso                                                 # dependency for `make iso`
-
-  # X11 tools
+    # X11 tools
     xorg.xdpyinfo                                           # get information about X display(s)
 
-  # Terminal
+    # Terminal
     alacritty                                               # GPU-accelerated terminal emulator
     starship                                                # blazing fast, highly customizable prompt for any shell
-    tldr                                                    # quickly summarize command usage
     eza                                                     # modern replacement for `ls` written in Rust
     ripgrep                                                 # modern replacement for `grep` written in Rust
-    killall                                                 # kill programs with ease
     fd                                                      # modern replacement for `find` written in Rust
 
-   ];
-
-  extraSysConfig = {};
-
-  extraHomeConfig = {
-    services = {
-      unclutter = {
-        enable = true;
-        extraOptions = [ "timeout 1" "ignore-scrolling" ];
-      };
-    };
-  };
-
+  ];
 }
