@@ -9,6 +9,7 @@
     ./hardware
     ./login-manager
     ./nix
+    ./security
     ./users.nix
   ];
 }

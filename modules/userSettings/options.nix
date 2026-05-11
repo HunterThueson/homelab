@@ -27,10 +27,8 @@
     ]);
     default = [];
   };
-  hashedPassword = lib.mkOption { type = lib.types.str; default = ""; };
 
-  # TODO: switch from hashedPassword to hashedPasswordFile once we enable `sops-nix` integration
-  # hashedPasswordFile  = lib.mkOption { type = lib.types.path; };
+  hashedPasswordFile  = lib.mkOption { type = lib.types.nullOr lib.types.path; default = null; };
 
   terminal  = lib.mkOption { type = lib.types.enum [ "alacritty" ]; default = "alacritty"; };
   shell     = lib.mkOption { type = lib.types.enum [ "bash" "fish" "zsh" ]; default = "bash"; };

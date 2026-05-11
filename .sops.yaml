@@ -1,0 +1,26 @@
+# .sops.yaml
+
+keys:
+  # Personal key
+  - &ash age1568u8l9ln607nfpzzczqvfgt20u725heqslwgcrgp8zpnkrrk38s8030zz
+  - &hunter age1v94xdzc9x93s3rx755newce0976ralh8mslr7efpqvmdetyw3q9q0y2jc0
+
+  # Host keys
+  - &hephaestus age1pff7gwffym3d7hwlyxcv4jxh7g02ezgssennu7h78p8c4yjsqdmsy6x346
+
+creation_rules:
+  # Secrets shared across all hosts
+  - path_regex: ^system/security/secrets/secrets\.yaml$
+    key_groups:
+      - age:
+          - *ash
+          - *hunter
+          - *hephaestus
+
+  # Host-specific secrets
+  - path_regex: ^system/security/secrets/hephaestus\.yaml$
+    key_groups:
+      - age:
+          - *ash
+          - *hunter
+          - *hephaestus

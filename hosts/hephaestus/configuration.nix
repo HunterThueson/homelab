@@ -29,6 +29,10 @@
     useDHCP = false;
   };
 
+  services.openssh = {
+    enable = true;
+  };
+
   #-----------------------------------#
   #  Internationalisation properties  #
   #-----------------------------------#

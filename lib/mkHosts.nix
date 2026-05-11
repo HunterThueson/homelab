@@ -63,6 +63,7 @@ lib.mapAttrs (hostname: hostConfig:
     modules = [
 
     # Flake inputs as NixOS modules
+      inputs.sops-nix.nixosModules.sops
       inputs.home-manager.nixosModules.home-manager
       inputs.nixvim.nixosModules.nixvim
       inputs.stylix.nixosModules.stylix

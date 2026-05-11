@@ -27,7 +27,7 @@ in {
   config.users.users = lib.mapAttrs (username: user: {
     isNormalUser = true;
     description = if user.nickname != "" then user.nickname else capitalize username;
-    hashedPassword = user.hashedPassword;
+    hashedPasswordFile = config.sops.secrets."${username}-hashed-password".path;
     shell = shellMap.${user.shell} or pkgs.bash;
     extraGroups = lib.optionals user.administrator [ "wheel" "networkmanager" ]
                   ++ lib.optionals (builtins.elem "wizard" user.role) [ "wizard" ]

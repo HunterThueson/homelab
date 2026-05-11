@@ -16,6 +16,11 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
 
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -40,7 +45,7 @@
   #  Outputs  #
   #-----------#
 
-  outputs = inputs @ { self, nixpkgs, home-manager, nixvim, stylix, ... }:
+  outputs = inputs @ { self, nixpkgs, sops-nix, home-manager, nixvim, stylix, ... }:
 
   let
     inherit (nixpkgs) lib;
@@ -54,28 +59,26 @@
 
     userDefs = {
       hunter = {
-        nickname       = "Hunter";
-        fullName       = "Hunter Thueson";
-        email          = "hunter.thueson@gmail.com";
-        administrator  = true;
-        role           = [ "wizard" "developer" "gamer" "writer" ];
-        hashedPassword = "$6$rounds=500000$ilzR8OoFwfvEOzfO$iJ9QJzjIINDW8ON33jTIIxe/B2XcB3MnCR7/qaA6NC2Sw6efZvX2HJ4l3vif8/ggmAv/4GutT8Xt4/wAgLW0H.";
-        shell          = "bash";
-        editor         = { terminal = "vim"; gui = "emacs"; };
-        desktop        = { environment = "plasmax11"; colorScheme = "electro-swing"; };
-        browser.name   = "firefox";
+        nickname      = "Hunter";
+        fullName      = "Hunter Thueson";
+        email         = "hunter.thueson@gmail.com";
+        administrator = true;
+        role          = [ "wizard" "developer" "gamer" "writer" ];
+        shell         = "bash";
+        editor        = { terminal = "vim"; gui = "emacs"; };
+        desktop       = { environment = "plasmax11"; colorScheme = "electro-swing"; };
+        browser.name  = "firefox";
       };
 
       ash = {
-        nickname       = "Ash";
-        fullName       = "Ashley Ellison";
-        email          = "ash.ellison@proton.me";
-        administrator  = true;
-        role           = [ "wizard" "developer" "writer" ];
-        hashedPassword = "$6$rounds=9999999$FThVWftaj3S0ShgC$C2HOgr7dst7/rnTy2NhLt5aiOOifhZ4cvg1XZ513VBMvxNg3fUGdH/ajdlnSHSKoxSpfoN84EqD3f6cOSL2/y.";
-        shell          = "bash";
-        desktop        = { environment = "plasmax11"; colorScheme = "electro-swing"; };
-        browser.name   = "firefox";
+        nickname      = "Ash";
+        fullName      = "Ashley Ellison";
+        email         = "ash.ellison@proton.me";
+        administrator = true;
+        role          = [ "wizard" "developer" "writer" ];
+        shell         = "bash";
+        desktop       = { environment = "plasmax11"; colorScheme = "electro-swing"; };
+        browser.name  = "firefox";
       };
     };
 
