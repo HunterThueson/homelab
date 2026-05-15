@@ -36,7 +36,7 @@ hl.monitor({
 })
 
 hl.monitor({
-    output   = "HDMI-A-1",
+    output   = "HDMI-A-5",
     mode     = "2560x1440@60",
     position = "auto-right",
     scale    = "1",
@@ -69,7 +69,7 @@ local fileManager = "dolphin"
 -- Wallpapers are picked randomly from ~/images/wallpapers/<orientation>/
 local monitor_wallpapers = {
     { output = "DP-5",     orientation = "landscape" },
-    { output = "HDMI-A-1", orientation = "landscape" },
+    { output = "HDMI-A-5", orientation = "landscape" },
 }
 
 hl.on("hyprland.start", function()
@@ -78,13 +78,17 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("dunst")
     hl.exec_cmd("nm-applet --indicator")
 
-    -- Set a random wallpaper per monitor after swww-daemon initializes
+    -- Build a single shell script that waits for swww-daemon, then sets
+    -- a random wallpaper on each monitor sequentially.
+    local cmds = "while ! swww query 2>/dev/null; do sleep 0.2; done"
     for _, mon in ipairs(monitor_wallpapers) do
-        hl.exec_cmd([[sleep 1 && swww img --outputs ]] .. mon.output
-            .. [[ --transition-type fade --transition-duration 2 ]]
-            .. [["$(find ~/images/wallpapers/]] .. mon.orientation
-            .. [[ -type f \( -name '*.png' -o -name '*.jpg' -o -name '*.jpeg' -o -name '*.webp' \) | shuf -n 1)"]])
+        cmds = cmds
+            .. " && swww img --outputs " .. mon.output
+            .. " --transition-type fade --transition-duration 2"
+            .. " \"$(find ~/images/wallpapers/" .. mon.orientation
+            .. " -type f \\( -name '*.png' -o -name '*.jpg' -o -name '*.jpeg' -o -name '*.webp' \\) | shuf -n 1)\""
     end
+    hl.exec_cmd(cmds)
 end)
 
 

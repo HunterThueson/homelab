@@ -34,7 +34,6 @@
         libnotify
         networkmanagerapplet
         playerctl
-        rofi
         slurp
         swww
         waybar
@@ -79,6 +78,12 @@
 
       # Lua config -- Hyprland loads this and ignores the HM-generated .conf
       xdg.configFile."hypr/hyprland.lua".source = ./hyprland.lua;
+
+      # Rofi — managed via HM so Stylix can theme it
+      programs.rofi = {
+        enable = true;
+        package = pkgs.rofi;
+      };
 
       programs.hyprlock.enable = true;
       programs.hyprshot = {
