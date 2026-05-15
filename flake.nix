@@ -66,7 +66,7 @@
         role          = [ "wizard" "developer" "gamer" "writer" ];
         shell         = "bash";
         editor        = { terminal = "vim"; gui = "emacs"; };
-        desktop       = { environment = "plasmax11"; colorScheme = "electro-swing"; };
+        desktop       = { environment = "hyprland"; colorScheme = "electro-swing"; };
         browser.name  = "firefox";
       };
 

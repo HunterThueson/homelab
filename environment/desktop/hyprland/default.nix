@@ -4,12 +4,12 @@
 #  Hyprland Window Manager Configuration  #
 #-----------------------------------------#
 
-# The user perceives keybinds, window rules, and the compositor itself.
-# System-level enabling and HM-level config live together via dual-export.
+# Dual-export module: NixOS enables Hyprland system-wide,
+# HM configures per-user session with Lua config.
 #
-# hyprland.conf contains the main compositor config (keybinds, animations,
-# window rules, monitor layout). It's loaded via extraConfig so it can be
-# edited as a plain .conf file without touching Nix.
+# The HM Hyprland module only generates Hyprlang (.conf).
+# Hyprland 0.55+ loads hyprland.lua first and ignores .conf,
+# so we place our Lua config via xdg.configFile.
 
 {
   nixos = { config, pkgs, lib, inputs, ... }:
@@ -28,30 +28,22 @@
       };
 
       environment.systemPackages = with pkgs; [
-        wlr-protocols
-        kdePackages.wayland-protocols
+        brightnessctl
         dunst
-        kitty
+        grim
         libnotify
         networkmanagerapplet
+        playerctl
         rofi
+        slurp
         swww
         waybar
+        wl-clipboard
+        wlr-protocols
+        kdePackages.wayland-protocols
       ];
 
-      programs.uwsm = {
-        enable = false;
-        waylandCompositors = {
-          hyprland = {
-            prettyName = "Hyprland";
-            comment = "Hyprland compositor managed by UWSM";
-            binPath = "/run/current-system/sw/bin/Hyprland";
-            extraArgs = [ ];
-          };
-        };
-      };
-
-      # Enable Cachix so we don't have to build hyprland from source
+      # Cachix so we don't have to build Hyprland from source
       nix.settings = {
         substituters = ["https://hyprland.cachix.org"];
         trusted-substituters = ["https://hyprland.cachix.org"];
@@ -81,20 +73,62 @@
         };
         package = null;       # Use the NixOS module's package
         portalPackage = null;
-
-        settings = {
-          "$mod" = "SUPER";
-        };
-
-        extraConfig = builtins.readFile ./hyprland.conf;
+        # Suppress HM warning about empty config -- actual config is in hyprland.lua
+        extraConfig = "# Config managed via hyprland.lua";
       };
 
-      wayland.systemd.target = "hyprland-session.target";
+      # Lua config -- Hyprland loads this and ignores the HM-generated .conf
+      xdg.configFile."hypr/hyprland.lua".source = ./hyprland.lua;
 
       programs.hyprlock.enable = true;
       programs.hyprshot = {
         enable = true;
         saveLocation = "$HOME/images/screenshots";
+      };
+
+      # Waybar (temporary -- will be replaced by Quickshell)
+      programs.waybar = {
+        enable = true;
+        settings = [{
+          layer = "top";
+          position = "top";
+          height = 25;
+          modules-left = [ "hyprland/workspaces" ];
+          modules-center = [ "clock" ];
+          modules-right = [ "pulseaudio" "network" "cpu" "memory" "tray" ];
+          "hyprland/workspaces" = { format = "{id}"; };
+          clock = { format = "{:%a %b %d  %I:%M %p}"; };
+          pulseaudio = {
+            format = "{icon} {volume}%";
+            format-icons.default = ["" "" ""];
+          };
+          network = {
+            format-wifi = " {essid}";
+            format-ethernet = " {ifname}";
+            format-disconnected = "Disconnected";
+          };
+          cpu.format = " {usage}%";
+          memory.format = " {}%";
+          tray = { spacing = 10; };
+        }];
+      };
+
+      # Dunst (temporary -- will be replaced by Quickshell)
+      # Colors handled by Stylix -- only structural config here
+      services.dunst = {
+        enable = true;
+        settings = {
+          global = {
+            width = 300;
+            height = 100;
+            offset = "30x50";
+            origin = "top-right";
+            corner_radius = 10;
+          };
+          urgency_low.timeout = 5;
+          urgency_normal.timeout = 10;
+          urgency_critical.timeout = 0;
+        };
       };
 
       home.packages = [
@@ -103,13 +137,3 @@
     };
   };
 }
-
-# TODO: The Big List
-#
-# Hyprland ships bare-bones. Things still needed:
-#   - Notification daemon (swaync, tiramisu)
-#   - XDG Desktop Portal
-#   - Authentication Agent (hyprpolkitagent)
-#   - Qt Wayland Support (qt5-wayland, qt6-wayland)
-#   - Pipewire (for screen sharing)
-#   - Status bar (Waybar, ashell, Quickshell)
