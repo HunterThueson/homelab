@@ -264,7 +264,6 @@ This configuration has been my daily driver and learning project since **July 20
 - Finish setting up Emacs keybinds and Org Roam functionality
 - Create a project wiki for this repository - write extensive & thorough documentation
 - Implement easy-to-use shell wrapper functions for `nixos-rebuild` and `home-manager switch`
-- Implement host type modules (desktop, laptop, server) with type-specific defaults
 - Implement remaining role modules (gamer, developer, filmmaker, writer) with role-specific defaults
 - Create a live ISO for deploying new hosts
 - Update artemis `hardware.nix` with real UUIDs and deploy to laptop
@@ -273,7 +272,7 @@ This configuration has been my daily driver and learning project since **July 20
 - Declaratively configure Firefox preferences - default values for all users & user-specific overrides
 - Wire remaining environment/ modules to userSettings (remaining shell options, desktop fine-tuning)
 - Wire remaining system/ modules to hostSettings (inputDevices, display, login-manager refinements)
-- Make monitor config dynamic instead of hardcoded in hyprland.conf, add monitor presets
+- Make monitor config dynamic instead of hardcoded in hyprland.lua, add monitor presets
 - Build a custom desktop environment with Quickshell
 
 ---

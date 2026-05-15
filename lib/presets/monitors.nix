@@ -34,8 +34,8 @@
 
   lenovoThinkPad = {
     "built-in" = {
-      name = "Lenovo ThinkPad X1 Carbon Gen 13 built-in screen";
-      resolution = lib.mkDefault "";
+      name = "Lenovo ThinkPad X1 Carbon Gen 12 built-in screen";
+      resolution = lib.mkDefault "2880x1800@120";
       orientation = lib.mkDefault "landscape";
       placement = lib.mkDefault "primary";
     };

@@ -40,13 +40,6 @@
   i18n.defaultLocale = "en_US.UTF-8";
   console.useXkbConfig = true;
 
-  #------------#
-  #  Services  #
-  #------------#
-
-  services.printing.enable = true;
-  hardware.bluetooth.enable = true;
-
   #---------#
   #  Steam  #
   #---------#
@@ -62,5 +55,4 @@
   #  Environment  #
   #---------------#
 
-  environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
 }

@@ -23,8 +23,8 @@ let
   xkb = xkbMapping.${kb.layout};
 in {
   services.xserver = {
-    enable = true;
-    exportConfiguration = true;
+    enable = lib.mkDefault true;
+    exportConfiguration = lib.mkDefault true;
     xkb = {
       layout = xkb.layout;
     } // lib.optionalAttrs (xkb.variant != "") {
@@ -34,15 +34,15 @@ in {
 
   # Touchpad support — enabled by hostSettings or automatically for laptops
   services.libinput = {
-    enable = true;
+    enable = lib.mkDefault true;
     mouse.accelProfile = "flat";                              # Disable mouse acceleration
     touchpad = lib.mkIf (cfg.hardware.touchpad.enable || cfg.type == "laptop") {
       naturalScrolling = false;
     };
   };
 
-  services.ratbagd.enable = true;                             # Daemon for configuring gaming mice
-  services.upower.enable = true;                              # Power management support
+  services.ratbagd.enable = lib.mkDefault true;                # Daemon for configuring gaming mice
+  services.upower.enable = lib.mkDefault true;                # Power management support
 
   environment.systemPackages = with pkgs; [
     piper                                                     # Mouse configuration software

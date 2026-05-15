@@ -40,12 +40,6 @@
   i18n.defaultLocale = "en_US.UTF-8";
   console.useXkbConfig = true;
 
-  #--------------#
-  #  Bluetooth   #
-  #--------------#
-
-  hardware.bluetooth.enable = true;
-
   #---------------------#
   #  Hardware Packages  #
   #---------------------#
@@ -66,5 +60,4 @@
   #  Environment  #
   #---------------#
 
-  environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
 }

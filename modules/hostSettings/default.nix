@@ -11,5 +11,6 @@
 {
   imports = [
     ./schema.nix
+    ./types
   ];
 }

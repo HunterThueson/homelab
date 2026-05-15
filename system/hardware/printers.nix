@@ -6,11 +6,11 @@
 
 # Shared printer configuration for all hosts.
 
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   services.printing = {
-    enable = true;
+    enable = lib.mkDefault true;
     drivers = with pkgs; [
       cups-filters                                          # Additional backends, filters, and other software
       cups-browsed                                          # Daemon for browsing Bonjour broadcasts of shared printers
@@ -22,7 +22,7 @@
 
   # Enable auto-discovery of network printers
   services.avahi = {
-    enable = true;
+    enable = lib.mkDefault true;
     nssmdns4 = true;                                        # mDNS NSS plugin for IPv4
     openFirewall = true;                                    # Open firewall for UDP port 5353
   };
