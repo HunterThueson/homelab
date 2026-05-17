@@ -122,8 +122,10 @@
           role = [ "workstation" "writing" ];
           loginManager = "sddm";
           hardware = {
-            boot.loader = "systemd-boot";
-            bluetooth = true;
+            boot = {
+              loader = "systemd-boot";
+              device = "/dev/disk/by-uuid/F28D-FD6D";
+            };
             keyboard = {
               layout = "qwerty";
               model = keyboardPresets.lenovoThinkPad."built-in";

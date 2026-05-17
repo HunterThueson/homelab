@@ -7,6 +7,7 @@ keys:
 
   # Host keys
   - &hephaestus age1pff7gwffym3d7hwlyxcv4jxh7g02ezgssennu7h78p8c4yjsqdmsy6x346
+  - &artemis age1zdrkd8utqhu7fd7hd94ew3wfq5fz2p4shep6rwwq7ce6hyjmduvqpcrxf8
 
 creation_rules:
   # Secrets shared across all hosts
@@ -16,6 +17,7 @@ creation_rules:
           - *ash
           - *hunter
           - *hephaestus
+          - *artemis
 
   # Host-specific secrets
   - path_regex: ^system/security/secrets/hephaestus\.yaml$
@@ -24,3 +26,10 @@ creation_rules:
           - *ash
           - *hunter
           - *hephaestus
+
+  - path_regex: ^system/security/secrets/artemis\.yaml$
+    key_groups:
+      - age:
+          - *ash
+          - *hunter
+          - *artemis

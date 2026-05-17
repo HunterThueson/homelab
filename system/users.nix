@@ -24,6 +24,7 @@ let
        else lib.toUpper (builtins.substring 0 1 s) + builtins.substring 1 (len - 1) s;
 
 in {
+  config.users.mutableUsers = false;
   config.users.users = lib.mapAttrs (username: user: {
     isNormalUser = true;
     description = if user.nickname != "" then user.nickname else capitalize username;

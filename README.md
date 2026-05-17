@@ -257,6 +257,8 @@ This configuration has been my daily driver and learning project since **July 20
 
 **May 8, 2026 - present** — From this point forward, ongoing work will be implemented manually. AI is still used to help me understand difficult concepts and to review my work.
 
+**May 2026** — Implemented `sops-nix` support; created custom live graphical ISO for easier installation on new hosts; officially added new host `artemis`.
+
 ---
 
 ## What's Next
@@ -265,8 +267,6 @@ This configuration has been my daily driver and learning project since **July 20
 - Create a project wiki for this repository - write extensive & thorough documentation
 - Implement easy-to-use shell wrapper functions for `nixos-rebuild` and `home-manager switch`
 - Implement remaining role modules (gamer, developer, filmmaker, writer) with role-specific defaults
-- Create a live ISO for deploying new hosts
-- Update artemis `hardware.nix` with real UUIDs and deploy to laptop
 - Create & deploy a new server host for use as a personal NAS/web server
 - Automate garbage collection, flake updates, and file backups
 - Declaratively configure Firefox preferences - default values for all users & user-specific overrides
