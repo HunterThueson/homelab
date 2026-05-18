@@ -100,7 +100,7 @@
           height = 25;
           modules-left = [ "hyprland/workspaces" ];
           modules-center = [ "clock" ];
-          modules-right = [ "pulseaudio" "network" "cpu" "memory" "tray" ];
+          modules-right = [ "pulseaudio" "network" "cpu" "memory" "tray" "battery" ];
           "hyprland/workspaces" = { format = "{id}"; };
           clock = { format = "{:%a %b %d  %I:%M %p}"; };
           pulseaudio = {
@@ -115,6 +115,10 @@
           cpu.format = " {usage}%";
           memory.format = " {}%";
           tray = { spacing = 10; };
+          battery = {
+            format = "{icon} {capacity}%";
+            format-icons.default = ["" "" ""];
+          };
         }];
       };
 
