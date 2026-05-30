@@ -63,11 +63,21 @@ in {
       };
 
       bashrcExtra = ''
+        # cd wrapper for quick home teleports
+        cd () {
+          if [[ $# -eq 0 ]]; then
+            command cd $HOME
+            clear
+            eza -DG --icons=auto --group-directories-first
+          else
+            command cd "$@"
+          fi
+        }
+
         # Teleport to ~/docs (org-roam directory)
         cdd () {
           cd $HOME/docs
           clear
-          sleep 0.01
           eza -DG --icons=auto --group-directories-first
         }
 
