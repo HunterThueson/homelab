@@ -1,8 +1,8 @@
 # environment/dev/git.nix
 
-#---------#
-#  Git    #
-#---------#
+#-------#
+#  Git  #
+#-------#
 
 # Configures git for users with enableGit = true or git enabled by a role.
 # Settings apply whenever programs.git.enable is true, regardless of source.
@@ -32,6 +32,21 @@ in {
           ""
           "!${pkgs.gh}/bin/gh auth git-credential"
         ];
+      };
+
+      programs.bash.bashrcExtra = ''
+        # gh wrapper to make listing issues easier
+        gh () {
+          if [[ $@ == "issue list" ]]; then
+            command gh issue list -L 100
+          else
+            command gh "$@"
+          fi
+        }
+      '';
+
+      programs.bash.shellAliases = {
+        ghs = "git status";
       };
     })
   ];

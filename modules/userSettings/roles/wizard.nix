@@ -34,6 +34,10 @@
           eza --icons=auto --group-directories-first
         }
       '';
+
+      home.sessionPath = [
+        "/etc/nixos/scripts"
+      ];
     };
   };
 }

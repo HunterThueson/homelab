@@ -48,9 +48,6 @@ in {
         lsd = "eza -D --color=auto --icons=auto";
         lst = "eza -T --color=auto --icons=auto --group-directories-last";
 
-        # Navigation
-        ghs = "git status";
-
         # Drop-in replacements
         find = "fd";
 
@@ -74,13 +71,6 @@ in {
           fi
         }
 
-        # Teleport to ~/docs (org-roam directory)
-        cdd () {
-          cd $HOME/docs
-          clear
-          eza -DG --icons=auto --group-directories-first
-        }
-
         # Teleport to config directory
         cdc () {
           cd $XDG_CONFIG_HOME
@@ -88,22 +78,17 @@ in {
           eza -DG --icons=auto --group-directories-first
         }
 
-        # gh wrapper to make listing issues easier
-        gh () {
-          if [[ $@ == "issue list" ]]; then
-            command gh issue list -L 100
-          else
-            command gh "$@"
-          fi
+        # Teleport to ~/docs (org-roam directory)
+        cdd () {
+          cd $HOME/docs
+          clear
+          eza -DG --icons=auto --group-directories-first
         }
       '';
     };
 
     home.sessionPath = [
       "/usr/local/bin/"
-      "/etc/nixos/scripts"
-      "$HOME/bin/"
-      "$HOME/.cargo/bin/"
     ];
   };
 }

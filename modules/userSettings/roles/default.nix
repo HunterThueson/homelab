@@ -5,4 +5,5 @@
 
 [
   ./wizard.nix
+  ./developer.nix
 ]

@@ -38,18 +38,6 @@
     realesrgan-ncnn-vulkan                                  # AI image upscaler (Real-ESRGAN)
     upscayl-ncnn                                            # AI image upscaler
 
-    # Python
-    python314                                               # Python release 3.14
-    python313Packages.beautifulsoup4                        # Python web scraping utility
-    python313Packages.types-beautifulsoup4                  # Typing stubs for beautifulsoup4
-
-    # Rust
-    rustup                                                  # the Rust toolchain installer (manages cargo, rustc, rustfmt)
-
-    # Build tools
-    binutils                                                # dependency for `make`
-    xorriso                                                 # dependency for `make iso`
-
     # Networking
     openvpn                                                 # connect to VPN
 
