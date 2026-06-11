@@ -12,6 +12,7 @@
 
 (import ./browser) ++           # [ firefox ] — HM modules
 (import ./desktop) ++           # [ hyprland, plasma ] — dual-export
+(import ./services) ++          # [ privacy ] — dual-export
 (import ./terminal) ++          # [ alacritty ] — HM modules
 (import ./themes) ++            # [ fonts, stylix ] — dual-export
 [

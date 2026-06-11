@@ -68,6 +68,12 @@
         editor        = { terminal = "vim"; gui = "emacs"; };
         desktop       = { environment = "hyprland"; colorScheme = "electro-swing"; };
         browser.name  = "firefox";
+
+        networking.privacy = {
+          vpn     = { enable = true; autostart = false; server = "USA-Denver"; };
+          torrent = { enable = true; autostart = true;  portForward = false; };
+          tor     = { enable = true; autostart = false; };
+        };
       };
 
       ash = {
@@ -79,6 +85,12 @@
         shell         = "bash";
         desktop       = { environment = "plasmax11"; colorScheme = "electro-swing"; };
         browser.name  = "firefox";
+
+        networking.privacy = {
+          vpn     = { enable = true; autostart = true;  server = "USA-Denver"; };
+          torrent = { enable = true; autostart = true;  portForward = false; };
+          tor     = { enable = true; autostart = false; };
+        };
       };
     };
 

@@ -42,6 +42,17 @@ let
         inputs.stylix.homeModules.stylix
       ] ++ hmFromAll;
 
+      # Users on this host whose vpn.autostart is true. Same shape as in
+      # mkHosts.nix — keeps the standalone HM path consistent with the
+      # NixOS-integrated path so vpn-veto behavior is identical regardless
+      # of how HM is built.
+      hostUserData = lib.listToAttrs (map (username:
+        lib.nameValuePair username users.${username}
+      ) hostConfig.users);
+      vpnAutostartUsers = lib.attrNames (lib.filterAttrs
+        (_: u: u.networking.privacy.vpn.autostart or false)
+        hostUserData);
+
     in
     lib.listToAttrs (map (username:
       let
@@ -50,7 +61,7 @@ let
       lib.nameValuePair "${username}@${hostname}" (
         inputs.home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          extraSpecialArgs = { inherit inputs flakeRoot; };
+          extraSpecialArgs = { inherit inputs flakeRoot vpnAutostartUsers; };
           modules = hmModules ++ [
             "${flakeRoot}/users/${username}"
 

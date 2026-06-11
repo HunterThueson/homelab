@@ -31,6 +31,14 @@ lib.mapAttrs (hostname: hostConfig:
       lib.nameValuePair username users.${username}
     ) hostConfig.users);
 
+    # Users on this host whose vpn.autostart is true. Computed at eval time
+    # from raw userDefs (defaults not yet applied, so use `or` fallbacks).
+    # Consumed by the per-user vpn-veto script to detect "is another VPN
+    # user logged in?" at login time.
+    vpnAutostartUsers = lib.attrNames (lib.filterAttrs
+      (_: u: u.networking.privacy.vpn.autostart or false)
+      userDataAttrs);
+
     # Import module definition lists (each may contain plain or dual-export modules)
     envModules   = import "${flakeRoot}/environment";
     roleModules  = import "${flakeRoot}/modules/userSettings/roles";
@@ -88,7 +96,7 @@ lib.mapAttrs (hostname: hostConfig:
           useGlobalPkgs = true;
           useUserPackages = true;
           backupFileExtension = "bak";
-          extraSpecialArgs = { inherit inputs flakeRoot; };
+          extraSpecialArgs = { inherit inputs flakeRoot vpnAutostartUsers; };
           users = lib.mapAttrs (username: userData: {
             imports = hmModules ++ [
               "${flakeRoot}/users/${username}"

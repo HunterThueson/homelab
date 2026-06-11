@@ -8,6 +8,7 @@
     ./display
     ./hardware
     ./login-manager
+    ./networking
     ./nix
     ./security
     ./users.nix

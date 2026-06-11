@@ -18,6 +18,13 @@
       "ash-hashed-password" = {
         neededForUsers = true;
       };
+
+      # IVPN OpenVPN auth: two lines (account ID, then any non-empty password).
+      # Add via: sops system/security/secrets/secrets.yaml
+      "ivpn-auth" = {
+        mode  = "0400";
+        owner = "root";
+      };
     };
   };
 }
