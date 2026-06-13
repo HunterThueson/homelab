@@ -20,6 +20,9 @@
       pulse.enable = true;
     };
 
+    # Enable WiFi
+    networking.networkmanager.enable = lib.mkDefault true;
+
     # Power management
     services.thermald.enable = lib.mkDefault true;
     services.tlp = {

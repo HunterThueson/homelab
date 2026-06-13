@@ -25,8 +25,6 @@
 
   networking = {
     hostName = "hephaestus";
-    networkmanager.enable = true;
-    useDHCP = false;
   };
 
   services.openssh = {

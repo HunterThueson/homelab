@@ -9,5 +9,6 @@
     ./ivpn-host.nix
     ./wrappers.nix
     ./tor.nix
+    ./wifi.nix
   ];
 }

@@ -10,8 +10,14 @@
     # Use the host's SSH key to decrypt
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
-    # Declare which secrets to decrypt
+    #-----------#
+    #  Secrets  #
+    #-----------#
+
     secrets = {
+
+      # -- User Passwords -- #
+
       "hunter-hashed-password" = {
         neededForUsers = true;
       };
@@ -19,12 +25,21 @@
         neededForUsers = true;
       };
 
+      # -- Wifi Passwords -- #
+
+      "wifi-auth" = {
+        mode  = "0400";
+        owner = "root";
+      };
+
+      # -- Miscellaneous -- #
+
       # IVPN OpenVPN auth: two lines (account ID, then any non-empty password).
-      # Add via: sops system/security/secrets/secrets.yaml
       "ivpn-auth" = {
         mode  = "0400";
         owner = "root";
       };
+
     };
   };
 }
