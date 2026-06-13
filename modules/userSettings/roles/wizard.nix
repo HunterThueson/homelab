@@ -19,7 +19,7 @@
     '';
   };
 
-  home = { config, lib, ... }:
+  home = { config, lib, pkgs, ... }:
   let
     isWizard = builtins.elem "wizard" config.userSettings.role;
   in {
@@ -37,6 +37,12 @@
 
       home.sessionPath = [
         "/etc/nixos/scripts"
+      ];
+
+      home.packages = with pkgs; [
+        sops
+        age
+        ssh-to-age
       ];
     };
   };
