@@ -4,8 +4,8 @@
 #  Hephaestus  #     AKA     Hunter's Home Desktop PC
 #--------------#
 
-# Host-specific configuration. Module imports now come from system/ and environment/
-# via mkHosts.nix. This file only contains config unique to this host.
+# Host-specific configuration. Module imports come from system/ and environment/
+# via flake-wizard's conjure. This file only contains config unique to this host.
 
 { config, pkgs, lib, ... }:
 

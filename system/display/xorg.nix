@@ -6,7 +6,7 @@
 
 # Configures Xorg from hostSettings.hardware.display.
 # Monitor-specific layout (DPI, MetaModes, xrandrHeads) comes from display
-# presets defined in lib/presets/monitors.nix.
+# presets defined in flake-wizard (spellbook.presets.monitors).
 
 { config, pkgs, lib, ... }:
 

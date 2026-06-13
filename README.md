@@ -2,6 +2,8 @@
 
 Personal NixOS flake managing two hosts, multiple users, and a shared pool of system and environment modules. Designed around a hub-and-spoke architecture where hosts and users are declared in simple syntax and the backend enables opinionated defaults automatically; per-user and per-host overrides are supported for edge cases where the default settings should not apply.
 
+The generic machinery behind this config lives in [flake-wizard](https://github.com/HunterThueson/flake-wizard), a standalone framework extracted from this repository. This repo contains only the data (hosts, users) and the modules specific to my fleet; flake-wizard's `conjure` turns them into complete systems.
+
 ## Hosts
 
 | Host | Type | Role | Hardware |
@@ -30,12 +32,12 @@ Personal NixOS flake managing two hosts, multiple users, and a shared pool of sy
 
 ### Hub-and-spoke
 
-`flake.nix` is the hub. It defines each host and user as pure data, then hands them to two builder functions:
+`flake.nix` is the hub. It defines each host and user as pure data, then hands them to flake-wizard's `conjure`, which produces both build paths from the same definitions:
 
-- **`mkHosts`** builds full NixOS systems (`nixos-rebuild switch`) — system config + Home Manager for all users
-- **`mkHomes`** builds standalone Home Manager configs (`home-manager switch`) — just one user's environment, no root required, much faster iteration
+- **`nixosConfigurations`** — full NixOS systems (`nixos-rebuild switch`): system config + Home Manager for all users
+- **`homeConfigurations`** — standalone Home Manager configs (`home-manager switch --flake .#user@host`): just one user's environment, no root required, much faster iteration
 
-Both consume the same host and user definitions and the same pool of modules. The difference is scope: `mkHosts` wires everything; `mkHomes` only wires the user-facing parts.
+Both consume the same host and user definitions and the same pool of modules, so they always agree. `flake.nix` also declares the local vocabulary: which host types, host roles, and user roles exist, and which module file (if any) provides each one's defaults.
 
 ### The two layers
 
@@ -50,11 +52,11 @@ Some features straddle both layers — Hyprland needs a NixOS module enabled *an
 
 ### Schemas vs backends
 
-The `modules/` directory contains **option schemas only** — it defines *what* can be configured (GPU type, desktop environment, editor preference, user roles, etc.) but doesn't *do* anything. The actual implementation lives in `system/` and `environment/`, which read the schema values and configure the system accordingly. This separation means you can read `modules/` to understand the interface and `system/`/`environment/` to understand the implementation.
+flake-wizard provides a small core schema (`hostSettings.system/type/role`, `userSettings.name/fullName/email/administrator/...`); the `modules/` directory **extends it** with this fleet's options (GPU type, desktop environment, editor preference, etc.) but doesn't *do* anything. The actual implementation lives in `system/` and `environment/`, which read the schema values and configure the system accordingly. This separation means you can read `modules/` to understand the interface and `system/`/`environment/` to understand the implementation.
 
-### Roles
+### Types and roles
 
-Users can be assigned roles (`wizard`, `developer`, `gamer`, `filmmaker`, `writer`) which automatically enable relevant features. Role modules live in `modules/userSettings/roles/` and use the dual-export pattern:
+Hosts have a type (`desktop`, `laptop`, `server`); type default modules live in `hosts/types/`. Users can be assigned roles (`wizard`, `developer`, `gamer`, `filmmaker`, `writer`) which automatically enable relevant features. Role modules live in `users/roles/` and use the dual-export pattern. conjure imports type and role modules only where they apply, so they don't need any `lib.mkIf` guards of their own:
 
 - **wizard** — creates the `wizard` group, manages `/etc/nixos` permissions, auto-enables git, adds the `cdn` shell function for quick navigation to `/etc/nixos/`
 - **gamer** — enables Steam runtime, installs game clients (Discord, Bolt Launcher)
@@ -67,18 +69,12 @@ Users can be assigned roles (`wizard`, `developer`, `gamer`, `filmmaker`, `write
 
 ```
 .
-├── flake.nix                  # Hub: defines hosts and users as pure data,
-│                                wires everything together
-├── lib/
-│   ├── default.nix            # Single import for all lib utilities (mkHosts, mkHomes, presets)
-│   ├── mkHosts.nix            # Builds nixosSystem for each host; detects dual-export modules
-│   ├── mkHomes.nix            # Builds standalone homeConfigurations for fast HM iteration
-│   └── presets/               # Hardware preset attrsets (GPUs, keyboards, monitor layouts)
+├── flake.nix                  # Hub: defines hosts and users as pure data, declares the
+│                                type/role vocabulary, hands everything to flake-wizard's conjure
 │
-├── modules/                   # Option schemas only (no implementation)
-│   ├── hostSettings/          # Host-level options (type, role, hardware, display)
-│   └── userSettings/          # User-level options (editor, shell, desktop, browser, roles)
-│       └── roles/             # Dual-export role modules (wizard, gamer, writer, etc.)
+├── modules/                   # Schema extensions only (no implementation)
+│   ├── hostSettings/          # Extra hostSettings options (loginManager, hardware, networking)
+│   └── userSettings/          # Extra userSettings options (editor, shell, desktop, browser)
 │
 ├── system/                    # System-level backend implementation via hostSettings + userSettings
 │   ├── boot/                  # Bootloader: GRUB or systemd-boot (via hostSettings.hardware.boot)
@@ -103,13 +99,17 @@ Users can be assigned roles (`wizard`, `developer`, `gamer`, `filmmaker`, `write
 │   └── themes/                # Colors, fonts, Stylix, wallpaper management, etc. (dual-export)
 │
 ├── users/                     # Per-user HM module directories
+│   ├── roles/                 # Dual-export role default modules (wizard, developer)
 │   ├── hunter/                # packages.nix, services.nix, future overrides (Firefox, etc.)
 │   └── ash/                   # packages.nix, services.nix
 │
 └── hosts/                     # Per-host hardware config and overrides
+    ├── types/                 # Host-type default modules (desktop, laptop, server)
     ├── hephaestus/
     └── artemis/
 ```
+
+Hardware presets (GPUs, keyboards, monitor layouts) come from flake-wizard's `spellbook.presets` and are referenced from the host definitions in `flake.nix`.
 
 ---
 
@@ -258,6 +258,8 @@ This configuration has been my daily driver and learning project since **July 20
 **May 8, 2026 - present** — From this point forward, ongoing work will be implemented manually. AI is still used to help me understand difficult concepts and to review my work.
 
 **May 2026** — Implemented `sops-nix` support; created custom live graphical ISO for easier installation on new hosts; officially added new host `artemis`.
+
+**June 2026** — Extracted the reusable machinery (`mkHosts`/`mkHomes`, presets, schemas, dual-export handling) into [flake-wizard](https://github.com/HunterThueson/flake-wizard), a standalone framework, leaving this repo as pure data + fleet-specific modules. Migration was done with AI assistance and verified by derivation-path parity: every host and home configuration evaluates to the same derivations before and after.
 
 ---
 

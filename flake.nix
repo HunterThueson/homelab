@@ -5,6 +5,10 @@
 #----------------------------------#
 
 # for high-level management of my NixOS homelab and its dependencies
+#
+# The heavy lifting (schemas, host/user assembly, dual-export module
+# loading, type/role selection) is done by flake-wizard's spellbook —
+# this file only declares inputs, users, and hosts.
 
 {
   description = "Hunter Thueson's NixOS System Configuration(s)";
@@ -15,6 +19,8 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+
+    flake-wizard.url = "path:/home/hunter/projects/flake-wizard";
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -45,13 +51,15 @@
   #  Outputs  #
   #-----------#
 
-  outputs = inputs @ { self, nixpkgs, sops-nix, home-manager, nixvim, stylix, ... }:
+  outputs = inputs @ { self, nixpkgs, flake-wizard, ... }:
 
   let
-    inherit (nixpkgs) lib;
-    flakeRoot = ./.;
-    inherit (import ./lib { inherit inputs lib flakeRoot; })
-      mkHosts mkHomes keyboardPresets monitorPresets gpuPresets;
+    inherit (flake-wizard) spellbook;
+
+    presets = spellbook.presets { inherit (nixpkgs) lib; };
+    keyboardPresets = presets.keyboards;
+    monitorPresets  = presets.monitors;
+    gpuPresets      = presets.gpus;
 
     #--------------------#
     #  User Definitions  #
@@ -150,9 +158,80 @@
       };
     };
 
+    #-------------------#
+    #  The Incantation  #
+    #-------------------#
+
+    cast = spellbook.conjure {
+      inherit inputs;
+      root = ./.;
+
+      hosts = hostDefs;
+      users = userDefs;
+
+      # Host types — each host picks exactly one
+      types = {
+        desktop = ./hosts/types/desktop.nix;
+        laptop  = ./hosts/types/laptop.nix;
+        server  = ./hosts/types/server.nix;
+      };
+
+      # User roles — each user picks any number.
+      # null = tag only (no defaults module; environment/ keys off the name)
+      roles = {
+        wizard    = ./users/roles/wizard.nix;
+        developer = ./users/roles/developer.nix;
+        gamer     = null;
+        filmmaker = null;
+        writer    = null;
+      };
+
+      # Host roles — tags only, for now
+      hostRoles = {
+        workstation = null;
+        writing     = null;
+        media       = null;
+        server      = null;
+      };
+
+      # Personal extensions to the core hostSettings/userSettings schemas
+      hostOptions = ./modules/hostSettings/options.nix;
+      userOptions = ./modules/userSettings/options.nix;
+
+      # Flake inputs as NixOS modules (home-manager is added by conjure)
+      nixosModules = [
+        inputs.sops-nix.nixosModules.sops
+        inputs.nixvim.nixosModules.nixvim
+        inputs.stylix.nixosModules.stylix
+        inputs.hyprland.nixosModules.default
+      ];
+
+      # Flake inputs as Home Manager modules
+      hmModules = [
+        inputs.hyprland.homeManagerModules.default
+      ];
+
+      # HM modules needed only by standalone homeConfigurations
+      # (the stylix NixOS module covers the integrated path)
+      standaloneHmModules = [
+        inputs.stylix.homeModules.stylix
+      ];
+
+      nixpkgsConfig = { allowUnfree = true; };
+
+      # Users on each host whose vpn.autostart is true. Consumed by the
+      # per-user vpn-veto script to detect "is another VPN user logged
+      # in?" at login time. See environment/services/privacy.nix.
+      specialArgs = { host, users, lib, ... }: {
+        vpnAutostartUsers = lib.attrNames (lib.filterAttrs
+          (_: u: u.networking.privacy.vpn.autostart or false)
+          (lib.getAttrs host.users users));
+      };
+    };
+
   in
   {
-    nixosConfigurations = mkHosts { hosts = hostDefs; users = userDefs; } // {
+    nixosConfigurations = cast.nixosConfigurations // {
       installer = inputs.nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = { inherit inputs; };
@@ -164,6 +243,7 @@
         ];
       };
     };
-    homeConfigurations  = mkHomes { hosts = hostDefs; users = userDefs; };
+
+    homeConfigurations = cast.homeConfigurations;
   };
 }

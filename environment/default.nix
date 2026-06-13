@@ -1,7 +1,7 @@
 # environment/default.nix
 
 # Master list of environment module paths.
-# Imported by both mkHosts.nix and mkHomes.nix.
+# Loaded by flake-wizard's conjure for both NixOS and standalone HM builds.
 #
 # Each entry resolves to either:
 #   - A plain HM module (function)        → injected into HM only

@@ -1,33 +1,17 @@
 # modules/userSettings/options.nix
 
-#-----------#
-#  Options  #
-#-----------#
+#-----------------------------#
+#  User Settings (Extension)  #
+#-----------------------------#
 
-# Shared option definitions for userSettings.
-# Used by both schema.nix (NixOS, attrsOf submodule) and hm-schema.nix (HM, single submodule).
+# Personal extensions to spellbook's core userSettings schema.
+# Core options (name, nickname, fullName, email, administrator,
+# extraGroups, role) come from flake-wizard; the role enum is
+# generated from the role names declared in flake.nix.
 
 { lib, ... }:
 
 {
-  name        = lib.mkOption { type = lib.types.str; default = ""; };
-  nickname    = lib.mkOption { type = lib.types.str; default = ""; };
-  fullName    = lib.mkOption { type = lib.types.str; };
-  email       = lib.mkOption { type = lib.types.nullOr lib.types.str; default = null; };
-
-  administrator  = lib.mkOption { type = lib.types.bool; default = false; };
-  extraGroups    = lib.mkOption { type = lib.types.listOf lib.types.str; default = []; };
-  role = lib.mkOption {
-    type = lib.types.listOf (lib.types.enum [
-      "wizard"      # NixOS system administrator / power user
-      "developer"   # software development tools and workflows
-      "gamer"       # gaming-related user config
-      "filmmaker"   # video editing, media production
-      "writer"      # writing tools (org-roam, typst, etc.)
-    ]);
-    default = [];
-  };
-
   hashedPasswordFile  = lib.mkOption { type = lib.types.nullOr lib.types.path; default = null; };
 
   terminal  = lib.mkOption { type = lib.types.enum [ "alacritty" ]; default = "alacritty"; };

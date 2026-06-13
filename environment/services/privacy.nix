@@ -24,10 +24,10 @@
 # torrent.autostart launches qBittorrent at this user's login.
 # tor.autostart launches Tor Browser at this user's login.
 #
-# `vpnAutostartUsers` is passed via extraSpecialArgs by mkHosts.nix /
-# mkHomes.nix — it's the list of usernames on this host whose vpn.autostart
-# is true. The veto script uses it to decide whether stopping the host
-# tunnel at login would inconvenience another user.
+# `vpnAutostartUsers` is computed by the specialArgs hook in flake.nix
+# (passed through conjure) — it's the list of usernames on this host whose
+# vpn.autostart is true. The veto script uses it to decide whether stopping
+# the host tunnel at login would inconvenience another user.
 
 {
   home = { config, lib, pkgs, vpnAutostartUsers ? [], ... }:
