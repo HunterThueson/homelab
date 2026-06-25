@@ -32,6 +32,7 @@ in {
         lightline.enable = true;
         lspconfig.enable = true;
         lastplace.enable = true;
+        colorizer.enable = true;
       };
 
       opts = {

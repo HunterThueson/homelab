@@ -1,20 +1,29 @@
 # ./colors/electro-swing.yaml
+#
+# Base16 palette. See electro-swing.md for hex/rgb/hsl, named aliases,
+# and a fuller description of each slot.
 
 scheme: "Electro-Swing"
 author: "Hunter Thueson"
-base00: "131313"
-base01: "1c1c1c"
-base02: "5e676a"
-base03: "656763"
-base04: "d3d7cf"
-base05: "cbcec6"
-base06: "eeeeec"
-base07: "ffffff"
-base08: "c14646"
-base09: "be8a00"
-base0A: "fce847"
-base0B: "7cf10a"
-base0C: "52e9e9"
-base0D: "4c8cde"
-base0E: "ed83e2"
-base0F: "7e4387"
+
+# Backgrounds & surfaces
+base00: "131313"  # deep-black  — default background
+base01: "1c1c1c"  # soft-black  — lighter bg (status bars, line numbers)
+base02: "5e676a"  # slate       — selection background
+base03: "656763"  # dim-slate   — comments, invisibles, line highlight
+
+# Foregrounds
+base04: "d3d7cf"  # linen       — dark foreground (status bars)
+base05: "cbcec6"  # bone        — default foreground, carets, operators
+base06: "eeeeec"  # ivory       — light foreground
+base07: "ffffff"  # white       — light background
+
+# Accents
+base08: "c14646"  # crimson         — red     — variables, errors, diff removed
+base09: "be8a00"  # amber           — orange  — constants, integers, booleans
+base0A: "fce847"  # electric-yellow — yellow  — classes, search highlight
+base0B: "7cf10a"  # neon-lime       — green   — strings, diff added
+base0C: "52e9e9"  # electric-teal   — cyan    — regex, escape chars, support
+base0D: "4c8cde"  # sapphire        — blue    — functions, methods, headings
+base0E: "ed83e2"  # candy-pink      — magenta — keywords, storage
+base0F: "7e4387"  # deep-violet     — dark    — deprecated, embedded tags
