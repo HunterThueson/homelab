@@ -15,6 +15,7 @@
     mpv                                                     # video playback
     imagemagick                                             # image editing tools for the command line
     yt-dlp                                                  # `youtube-dl` fork; download videos from websites like YouTube
+    gallery-dl                                              # basically `yt-dlp` but for images & galleries
     ffmpeg_6-full                                           # video transcoding utility (and a dependency for many other programs)
     instaloader                                             # download photos & videos from Instagram
     speedcrunch                                             # calculator
@@ -28,6 +29,11 @@
     killall                                                 # kill programs with ease
     wget                                                    # download files from the command line
     unzip                                                   # extract / unzip file archives
+    alacritty                                               # GPU-accelerated terminal emulator
+    starship                                                # blazing fast, highly customizable prompt for any shell
+    eza                                                     # modern replacement for `ls` written in Rust
+    ripgrep                                                 # modern replacement for `grep` written in Rust
+    fd                                                      # modern replacement for `find` written in Rust
 
     # System info/monitoring
     neofetch                                                # display system info
@@ -48,13 +54,6 @@
 
     # X11 tools
     xorg.xdpyinfo                                           # get information about X display(s)
-
-    # Terminal
-    alacritty                                               # GPU-accelerated terminal emulator
-    starship                                                # blazing fast, highly customizable prompt for any shell
-    eza                                                     # modern replacement for `ls` written in Rust
-    ripgrep                                                 # modern replacement for `grep` written in Rust
-    fd                                                      # modern replacement for `find` written in Rust
 
   ];
 }
