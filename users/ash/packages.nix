@@ -46,6 +46,7 @@
 
     # AI tools
     claude-code                                             # AI helper Claude
+    video2x                                                 # AI video upscaling (free, open-source)
     realesrgan-ncnn-vulkan                                  # AI image upscaler (Real-ESRGAN)
     upscayl-ncnn                                            # AI image upscaler
 
