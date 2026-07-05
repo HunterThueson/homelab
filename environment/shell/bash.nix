@@ -87,8 +87,5 @@ in {
       '';
     };
 
-    home.sessionPath = [
-      "/usr/local/bin/"
-    ];
   };
 }

@@ -22,7 +22,7 @@ Personal NixOS flake managing two hosts, multiple users, and a shared pool of sy
     - Certain types of users have shared requirements; for example, developers need access to version control and support for programming languages. Instead of declaring those needs in each user's personal config over and over, the system administrator can assign each user a `role` and add functionality to every relevant user at the same time from just one file.
 4. **Transparency**
     - Extensive documentation is extremely important. The codebase and design decisions will (eventually) be thoroughly documented in the project wiki. **This is still a work in progress.** Documentation is next on the to-do list.
-    - AI was used to help rework this project during a short period of time in early 2026. See the AI Disclosure section below for more details.
+    - AI is used openly as a tool while building and maintaining this config — see the AI Usage note below. Nothing here is presented as hand-written that wasn't.
 
 ---
 
@@ -251,19 +251,19 @@ This configuration has been my daily driver and learning project since **July 20
 
 **2022 - 2025** — Built the initial configuration from scratch: GRUB and systemd-boot setup, Nvidia GPU configuration, Hyprland and Plasma desktop environments, SDDM and greetd login managers, Xorg dual-monitor support, Home Manager integration, Starship shell prompt, Alacritty terminal, package management, and all the iterative debugging that comes with learning NixOS. All of this work was done manually.
 
-**Early 2026** — Added Emacs configuration (Evil mode, Org-Roam, Magit, capture templates), printer support, hardware monitoring tools (LACT, nvtop), development toolchains (Rust, Python), and continued refining the system. Also began planning a structural rework to support multi-host deployment and faster iteration — the configuration had grown organically and needed a more principled architecture. All of this work was done manually.
+**Early 2026** — Added Emacs configuration (Evil mode, Org-Roam, Magit, capture templates), printer support, hardware monitoring tools (LACT, nvtop), development toolchains (Rust, Python), and continued refining the system. Also began planning a structural rework to support multi-host deployment and faster iteration — the configuration had grown organically and needed a more principled architecture.
 
-**April - May 8, 2026** — Executed the structural rework on the `structural-rework` branch, then merged it back into `master`. This is where AI was used — see disclosure below.
+**April - May 2026** — Executed the structural rework (hub-and-spoke, dual-export modules, `mkHosts` / `mkHomes`) on the `structural-rework` branch and merged it into `master`, with AI assistance — see the AI Usage note below. Also added `sops-nix` secrets management, a custom live graphical installer ISO, and the `artemis` laptop host.
 
-**May 8, 2026 - present** — From this point forward, ongoing work will be implemented manually. AI is still used to help me understand difficult concepts and to review my work.
-
-**May 2026** — Implemented `sops-nix` support; created custom live graphical ISO for easier installation on new hosts; officially added new host `artemis`.
+**May 2026 - present** — Ongoing iteration with AI as a standard part of the toolkit: package and desktop refinements, the NixOS 26.05 upgrade, and continued work toward a Hyprland + Quickshell daily driver.
 
 ---
 
 ## What's Next
 
-- Finish setting up Emacs keybinds and Org Roam functionality
+- **Primary goal — the daily-driver desktop:** a Hyprland (tiling/scrolling) setup with a Quickshell topbar, widgets, and an integrated search/launch bar, polished enough to replace Plasma as the everyday environment
+- Adopt Emacs (likely a lightly-customized Doom or Spacemacs) for Org-Roam and Magit — currently daily-driving nvim
+- Make monitor config dynamic instead of hardcoded in hyprland.lua, add monitor presets
 - Create a project wiki for this repository - write extensive & thorough documentation
 - Implement easy-to-use shell wrapper functions for `nixos-rebuild` and `home-manager switch`
 - Implement remaining role modules (gamer, developer, filmmaker, writer) with role-specific defaults
@@ -272,31 +272,18 @@ This configuration has been my daily driver and learning project since **July 20
 - Declaratively configure Firefox preferences - default values for all users & user-specific overrides
 - Wire remaining environment/ modules to userSettings (remaining shell options, desktop fine-tuning)
 - Wire remaining system/ modules to hostSettings (inputDevices, display, login-manager refinements)
-- Make monitor config dynamic instead of hardcoded in hyprland.lua, add monitor presets
-- Build a custom desktop environment with Quickshell
 
 ---
 
-## AI Usage Disclosure
+## AI Usage
 
-The structural rework (the `rework(...)` and `merge(...)` commits) was done with assistance from Claude Code. I want to be transparent about what that means and doesn't mean.
+I use AI (Claude Code) as an ordinary tool while building and maintaining this configuration. I'd rather say so plainly than pretend otherwise.
 
-**What I did:**
-- Designed the hub-and-spoke architecture and the logical separation between `modules/`, `system/`, and `environment/`
-- Made all architectural decisions: the dual-export pattern (my preference over splitting config across directories), the perceptual boundary principle for `environment/` vs `system/`, standalone Home Manager separation, the coupled+fast-path rebuild strategy, per-user HM module directories, and user identity data in flake.nix
-- Defined the option schemas and decided what should be configurable vs hardcoded
-- Designed the role system and decided role responsibilities (group permissions, role-specific functionality & features)
-- Reviewed all generated code and directed revisions
-- Built the entire pre-rework codebase (4 years of commits) without AI assistance
-- Continued adding features on `master` during the rework period (Emacs overhaul, printer support, hardware tools) without AI assistance
+Why I'm fine with that here: this is a personal system configuration, not a product or a coding portfolio. Its job is to make my machines work the way I want them to. Getting there efficiently—with AI, upstream modules, community configs, and whatever else the ecosystem offers—is the point, not a shortcut I feel any need to apologize for.
 
-**What the AI did:**
-- Implemented the architectural decisions I made — writing the Nix module code for `mkHosts`, `mkHomes`, dual-export modules, schema definitions, and system backends
-- Helped debug evaluation errors during the rework (unfree package resolution, NixOS vs HM option conflicts, module detection logic, infinite recursion in role-based defaults)
-- Helped me understand Nix patterns I wasn't familiar with (like `attrsOf submodule`, `lib.mkMerge`, `lib.mkDefault`, and the mechanics of standalone Home Manager)
-- Assisted with the merge back into `master` (conflict resolution, preserving master-only features)
+Two lines I hold to:
 
-**Why I used AI for this:**
-I'm learning NixOS with the goal of working with it professionally. The rework involved restructuring dozens of interdependent files simultaneously — the kind of change where a single syntax error in one file breaks evaluation of everything, and where the feedback loop of "change, rebuild, debug, repeat" across that many files would have taken at least several months of working in the evenings. (That may sound like an exaggeration, but even with AI assistance this rework took close to a month and a half to complete.) I used AI to accelerate the implementation so I could focus on understanding the design patterns and architectural tradeoffs rather than fighting Nix syntax for every line. Now that the structure is in place, future development will be manual — the whole point of this rework was to make the codebase easier to understand and extend, and I intend to do that myself.
+- **Credit where it's due.** Anything adapted from someone else's work is attributed, never passed off as my own.
+- **No false authorship.** I don't present code as hand-written by me when it wasn't.
 
-The foundational work — the hardware configurations, desktop environments, editor setups, display server configs, and everything else that makes this a functional daily-driver system — was built by hand over four years of learning NixOS.
+The pre-2026 configuration—roughly four years of it—was built by hand while I learned NixOS, and that foundation is mine. The 2026 structural rework and the ongoing work since lean on AI assistance.

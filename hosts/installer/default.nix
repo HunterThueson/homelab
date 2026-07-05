@@ -211,7 +211,7 @@ in
     libnotify
     networkmanagerapplet
     rofi
-    swww
+    awww
     waybar
     wl-clipboard
     grim
@@ -240,7 +240,7 @@ in
     git
     vim
     firefox
-    neofetch
+    fastfetch
     htop
   ];
 
@@ -252,6 +252,9 @@ in
     networkmanager.enable = true;
     wireless.enable = lib.mkForce false;  # NM handles WiFi
   };
+
+  # No ZFS pools on the ISO, so this only silences the deprecation warning.
+  boot.zfs.forceImportRoot = false;
 
   # ----------------
   #  Auto-login
@@ -284,6 +287,7 @@ in
 
   programs.nixvim = {
     enable = true;
+    nixpkgs.source = pkgs.path;
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;

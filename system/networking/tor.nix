@@ -21,9 +21,19 @@ in {
   config = lib.mkIf anyTor {
     services.tor = {
       enable = true;
+      # SOCKSPort is provided automatically by client.enable. [1]
       client.enable = true;
-      # SOCKS port defaults to 9050; explicit for clarity.
-      settings.SOCKSPort = [ 9050 ];
     };
   };
 }
+
+
+#-------------#
+#  Footnotes  #
+#-------------#
+
+# 1: `client.enable` emits `SOCKSPort 127.0.0.1:9050 IsolateDestAddr` from
+#    `client.socksListenAddress`. `SOCKSPort` is a list option, so also setting
+#    `settings.SOCKSPort` appends a second entry instead of replacing the first —
+#    the resulting duplicate `SOCKSPort` line passes `torrc --verify` but fails to
+#    bind at runtime.

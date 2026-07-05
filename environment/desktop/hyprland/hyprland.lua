@@ -73,17 +73,17 @@ local monitor_wallpapers = {
 }
 
 hl.on("hyprland.start", function()
-    hl.exec_cmd("swww-daemon")
+    hl.exec_cmd("awww-daemon")
     hl.exec_cmd("waybar")
     hl.exec_cmd("dunst")
     hl.exec_cmd("nm-applet --indicator")
 
-    -- Build a single shell script that waits for swww-daemon, then sets
+    -- Build a single shell script that waits for awww-daemon, then sets
     -- a random wallpaper on each monitor sequentially.
-    local cmds = "while ! swww query 2>/dev/null; do sleep 0.2; done"
+    local cmds = "while ! awww query 2>/dev/null; do sleep 0.2; done"
     for _, mon in ipairs(monitor_wallpapers) do
         cmds = cmds
-            .. " && swww img --outputs " .. mon.output
+            .. " && awww img --outputs " .. mon.output
             .. " --transition-type fade --transition-duration 2"
             .. " \"$(find ~/images/wallpapers/" .. mon.orientation
             .. " -type f \\( -name '*.png' -o -name '*.jpg' -o -name '*.jpeg' -o -name '*.webp' \\) | shuf -n 1)\""

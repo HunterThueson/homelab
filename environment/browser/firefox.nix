@@ -20,6 +20,7 @@ in {
   config = lib.mkIf (browser.name == "firefox") {
     programs.firefox = {
       enable = true;
+      configPath = "${config.xdg.configHome}/mozilla/firefox";
 
       # Default profile — managed by Home Manager
       profiles.default = {

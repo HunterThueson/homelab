@@ -25,7 +25,7 @@
     unzip                                                   # extract / unzip file archives
 
     # System info/monitoring
-    neofetch                                                # display system info
+    fastfetch                                               # display system info
     gtop                                                    # graphical `top`
     btop                                                    # another fancy `top`
 
@@ -42,7 +42,7 @@
     openvpn                                                 # connect to VPN
 
     # X11 tools
-    xorg.xdpyinfo                                           # get information about X display(s)
+    xdpyinfo                                                # get information about X display(s)
 
     # Terminal
     alacritty                                               # GPU-accelerated terminal emulator

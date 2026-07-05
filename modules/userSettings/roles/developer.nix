@@ -16,6 +16,9 @@
     users.groups.developer.gid = 1002;
 
     system.activationScripts.developerPermissions = ''
+      mkdir -p $HOME/.local/bin
+      mkdir -p $HOME/bin
+      mkdir -p /usr/local/bin
       chown -R root:developer /usr/local/bin
       chmod -R a+rx,g+w,o-w /usr/local/bin
     '';
@@ -31,6 +34,12 @@
       programs.bash.bashrcExtra = ''
         # Teleport to $HOME/bin
         cdb () {
+          cd $HOME/bin
+          clear
+          eza --icons=auto --group-directories-first
+        }
+
+        cdB () {
           cd /usr/local/bin
           clear
           eza --icons=auto --group-directories-first
@@ -38,8 +47,8 @@
       '';
 
       home.sessionPath = [
-        "$HOME/bin/"
-        "$HOME/.cargo/bin/"
+        "$HOME/bin/"              # allow devs to run their own code easily from PATH
+        "$HOME/.cargo/bin/"       # get Rust working (for whenever we finally get back to learning that)
       ];
 
       home.packages = with pkgs; [

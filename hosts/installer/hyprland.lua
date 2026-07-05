@@ -30,16 +30,17 @@ local fileManager = "nautilus"
 --  AUTOSTART
 -- ----------------
 
+-- `swww` was renamed to `awww` in nixpkgs 26.05; binaries follow the new name.
 hl.on("hyprland.start", function()
-    hl.exec_cmd("swww-daemon")
+    hl.exec_cmd("awww-daemon")
     hl.exec_cmd("waybar")
     hl.exec_cmd("dunst")
     hl.exec_cmd("nm-applet --indicator")
     hl.exec_cmd(terminal)
 
-    -- Set wallpaper once swww-daemon is ready
-    hl.exec_cmd("while ! swww query 2>/dev/null; do sleep 0.2; done"
-        .. " && swww img ~/.config/hypr/wallpaper.png"
+    -- Set wallpaper once awww-daemon is ready
+    hl.exec_cmd("while ! awww query 2>/dev/null; do sleep 0.2; done"
+        .. " && awww img ~/.config/hypr/wallpaper.png"
         .. " --transition-type fade --transition-duration 2")
 end)
 

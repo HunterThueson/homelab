@@ -7,7 +7,7 @@
 # Defaults for laptop hosts: everything a desktop has, plus
 # power management, WiFi power save, lid behavior, backlight.
 
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   config = lib.mkIf (config.hostSettings.type == "laptop") {
@@ -43,8 +43,9 @@
     # Printing
     services.printing.enable = true;
 
-    # Backlight control
-    programs.light.enable = lib.mkDefault true;
+    # Backlight control — brightnessctl ships the CLI plus its udev rules.
+    environment.systemPackages = [ pkgs.brightnessctl ];
+    services.udev.packages = [ pkgs.brightnessctl ];
 
     # XDG portal plumbing
     environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];

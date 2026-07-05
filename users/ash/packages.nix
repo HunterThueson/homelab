@@ -36,7 +36,7 @@
     fd                                                      # modern replacement for `find` written in Rust
 
     # System info/monitoring
-    neofetch                                                # display system info
+    fastfetch                                               # display system info
     gtop                                                    # graphical `top`
     btop                                                    # another fancy `top`
 
@@ -54,7 +54,7 @@
     openvpn                                                 # connect to VPN
 
     # X11 tools
-    xorg.xdpyinfo                                           # get information about X display(s)
+    xdpyinfo                                                # get information about X display(s)
 
   ];
 }

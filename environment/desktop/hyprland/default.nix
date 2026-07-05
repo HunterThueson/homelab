@@ -35,7 +35,7 @@
         networkmanagerapplet
         playerctl
         slurp
-        swww
+        awww
         waybar
         wl-clipboard
         wlr-protocols
@@ -72,14 +72,17 @@
         };
         package = null;       # Use the NixOS module's package
         portalPackage = null;
+
+        # Pin the legacy hyprlang mode so `extraConfig` stays a Hyprlang comment. [1]
+        configType = "hyprlang";
+
         # Suppress HM warning about empty config -- actual config is in hyprland.lua
         extraConfig = "# Config managed via hyprland.lua";
       };
 
-      # Lua config -- Hyprland loads this and ignores the HM-generated .conf
+      # Lua config
       xdg.configFile."hypr/hyprland.lua".source = ./hyprland.lua;
 
-      # Rofi — managed via HM so Stylix can theme it
       programs.rofi = {
         enable = true;
         package = pkgs.rofi;
@@ -91,7 +94,7 @@
         saveLocation = "$HOME/images/screenshots";
       };
 
-      # Waybar (temporary -- will be replaced by Quickshell)
+      # Waybar (until Quickshell implementation)
       programs.waybar = {
         enable = true;
         settings = [{
@@ -122,8 +125,7 @@
         }];
       };
 
-      # Dunst (temporary -- will be replaced by Quickshell)
-      # Colors handled by Stylix -- only structural config here
+      # Dunst (until Quickshell implementation)
       services.dunst = {
         enable = true;
         settings = {
@@ -146,3 +148,13 @@
     };
   };
 }
+
+#-----------#
+# Footnotes #
+#-----------#
+
+# 1: HM 26.05 flipped the default to "lua", but the actual lua config is
+#    placed via xdg.configFile below — setting configType="lua" would make
+#    HM emit its own hyprland.lua from `extraConfig` and clash with ours.
+
+# EOF
