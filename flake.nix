@@ -84,7 +84,7 @@
         role          = [ "wizard" "developer" "writer" ];
         shell         = "bash";
         desktop       = { environment = "plasmax11"; colorScheme = "electro-swing"; };
-        browser.name  = "firefox";
+        browser       = { name = "firefox"; declarative = false; };  # keep profile imperative
 
         networking.privacy = {
           vpn     = { enable = true; autostart = true;  server = "USA-Denver"; };

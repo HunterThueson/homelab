@@ -196,6 +196,16 @@
           default     = "firefox";
           description = "Which browser to install and configure.";
         };
+        declarative = lib.mkOption {
+          type        = lib.types.bool;
+          default     = true;
+          description = ''
+            Whether Home Manager manages this browser's profile (UI layout,
+            about:config, extensions, theming). When false, HM still installs
+            the browser but writes nothing to the profile, leaving it fully
+            imperative — e.g. to protect a hand-configured profile.
+          '';
+        };
         extensions = lib.mkOption {
           type        = lib.types.listOf lib.types.str;
           default     = [];

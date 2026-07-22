@@ -8,5 +8,6 @@
   imports = [
     ./packages.nix
     ./services.nix
+    ./firefox.nix
   ];
 }
