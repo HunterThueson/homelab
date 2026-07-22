@@ -12,7 +12,7 @@
 # The system daemon is NOT routed through IVPN — keeping Tor and the VPN
 # in separate lanes is intentional (see the design plan).
 
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   cfg = config.userSettings;
@@ -24,6 +24,14 @@ in {
       # SOCKSPort is provided automatically by client.enable. [1]
       client.enable = true;
     };
+    environment.systemPackages = with pkgs; [
+      file          # verify filetypes
+      gnupg         # verify GPG signatures
+      clamav        # scan for known malware with freshclam & clamscan
+      p7zip         # inspect archives without extracting
+      exiftool      # read, write, and edit EXIF metadata
+      firejail      # light sandbox for quick & easy isolation
+    ];
   };
 }
 
