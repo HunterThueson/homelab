@@ -33,6 +33,18 @@
           clear
           eza --icons=auto --group-directories-first
         }
+
+        # Garbage-collect Nix, keeping the last N generations (default 5) of the
+        # system, Home Manager, and personal nix-env profiles, then free space.
+        ngc () {
+          local keep="+''${1:-5}"
+          local hm="$HOME/.local/state/nix/profiles/home-manager"
+          local usr="$HOME/.local/state/nix/profiles/profile"
+          sudo nix-env -p /nix/var/nix/profiles/system --delete-generations "$keep"
+          [ -e "$hm"  ] && nix-env -p "$hm"  --delete-generations "$keep"
+          [ -e "$usr" ] && nix-env -p "$usr" --delete-generations "$keep"
+          nix-collect-garbage
+        }
       '';
 
       home.sessionPath = [
