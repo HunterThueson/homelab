@@ -14,28 +14,28 @@
   #----------#
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";                           # Packages for Nix/NixOS
 
-    sops-nix = {
+    sops-nix = {                                                                # Declarative secrets management via `sops`
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    home-manager = {
+    home-manager = {                                                            # Declaratively manage users' home directories
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    stylix = {
+    stylix = {                                                                  # Comprehensive theme engine
       url = "github:nix-community/stylix/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprland = {
+    hyprland = {                                                                # Fast, flashy Wayland compositor
       url = "github:hyprwm/Hyprland";
     };
 
-    nixvim = {
+    nixvim = {                                                                  # Manage Neovim with Nix
       url = "github:nix-community/nixvim/nixos-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
