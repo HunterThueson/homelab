@@ -1,6 +1,6 @@
 # users/hunter/services.nix
 
-{ pkgs, ... }:
+{ ... }:
 
 {
 
@@ -8,10 +8,6 @@
   services.unclutter = {
     enable = true;
     extraOptions = [ "timeout 5" "ignore-scrolling" ];
-  };
-
-  programs.bash.shellAliases = {
-        claude = "${pkgs.claude-code}/bin/claude --append-system-prompt $HOME/docs/reference/claude/CLAUDE.md";
   };
 
 }

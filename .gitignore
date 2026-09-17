@@ -3,3 +3,7 @@ tutorial/*
 
 .cfg/
 .cfg/**
+
+# Claude Code session context: a symlink to the private reference docs in
+# ~/docs/reference/claude/, so it isn't meaningful to anyone else cloning this repo.
+CLAUDE.md
