@@ -23,7 +23,11 @@ in {
         user.email = user.email;
         init.defaultBranch = "master";
         pull.rebase = false;
-        safe.directory = "/etc/nixos";
+        safe.directory = [
+          "/etc/nixos"
+          "/home/wizard/bin/medialib"
+          "/home/wizard/claude-config"
+        ];
         credential."https://github.com".helper = [
           ""
           "!${pkgs.gh}/bin/gh auth git-credential"

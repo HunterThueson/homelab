@@ -104,17 +104,17 @@
     "claude-config": {
       "flake": false,
       "locked": {
-        "lastModified": 1786084413,
-        "narHash": "sha256-3TEsciGBIGeKChCkCtjlBAq90yVf9SGNXv9UUyXPhqg=",
+        "lastModified": 1789653171,
+        "narHash": "sha256-Wg9FnB5YqBulJPTs9rOjkbhiHcLbaKe6OS+8VGDzd10=",
         "ref": "refs/heads/master",
-        "rev": "e9c6ed5101520ff905f1cf1dbd7a66a4b5725a4b",
-        "revCount": 1,
+        "rev": "961b428cb0462fe06a881c8544bd86572c68245f",
+        "revCount": 2,
         "type": "git",
-        "url": "file:///home/hunter/projects/claude-config"
+        "url": "file:///home/wizard/claude-config"
       },
       "original": {
         "type": "git",
-        "url": "file:///home/hunter/projects/claude-config"
+        "url": "file:///home/wizard/claude-config"
       }
     },
     "doomdir": {

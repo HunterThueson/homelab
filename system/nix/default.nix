@@ -33,6 +33,10 @@
 
   # Ensure the Wizard group can edit /etc/nixos/ across reboots
   systemd.tmpfiles.rules = [
-    "d /etc/nixos 0770 root wizard - -"
+    "d /etc/nixos 2770 root wizard - -"
+    "d /home/wizard 2775 root wizard - -"
+    "d /home/wizard/bin 2775 root wizard - -"
+    "d /home/wizard/bin/medialib 2775 root wizard - -"
+    "d /home/wizard/claude-config 2775 root wizard - -"
   ];
 }

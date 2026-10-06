@@ -48,7 +48,7 @@
     # Personal Claude Code config (settings, keybindings, skills), kept private
     # and out of this public repo; wired in by users/hunter/claude-code.nix.
     claude-config = {
-      url = "git+file:///home/hunter/projects/claude-config";
+      url = "git+file:///home/wizard/claude-config";
       flake = false;
     };
   };
