@@ -636,6 +636,29 @@
         "type": "github"
       }
     },
+    "medialib": {
+      "inputs": {
+        "nixos-config": [
+          "nixpkgs"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791256529,
+        "narHash": "sha256-85YYtvhNECSGKAtcWV90accJhte205/mTpnBpoDScP4=",
+        "ref": "refs/heads/master",
+        "rev": "41e1a767730259f5cde8cfce4e6c2da37eddffba",
+        "revCount": 22,
+        "type": "git",
+        "url": "file:///home/wizard/bin/medialib"
+      },
+      "original": {
+        "type": "git",
+        "url": "file:///home/wizard/bin/medialib"
+      }
+    },
     "nix-doom-emacs-unstraightened": {
       "inputs": {
         "doomdir": "doomdir",
@@ -779,6 +802,7 @@
         "claude-config": "claude-config",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
+        "medialib": "medialib",
         "nix-doom-emacs-unstraightened": "nix-doom-emacs-unstraightened",
         "nixpkgs": "nixpkgs_3",
         "nixvim": "nixvim",

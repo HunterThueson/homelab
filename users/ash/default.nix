@@ -9,5 +9,6 @@
     ./packages.nix
     ./services.nix
     ./firefox.nix
+    ./medialib.nix
   ];
 }
