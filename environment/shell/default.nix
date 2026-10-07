@@ -23,6 +23,7 @@
     imports = [
       ./bash.nix
       ./starship.nix
+      ./utilities.nix
     ];
   };
 }
