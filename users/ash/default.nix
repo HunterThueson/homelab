@@ -10,5 +10,6 @@
     ./services.nix
     ./firefox.nix
     ./medialib.nix
+    ./extraConfig.nix
   ];
 }

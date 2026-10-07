@@ -1,6 +1,6 @@
 # system/security/sops.nix
 
-{ config, flakeRoot, ... }:
+{ config, lib, flakeRoot, ... }:
 
 {
   sops = {
@@ -40,6 +40,27 @@
         owner = "root";
       };
 
+      # -- Private Shell Fragments -- #
+
+      # Sourced by users/<name>/, so content stays off the public repo. Gated
+      # per-host: `owner` must name a user that exists here. [1]
+    } // lib.optionalAttrs (config.userSettings ? ash) {
+      "ash-bashrc-extra" = {
+        mode  = "0400";
+        owner = "ash";
+      };
     };
   };
 }
+
+#-------------#
+#  Footnotes  #
+#-------------#
+
+# 1: `config.userSettings` holds only the users on *this* host (mkHosts builds
+#    it from hostDefs.<host>.users), so `? ash` is the per-host gate — the same
+#    one environment/services/syncthing.nix uses. Declaring this
+#    unconditionally would break activation on artemis, where `ash` has no
+#    account for sops-install-secrets to chown to.
+
+# EOF
