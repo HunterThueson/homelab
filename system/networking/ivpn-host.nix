@@ -17,10 +17,13 @@
 #   - LAN ranges (10/8, 172.16/12, 192.168/16) are allowed so local services
 #     keep working (SSH from another box, printers, etc.). Acceptable for a
 #     personal homelab.
-#   - $trusted_ip (the resolved IVPN gateway IP) is captured at --up time.
-#     If openvpn reconnects to a different IP, the up/down cycle re-captures
-#     it — small unprotected window during reconnect is acceptable for the
-#     threat model.
+#   - $trusted_ip (the resolved IVPN gateway IP) is captured at --up time and
+#     NOT re-captured on reconnect: the .ovpn configs set `persist-tun`, which
+#     suppresses the up/down hooks across ping-restarts. That stays correct
+#     only because those configs also set `persist-remote-ip`, pinning the
+#     gateway for the life of the process. Drop persist-remote-ip and a
+#     reconnect to a different gateway IP would be blocked by the stale
+#     killswitch rule, wedging the tunnel until the unit is restarted.
 
 { config, lib, pkgs, ... }:
 
@@ -79,15 +82,19 @@ let
     NFEOF
   '';
 
+  # Teardown. Every step is best-effort and idempotent: this runs both as
+  # openvpn's --down hook and as the unit's ExecStopPost, so it has to tolerate
+  # running twice, and running when --up never completed. An error part-way
+  # through must not leave the rest undone, hence no `set -e`.
   downScript = pkgs.writeShellScript "ivpn-host-down" ''
-    set -e
+    set -u
 
     # Remove DNS entry — resolvconf rebuilds /etc/resolv.conf from remaining sources
-    ${pkgs.openresolv}/bin/resolvconf -d tun-host || true
+    ${pkgs.openresolv}/bin/resolvconf -d tun-host 2>/dev/null || true
 
     # Re-enable IPv6
-    ${pkgs.procps}/bin/sysctl -w net.ipv6.conf.all.disable_ipv6=0
-    ${pkgs.procps}/bin/sysctl -w net.ipv6.conf.default.disable_ipv6=0
+    ${pkgs.procps}/bin/sysctl -w net.ipv6.conf.all.disable_ipv6=0 || true
+    ${pkgs.procps}/bin/sysctl -w net.ipv6.conf.default.disable_ipv6=0 || true
 
     # Remove killswitch
     ${pkgs.nftables}/bin/nft delete table inet ivpn-killswitch 2>/dev/null || true
@@ -120,6 +127,14 @@ in {
       serviceConfig = {
         Type = "simple";
         ExecStart = "${ivpnHostStart}";
+        # The killswitch and the IPv6 sysctls are installed by openvpn's --up
+        # hook and removed only by its --down hook. If openvpn is SIGKILLed
+        # (OOM, stop-timeout escalation) neither runs, leaving a box with
+        # policy-drop egress and IPv6 off and no way back but `nft delete
+        # table` by hand. Fail-closed is the right default for a killswitch,
+        # but it needs a recovery path; ExecStopPost gives systemd the last
+        # word regardless of how openvpn died.
+        ExecStopPost = "${downScript}";
         Restart = "on-failure";
         RestartSec = "5s";
       };

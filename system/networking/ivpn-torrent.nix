@@ -95,7 +95,16 @@ in {
     systemd.services.ivpn-torrent = {
       description = "IVPN OpenVPN tunnel (torrent / ${netnsName} namespace)";
       wantedBy = lib.optional hostAutostart "multi-user.target";
-      requires = [ "netns-ivpn.service" ];
+      # bindsTo rather than requires: if the namespace service goes away the
+      # tunnel is useless, and bindsTo also catches it disappearing without an
+      # explicit stop. partOf is the one that matters in practice — Requires=
+      # does not propagate RESTARTS, so a `nixos-rebuild switch` that restarts
+      # netns-ivpn used to delete the namespace and recreate it empty while
+      # this unit stayed active against the old one. Traffic failed closed, but
+      # new `qbt` launches landed in a bare namespace and the is-active guard
+      # still passed. partOf makes the tunnel follow the namespace.
+      bindsTo  = [ "netns-ivpn.service" ];
+      partOf   = [ "netns-ivpn.service" ];
       after    = [ "netns-ivpn.service" "sops-install-secrets.service" "network-online.target" ];
       wants    = [ "network-online.target" ];
       path = with pkgs; [ iproute2 openvpn ];
