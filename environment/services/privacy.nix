@@ -42,12 +42,25 @@
       # IVPN port-forward before launching when torrent.portForward is on.
       qbtWrapper = pkgs.writeShellApplication {
         name = "qbt";
-        runtimeInputs = with pkgs; [ systemd qbittorrent ];
+        runtimeInputs = with pkgs; [ systemd gnugrep ];
         text = ''
-          set -u
           if ! systemctl is-active --quiet ivpn-torrent.service; then
             echo "qbt: torrent tunnel is not running; refusing to launch torrent client" >&2
             echo "qbt: run 'torrent-up' first" >&2
+            exit 1
+          fi
+
+          # `is-active` only proves openvpn is alive — not that tun-torrent
+          # actually landed in the namespace. Restarting netns-ivpn (which a
+          # `nixos-rebuild switch` can do) deletes the namespace and recreates
+          # it empty while the unit stays active, so check the thing we
+          # actually depend on: a default route out of tun-torrent, observed
+          # from inside the namespace. Fails closed if the namespace is bare.
+          if ! ns_default="$(/run/current-system/sw/bin/ns-run \
+                 ${lib.getExe' pkgs.iproute2 "ip"} route show default 2>/dev/null)" \
+             || ! printf '%s\n' "$ns_default" | grep -q 'dev tun-torrent'; then
+            echo "qbt: ivpn namespace has no default route via tun-torrent" >&2
+            echo "qbt: refusing to launch; try 'torrent-down && torrent-up'" >&2
             exit 1
           fi
         '' + lib.optionalString p.torrent.portForward ''
@@ -57,8 +70,42 @@
         '' + ''
           # ns-run is provided by the system module; reference by absolute
           # path since this HM-side wrapper can't see the system binary set.
-          exec /run/current-system/sw/bin/ns-run qbittorrent "$@"
+          # qBittorrent likewise goes in by store path: it is deliberately
+          # absent from $PATH (see home.packages below), and sudo resets PATH
+          # anyway, so a bare name would not resolve past ns-run.
+          exec /run/current-system/sw/bin/ns-run \
+            ${lib.getExe' pkgs.qbittorrent "qbittorrent"} "$@"
         '';
+      };
+
+      # Desktop entry pointing at `qbt` instead of the raw client.
+      #
+      # The qbittorrent package is deliberately kept out of home.packages:
+      # shipping it gave three ways to start the client OUTSIDE the namespace
+      # — `qbittorrent` on $PATH, an app-launcher entry, and (worst, because
+      # it needs no deliberate act) registration as the x-scheme-handler/magnet
+      # handler, so a magnet link clicked in a browser went straight out the
+      # host network. With the host tunnel down there is no killswitch either,
+      # since ivpn-host installs it from its --up script.
+      #
+      # This reuses the upstream desktop-file ID so launcher pins, KDE service
+      # preferences and any stale mimeapps.list rows resolve here too. The icon
+      # is referenced by store path because the package no longer contributes
+      # to the user's icon search path.
+      qbtDesktopItem = pkgs.makeDesktopItem {
+        name = "org.qbittorrent.qBittorrent";
+        desktopName = "qBittorrent (IVPN tunnel)";
+        genericName = "BitTorrent client";
+        comment = "Download and share files over BitTorrent, inside the IVPN namespace";
+        exec = "${qbtWrapper}/bin/qbt %U";
+        icon = "${pkgs.qbittorrent}/share/icons/hicolor/scalable/apps/qbittorrent.svg";
+        terminal = false;
+        type = "Application";
+        categories = [ "Network" "FileTransfer" "P2P" "Qt" ];
+        mimeTypes = [ "application/x-bittorrent" "x-scheme-handler/magnet" ];
+        keywords = [ "bittorrent" "torrent" "magnet" "download" "p2p" ];
+        startupNotify = false;
+        startupWMClass = "qbittorrent";
       };
 
       # Other users on this host who would expect the host tunnel running.
@@ -148,8 +195,10 @@
         })
 
         # ---- torrent ------------------------------------------------------
+        # Only the wrapper and its desktop entry — never pkgs.qbittorrent
+        # itself. See qbtDesktopItem above for why.
         (lib.mkIf p.torrent.enable {
-          home.packages = [ pkgs.qbittorrent qbtWrapper ];
+          home.packages = [ qbtWrapper qbtDesktopItem ];
         })
 
         (lib.mkIf (p.torrent.enable && p.torrent.autostart) {
