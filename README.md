@@ -93,6 +93,7 @@ Users can be assigned roles (`wizard`, `developer`, `gamer`, `filmmaker`, `write
 │   │   ├── gpu/               # Generic multi-GPU support (Nvidia, AMD, Intel)
 │   │   └── inputDevices/      # Keyboard layout, touchpad, ZSA (via hostSettings.hardware)
 │   ├── login-manager/         # greetd or SDDM (via hostSettings.loginManager)
+│   ├── networking/            # Wifi, Tor, network namespaces + IVPN tunnels (host & torrent)
 │   ├── nix/                   # Nix daemon settings, garbage collection
 │   ├── security/              # Security modules & secrets (sops-nix, age keys, etc.)
 │   └── users.nix              # Creates user accounts from userSettings (groups, SDDM nickname)
