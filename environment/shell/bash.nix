@@ -46,7 +46,6 @@ in {
         ls  = "eza -G --color=auto --icons=auto --group-directories-first";
         lsa = "eza -Gau --git --time-style long-iso --color=always --icons";
         lsd = "eza -D --color=auto --icons=auto";
-        lst = "eza -T --color=auto --icons=auto --group-directories-last";
 
         # Drop-in replacements
         find = "fd";
@@ -56,10 +55,24 @@ in {
         cls  = "clear && eza -G --color=auto --icons=auto --group-directories-first";
         clsa = "clear && eza -Gau --git --time-style long-iso --color=always --icons";
         clsd = "clear && eza -D --color=auto --icons=auto";
-        clst = "clear && eza -T --color=auto --icons=auto --group-directories-last";
       };
 
       bashrcExtra = ''
+        # tree view, with an optional leading integer as the depth limit
+        lst () {
+          local re='^[[:digit:]]+$'
+          local depth=()
+          if [[ $1 =~ $re ]]; then
+            depth=(-L "$1")
+            shift
+          fi
+          command eza -T "''${depth[@]}" --color=auto --icons=auto \
+            --group-directories-last "$@"
+        }
+
+        # same as `lst` function, but clear the terminal first
+        clst () { clear; lst "$@" }
+
         # cd wrapper for quick home teleports
         cd () {
           if [[ $# -eq 0 ]]; then
