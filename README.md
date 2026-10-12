@@ -63,8 +63,19 @@ Users can be assigned roles (`wizard`, `developer`, `gamer`, `filmmaker`, `write
 - **wizard** — creates the `wizard` group, manages `/etc/nixos` permissions, auto-enables git, adds the `cdn` shell function for quick navigation to `/etc/nixos/`
 - **gamer** — enables Steam runtime, installs game clients (Discord, Bolt Launcher)
 - **filmmaker** — installs OBS Studio (Nvidia NVENC + PipeWire/Wayland capture, obs-vkcapture game capture, virtual camera) for recording/streaming, plus the Kdenlive and DaVinci Resolve video editors
+- **developer** — creates the `developer` group and `/usr/local/bin`, enables git and direnv, installs Python/Rust toolchains, Claude Code, and the Penpot desktop client
 
 *Note: the role system is a work in progress. Some roles are defined in the schema but have not yet been implemented on the backend.*
+
+### Self-hosted services
+
+Services this config hosts itself are opt-in per host, under `hostSettings.services.<name>`, with the backend as a dual-export module in `environment/services/`. Today that's **Penpot** (the open-source design tool), enabled on `hephaestus`:
+
+```nix
+hostSettings.services.penpot.enable = true;      # plus listenAddress / port / publicUri
+```
+
+Penpot has no NixOS module or server package in nixpkgs, so `environment/services/penpot.nix` translates upstream's `docker-compose.yaml` into `virtualisation.oci-containers` (podman): frontend, backend, exporter, admin console, MCP server, PostgreSQL and Valkey on a shared podman network, with data under `/var/lib/penpot`. The master key and database password are generated on the host at first boot rather than kept in sops — they're machine-local and no human reads them, so `/var/lib/penpot` is what a backup needs to cover. The web UI is published on loopback only; the module's footnotes cover what else has to change before exposing it. Every `developer`-role user gets the desktop client, but Penpot keeps its own account database — each user signs up once in the UI.
 
 ---
 
@@ -105,7 +116,7 @@ Users can be assigned roles (`wizard`, `developer`, `gamer`, `filmmaker`, `write
 │   ├── editor/                # Emacs + Org-Roam, Nixvim (dual-export)
 │   ├── games/                 # Steam, OSRS, Discord (dual-export, gated on "gamer" role)
 │   ├── media/                 # OBS Studio (dual-export, gated on "filmmaker" role)
-│   ├── services/              # Privacy (VPN/Tor), Syncthing (OSRS sync), KDE Connect, Claude Code (gated on "developer" role); Firefly III, OpenVPN stubs
+│   ├── services/              # Privacy (VPN/Tor), Syncthing (OSRS sync), KDE Connect, Claude Code + self-hosted Penpot (gated on "developer" role); Firefly III, OpenVPN stubs
 │   ├── shell/                 # Bash, Starship prompt (dual-export)
 │   ├── terminal/              # Alacritty (HM module)
 │   └── themes/                # Colors, fonts, Stylix, wallpaper management, etc. (dual-export)

@@ -7,6 +7,7 @@
 [
   ./claude-code.nix
   ./kdeconnect.nix
+  ./penpot.nix
   ./privacy.nix
   ./syncthing.nix
 ]

@@ -83,6 +83,59 @@ in
           };
           default = {};
         };
+
+        services = lib.mkOption {
+          type = lib.types.submodule {
+            options = {
+              penpot = lib.mkOption {
+                type = lib.types.submodule ({ config, ... }: {
+                  options = {
+                    enable = lib.mkOption {
+                      type = lib.types.bool;
+                      default = false;
+                      description = ''
+                        Self-host Penpot on this machine. Brings up the
+                        upstream container stack (frontend, backend, exporter,
+                        admin console, MCP, postgres, valkey) under podman and
+                        serves the web UI on listenAddress:port.
+                      '';
+                    };
+
+                    listenAddress = lib.mkOption {
+                      type = lib.types.str;
+                      default = "127.0.0.1";
+                      description = ''
+                        Address the web UI is published on. The default keeps
+                        the instance machine-local; "0.0.0.0" exposes it to the
+                        LAN and opens the firewall port, which also means the
+                        session cookies and email verification left relaxed for
+                        a localhost instance start to matter.
+                      '';
+                    };
+
+                    port = lib.mkOption {
+                      type = lib.types.port;
+                      default = 9001;
+                      description = "Host port the Penpot frontend is published on.";
+                    };
+
+                    publicUri = lib.mkOption {
+                      type = lib.types.str;
+                      default = "http://localhost:${toString config.port}";
+                      description = ''
+                        URI browsers reach this instance at. Penpot bakes it
+                        into the frontend bundle and into the links it mails,
+                        so it has to match what users actually type.
+                      '';
+                    };
+                  };
+                });
+                default = {};
+              };
+            };
+          };
+          default = {};
+        };
       };
     };
   };

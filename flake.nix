@@ -136,6 +136,7 @@
           role = [ "workstation" "writing" ];
           loginManager = "sddm";
           availableSessions = [ "plasma" ];
+          services.penpot.enable = true;
           hardware = {
             boot = {
               loader = "systemd-boot";
