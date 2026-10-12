@@ -15,11 +15,6 @@
       source /run/secrets/ash-bashrc-extra
     fi
   '';
-
-  programs.obsidian = {
-    enable = true;
-
-  };
 }
 
 #-------------#
