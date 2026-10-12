@@ -71,7 +71,9 @@ in {
         }
 
         # same as `lst` function, but clear the terminal first
-        clst () { clear; lst "$@" }
+        clst () {
+          clear; lst "$@"
+        }
 
         # cd wrapper for quick home teleports
         cd () {
