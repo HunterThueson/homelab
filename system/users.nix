@@ -32,6 +32,8 @@ in {
     shell = shellMap.${user.shell} or pkgs.bash;
     extraGroups = lib.optionals user.administrator [ "wheel" "networkmanager" ]
                   ++ lib.optionals (builtins.elem "wizard" user.role) [ "wizard" ]
+                  ++ lib.optionals (builtins.elem "developer" user.role) [ "developer" ]
+                  ++ lib.optionals (builtins.elem "writer" user.role) [ "writer" ]
                   ++ user.extraGroups;
   }) cfg;
 }

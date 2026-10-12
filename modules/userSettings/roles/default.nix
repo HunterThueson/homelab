@@ -6,4 +6,5 @@
 [
   ./wizard.nix
   ./developer.nix
+  ./writer.nix
 ]
