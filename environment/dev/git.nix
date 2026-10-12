@@ -23,6 +23,7 @@ in {
         user.email = user.email;
         init.defaultBranch = "master";
         pull.rebase = false;
+        rebase.autostash = true;
         safe.directory = [
           "/etc/nixos"
           "/home/wizard/bin/medialib"
