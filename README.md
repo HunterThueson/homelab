@@ -125,9 +125,11 @@ Penpot has no NixOS module or server package in nixpkgs, so `environment/service
 │   ├── hunter/                # packages.nix, services.nix, future overrides (Firefox, etc.)
 │   └── ash/                   # packages.nix, services.nix
 │
-└── hosts/                     # Per-host hardware config and overrides
-    ├── hephaestus/
-    └── artemis/
+├── hosts/                     # Per-host hardware config and overrides
+│   ├── hephaestus/
+│   └── artemis/
+│
+└── docs/                      # Documentation for this repository, notes on what to do next, decision records
 ```
 
 ---
