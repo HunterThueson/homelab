@@ -1,4 +1,4 @@
-# system/networking/ivpn-host.nix
+# system/networking/ivpn/host.nix
 
 #----------------------------#
 #  IVPN host-wide tunnel     #
@@ -38,7 +38,7 @@ let
     let raw = (lib.head vpnUsers).networking.privacy.vpn.server;
     in if builtins.isString raw then raw else raw.name;
 
-  hostConfigPath = ./ivpn/configs + "/${hostServerName}.ovpn";
+  hostConfigPath = ./configs + "/${hostServerName}.ovpn";
 
   upScript = pkgs.writeShellScript "ivpn-host-up" ''
     set -eu

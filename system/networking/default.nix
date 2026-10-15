@@ -5,8 +5,7 @@
 {
   imports = [
     ./netns.nix
-    ./ivpn-torrent.nix
-    ./ivpn-host.nix
+    ./ivpn
     ./wrappers.nix
     ./tor.nix
     ./wifi.nix

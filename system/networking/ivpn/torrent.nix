@@ -1,4 +1,4 @@
-# system/networking/ivpn-torrent.nix
+# system/networking/ivpn/torrent.nix
 
 #---------------------------#
 #  IVPN torrent tunnel      #
@@ -29,7 +29,7 @@ let
       raw = if torrentServer != null then torrentServer else vpnServer;
     in if builtins.isString raw then raw else raw.name;
 
-  torrentConfigPath = ./ivpn/configs + "/${torrentServerName}.ovpn";
+  torrentConfigPath = ./configs + "/${torrentServerName}.ovpn";
 
   netnsName = "ivpn";
 
