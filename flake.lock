@@ -106,15 +106,15 @@
       "locked": {
         "lastModified": 1791395704,
         "narHash": "sha256-kMpZULx0UnPyiCTY2rf3ZLJmjfIttav9Bgc9ZpxEoHI=",
-        "ref": "refs/heads/master",
+        "owner": "HunterThueson",
+        "repo": "claude-config",
         "rev": "f2fd8faf29c31944acd34174c69da10c81211fb0",
-        "revCount": 3,
-        "type": "git",
-        "url": "file:///home/wizard/claude-config"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///home/wizard/claude-config"
+        "owner": "HunterThueson",
+        "repo": "claude-config",
+        "type": "github"
       }
     },
     "doomdir": {

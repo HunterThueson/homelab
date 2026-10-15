@@ -40,6 +40,13 @@
         owner = "root";
       };
 
+      # A nix.conf fragment, not a bare token — `!include`d by system/nix. [2]
+      "nix-access-tokens" = {
+        mode  = "0440";
+        owner = "root";
+        group = "wizard";
+      };
+
       # -- Private Shell Fragments -- #
 
       # Sourced by users/<name>/, so content stays off the public repo. Gated
@@ -62,5 +69,14 @@
 #    one environment/services/syncthing.nix uses. Declaring this
 #    unconditionally would break activation on artemis, where `ash` has no
 #    account for sops-install-secrets to chown to.
+
+# 2: Authenticates the private `claude-config` flake input. The decrypted file
+#    is a nix.conf fragment, since `!include` splices config lines, not a value:
+#      access-tokens = github.com=github_pat_…
+#    `group = "wizard"` rather than root-only 0400 because flake fetching runs
+#    as whoever evaluates — root under `sudo nixos-rebuild`, but hunter/ash
+#    under `nix flake update`, and `!include` only tolerates a *missing* file,
+#    not an unreadable one. The cost is that the token is readable by every
+#    wizard, so scope the PAT to this one repo.
 
 # EOF

@@ -28,16 +28,17 @@ in {
 #  Footnotes  #
 #-------------#
 
-# 1: `claude-config` is a `git+file` input (/home/wizard/claude-config), so it
-#    locks to a commit — an edit there isn't picked up until it's committed and
-#    the input is re-locked:
-#      cd /home/wizard/claude-config && git commit -am "…"
+# 1: `claude-config` is a private `github:` input, so it locks to a commit — an
+#    edit isn't picked up until it's pushed and the input is re-locked:
+#      cd <clone> && git commit -am "…" && git push
 #      nix flake update claude-config    # in /etc/nixos
 #      sudo nixos-rebuild switch --flake .#<host>
-#    The tradeoff bought by the input is privacy (content off the public repo);
-#    switching the URL to a private `github:HunterThueson/claude-config` would
-#    add portability across hosts but needs a GitHub token in Nix's
-#    access-tokens (sops-managed) because `nixos-rebuild` fetches as root.
+#    The input buys privacy (content off the public repo) plus portability
+#    across hosts. Being private, it costs authentication: `github:` fetches
+#    through api.github.com, which answers 404 — not 403 — when unauthorized,
+#    so a missing token looks like a missing repo. The token reaches Nix via
+#    the `nix-access-tokens` sops secret, which system/nix/default.nix
+#    `!include`s into nix.conf; see the footnotes in both files.
 #
 #    On a host's first switch, HM replaces any pre-existing ~/.claude files it
 #    owns with store symlinks. Under nixos-rebuild the originals are saved as
