@@ -55,7 +55,6 @@
     medialib = {                                                                # Ash's media management CLI (WIP)
       url = "git+file:///home/wizard/bin/medialib";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.nixos-config.follows = "nixpkgs";
     };
   };
 
