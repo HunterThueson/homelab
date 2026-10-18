@@ -57,7 +57,7 @@ in
     runelite = "${config.home.homeDirectory}/.local/share/bolt-launcher/.runelite";
 
     # Hosts listed here are held receive-only while they converge [5]
-    folderType = if lib.elem hostName [ "artemis" ] then "receiveonly" else "sendreceive";
+    folderType = if lib.elem hostName [ ] then "receiveonly" else "sendreceive";
   in {
     config = lib.mkIf (devices ? ${hostName} && syncsAnything user) {
 
@@ -133,9 +133,11 @@ in
 #    module landed merged two already-populated copies file by file instead of
 #    seeding one from the other. On 2026-10-18 artemis' profiles.json won and
 #    hephaestus' RuneLite started with its real profile unregistered — the
-#    settings file itself survived, as did `.sync-conflict-*` siblings, which are
-#    the only safety net while this folder configures no `versioning`. Syncthing
-#    has no "seed once, then go bidirectional" mode; folder type is the lever.
+#    settings file itself survived, as did the `.sync-conflict-*` siblings, which
+#    were the whole safety net back when this folder configured no `versioning`.
+#    Syncthing has no "seed once, then go bidirectional" mode; folder type is the
+#    lever. The list is empty because that convergence finished the same day; it
+#    is the resting state, and a host goes in it only while being seeded.
 #
 #    A host listed above cannot push, so the authority's copy wins while that
 #    host catches up. Receive-only does not discard what the host already has:
