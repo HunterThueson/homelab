@@ -635,19 +635,16 @@
     },
     "medialib": {
       "inputs": {
-        "nixos-config": [
-          "nixpkgs"
-        ],
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1792300526,
-        "narHash": "sha256-7N1AlD6p8HuCmPQBfZGpO+8BLpIHmVVb7yjjVOvkJTk=",
+        "lastModified": 1792301448,
+        "narHash": "sha256-VzjobJKagc3r6L2cHPudoc04Re+D+PEBXB6OgadbkkQ=",
         "ref": "refs/heads/master",
-        "rev": "9f8cc180b78b4559a50e0e816c22b01c68e26d57",
-        "revCount": 33,
+        "rev": "8cfe8a0ee63db6b4991c424a4bffd37b1eaa06a8",
+        "revCount": 34,
         "type": "git",
         "url": "file:///home/wizard/bin/medialib"
       },
