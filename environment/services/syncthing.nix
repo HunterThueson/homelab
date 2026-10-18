@@ -55,6 +55,9 @@ in
     username = config.home.username;
     peers    = lib.filterAttrs (h: _: h != hostName) devices;
     runelite = "${config.home.homeDirectory}/.local/share/bolt-launcher/.runelite";
+
+    # Hosts listed here are held receive-only while they converge [5]
+    folderType = if lib.elem hostName [ "artemis" ] then "receiveonly" else "sendreceive";
   in {
     config = lib.mkIf (devices ? ${hostName} && syncsAnything user) {
 
@@ -72,6 +75,7 @@ in
               label   = "OSRS RuneLite";
               path    = runelite;                                               # Bolt launcher's RuneLite home [3]
               devices = lib.attrNames peers;
+              type    = folderType;
             };
           };
         };
@@ -120,5 +124,21 @@ in
 #    profiles2 too, so they currently sync between machines — if the laptop
 #    ever needs weaker GPU settings, switch it to its own RuneLite profile
 #    via the in-client profile panel rather than unsyncing profiles2.
+
+# 5: Both sides default to `sendreceive`, so the first convergence after this
+#    module landed merged two already-populated copies file by file instead of
+#    seeding one from the other. On 2026-10-18 artemis' profiles.json won and
+#    hephaestus' RuneLite started with its real profile unregistered — the
+#    settings file itself survived, as did `.sync-conflict-*` siblings, which are
+#    the only safety net while this folder configures no `versioning`. Syncthing
+#    has no "seed once, then go bidirectional" mode; folder type is the lever.
+#
+#    A host listed above cannot push, so the authority's copy wins while that
+#    host catches up. Receive-only does not discard what the host already has:
+#    those files become "Locally Changed Items" and need a "Revert Local Changes"
+#    in its GUI (or deleting the folder before first start) before authority
+#    really transfers. Removing a host from the list restores `sendreceive`,
+#    which is where both hosts should end up — a host left in the list keeps
+#    working, but its local edits silently never reach the other machine.
 
 # EOF
