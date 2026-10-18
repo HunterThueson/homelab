@@ -15,7 +15,7 @@ in {
     boot.loader.systemd-boot = {
       enable = true;
       memtest86.enable = true;
-      configurationLimit = 25;
+      configurationLimit = 5;
       editor = false;                   # Disable editing kernel cmd line — security risk
     };
   };
