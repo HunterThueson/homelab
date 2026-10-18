@@ -71,11 +71,15 @@ in
 
           folders = lib.mkIf user.sync.osrs {
             osrs-runelite = {
-              id      = "osrs-runelite";
-              label   = "OSRS RuneLite";
-              path    = runelite;                                               # Bolt launcher's RuneLite home [3]
-              devices = lib.attrNames peers;
-              type    = folderType;
+              id          = "osrs-runelite";
+              label       = "OSRS RuneLite";
+              path        = runelite;                                               # Bolt launcher's RuneLite home [3]
+              devices     = lib.attrNames peers;
+              type        = folderType;
+              versioning  = {
+                type        = "simple";
+                params.keep = "5";
+              };
             };
           };
         };
