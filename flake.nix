@@ -113,7 +113,7 @@
         browser       = { name = "firefox"; declarative = false; };  # keep profile imperative
 
         networking.privacy = {
-          vpn     = { enable = true; autostart = true;  server = "USA-Las_Vegas";  };
+          vpn     = { enable = true; autostart = true;  server = "USA-Denver";  };
           torrent = { enable = true; autostart = false;  server = "USA-Phoenix"; portForward = true; };
           tor     = { enable = true; autostart = false; };
         };
