@@ -18,7 +18,7 @@ in {
       device = cfg.device;
       efiSupport = true;
       useOSProber = true;
-      configurationLimit = 25;
+      configurationLimit = 5;
 
       # Memtest86 (unfree) EFI-compatible system diagnostics
       extraFiles = {
