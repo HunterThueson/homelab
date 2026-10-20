@@ -7,9 +7,6 @@
 
     # Media & entertainment
     spotify                                                 # music
-    mailspring                                              # email client
-      libsecret                                             # dependency for mailspring
-    discord                                                 # chat client
     gimp-with-plugins                                       # GNU Image Manipulation Program
       gimpPlugins.gmic                                      # GIMP plugin for the G'MIC image processing framework
     mpv                                                     # video playback
@@ -19,6 +16,14 @@
     ffmpeg_6-full                                           # video transcoding utility (and a dependency for many other programs)
     instaloader                                             # download photos & videos from Instagram
     speedcrunch                                             # calculator
+
+    # Communication
+    discord                                                 # chat client
+    protonmail-desktop                                      # Desktop app for Proton Mail & Calendar
+    protonmail-export                                       # Export your Proton Mail emails as eml files
+    protonmail-bridge                                       # Use your ProtonMail account with your local email client (mailspring)
+    mailspring                                              # email client
+      libsecret                                             # dependency for mailspring
 
     # Dedup & library management
     fclones                                                 # parallel byte-exact duplicate finder (Rust)
