@@ -303,11 +303,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792274446,
-        "narHash": "sha256-AM1HmBeDnB2B3dSiXuCYeu7Me+lHNpz/P39lVxGJBuQ=",
+        "lastModified": 1792438572,
+        "narHash": "sha256-5mQQOcggBRBXB7NlzUxO0dbvQN4euJOISjNybrtfxPk=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "ab3823b4b24c0c3ca984c1f3ee577fd6d667424c",
+        "rev": "24f8f8e786f87d6a818e1746cb2389bf922afdab",
         "type": "github"
       },
       "original": {
@@ -640,11 +640,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792433714,
-        "narHash": "sha256-TfTpkVrskUHWpNPPGDCoNgfwdztpOVYbkJdiIXrCPHg=",
+        "lastModified": 1792504231,
+        "narHash": "sha256-67Cbnegs2zMntZuS+53nH4wv98fRafg27xKkOl0DY3Q=",
         "ref": "refs/heads/master",
-        "rev": "84424653b9bcf6861d35508d32d8b8eff7ce2aca",
-        "revCount": 41,
+        "rev": "459b38b24825ac348bcfa02dec8eb488fe7bdfa7",
+        "revCount": 45,
         "type": "git",
         "url": "file:///home/wizard/bin/medialib"
       },
@@ -706,11 +706,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1792295010,
-        "narHash": "sha256-F7meJtbqGttmUoMmYjRRgkVs42sn7bh7vvRvLPlUN98=",
+        "lastModified": 1792422028,
+        "narHash": "sha256-qVt97ILUu2DorFGGEi+mqVuzOF8R18fQLgFkHiLrNfE=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "8ce73368d1efd4d657e9064d29b144a52046b4e8",
+        "rev": "f3a73bcf5d1c5b75a66cf35a48957e30d41d647a",
         "type": "github"
       },
       "original": {
