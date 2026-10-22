@@ -1,5 +1,37 @@
 # TODO
 
+## `README.md` Accuracy Pass
+
+The README has drifted; it hasn't been walked through end-to-end in a while and the
+scope of the project has moved on since it was last updated. Go through it section by
+section and reconcile it against the actual tree.
+
+The north star to write it around: **switching between machines ought to be as seamless
+as possible, and tools of creation should feel like magic.** The current "What's Next"
+list still frames the project as "daily-driver Hyprland desktop," which is a means now,
+not the end.
+
+Known-stale items found so far:
+
+* `scripts/bootstrap-access-token` is referenced in the directory tree (line ~132) and
+  in the whole of "First deployment" (lines ~211-220), but `scripts/` contains only
+  `newfile-nix`. Either the script needs writing or those steps need rewriting.
+* The "Design Principles & Core Values" list predates the cross-machine goal — nothing
+  in it mentions portability or multi-host consistency.
+* `hosts/` in the directory tree lists only `hephaestus` and `artemis`; `hestia` exists
+  as a stub.
+
+## Host: `hestia`
+
+A Raspberry Pi to run as a personal NAS / backup + web server. Hardware is on hand;
+`hosts/hestia/` currently holds only a `default.nix` that imports a `configuration.nix`
+and `hardware.nix` which don't exist yet, so it's deliberately absent from `hostDefs`
+in `flake.nix` — don't add it there until those files are real.
+
+Blocked on storage, not on config: it needs a drive pilfered from `hephaestus`, which
+first needs enough space cleared to free an entire drive. Not difficult, just not yet
+a priority.
+
 ## Miscellaneous Fixes & Adjustments
 
 ### `nvim`
