@@ -23,6 +23,7 @@ in {
         user.email = user.email;
         init.defaultBranch = "master";
         pull.rebase = false;
+        push.autoSetupRemote = true;                    # Automatically create a new branch on the remote if it doesn't exist during a push
         rebase.autostash = true;
         safe.directory = [
           "/etc/nixos"
